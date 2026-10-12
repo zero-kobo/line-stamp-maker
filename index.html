@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>無料LINEスタンプメーカー｜AIイラストを分割・背景透過・文字入れしてZIP一括書き出し</title>
-<meta name="description" content="AIで作ったイラストやまとめ画像を、LINEスタンプの規格（最大370×320px・偶数サイズ・透過PNG）に自動で整える無料ツール。シート分割、背景透過、白フチ、文字演出、審査チェック、01.png〜main.png・tab.pngのZIP一括書き出しまでブラウザだけで完結。登録不要・画像はサーバーに送信されません。">
+<title>無料LINEスタンプ・絵文字メーカー｜AIイラストを分割・背景透過・文字入れしてZIP一括書き出し</title>
+<meta name="description" content="AIで作ったイラストやまとめ画像を、LINEスタンプ（最大370×320px）やLINE絵文字（180×180px）の規格に自動で整える無料ツール。シート分割、背景透過、白フチ、文字演出、審査チェック、01.png〜main.png・tab.pngのZIP一括書き出しまでブラウザだけで完結。登録不要・画像はサーバーに送信されません。">
 <link rel="canonical" href="https://zero-kobo.github.io/line-stamp-maker/">
 <meta name="theme-color" content="#10b981">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="ちいさなツール工房">
 <meta property="og:locale" content="ja_JP">
-<meta property="og:title" content="無料LINEスタンプメーカー｜AIイラストからスタンプ一式をZIPで書き出し">
+<meta property="og:title" content="無料LINEスタンプ・絵文字メーカー｜AIイラストから申請用一式をZIPで書き出し">
 <meta property="og:description" content="まとめ画像の分割・背景透過・白フチ・文字入れ・審査チェック・ZIP書き出しまでブラウザだけで。登録不要・無料。">
 <meta property="og:url" content="https://zero-kobo.github.io/line-stamp-maker/">
 <meta property="og:image" content="https://zero-kobo.github.io/line-stamp-maker/ogp.png">
@@ -23,22 +23,22 @@
   "@graph": [
     {
       "@type": "WebApplication",
-      "name": "LINEスタンプメーカー",
+      "name": "LINEスタンプ・絵文字メーカー",
       "url": "https://zero-kobo.github.io/line-stamp-maker/",
       "applicationCategory": "DesignApplication",
       "operatingSystem": "Windows, macOS, iOS, Android（ブラウザ）",
       "inLanguage": "ja",
       "isAccessibleForFree": true,
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" },
-      "description": "AIイラストやまとめ画像をLINEスタンプ規格に整え、背景透過・白フチ・文字入れ・審査チェック・ZIP一括書き出しまで行える無料Webツール。",
-      "featureList": ["まとめ画像（シート）の自動分割", "背景の自動透過・スポイト・消しゴム", "イラストの白フチ", "文字の縦書き・斜め・グラデ・虹色・震え・波打ち", "余白10px・偶数サイズ・1MBの自動チェック", "01.png〜24.png・main.png・tab.pngのZIP一括書き出し"],
+      "description": "AIイラストやまとめ画像をLINEスタンプ・LINE絵文字の規格に整え、背景透過・白フチ・文字入れ・審査チェック・ZIP一括書き出しまで行える無料Webツール。",
+      "featureList": ["まとめ画像（シート）の自動分割", "背景の自動透過・スポイト・消しゴム", "イラストの白フチ", "文字の縦書き・斜め・グラデ・虹色・震え・波打ち", "余白10px・偶数サイズ・1MBの自動チェック", "01.png〜24.png・main.png・tab.pngのZIP一括書き出し", "LINE絵文字（180×180px・001.png〜）モード"],
       "publisher": { "@type": "Organization", "name": "ちいさなツール工房", "url": "https://zero-kobo.github.io/" }
     },
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
         { "@type": "ListItem", "position": 1, "name": "ちいさなツール工房", "item": "https://zero-kobo.github.io/" },
-        { "@type": "ListItem", "position": 2, "name": "LINEスタンプメーカー", "item": "https://zero-kobo.github.io/line-stamp-maker/" }
+        { "@type": "ListItem", "position": 2, "name": "LINEスタンプ・絵文字メーカー", "item": "https://zero-kobo.github.io/line-stamp-maker/" }
       ]
     },
     {
@@ -48,6 +48,7 @@
         { "@type": "Question", "name": "LINEスタンプの画像サイズは？", "acceptedAnswer": { "@type": "Answer", "text": "スタンプ画像は最大370×320px、メイン画像は240×240px、トークルームタブ画像は96×74pxです。縦横とも偶数px、背景透過のPNG、1枚1MB以下にします。このツールは書き出し時に自動で合わせます。" } },
         { "@type": "Question", "name": "AIで作った1枚のまとめ画像を分割できますか？", "acceptedAnswer": { "@type": "Answer", "text": "「一括作成」タブのシート分割で、列数と行数を指定すると1コマずつスタンプに割り当て、背景透過と配置まで自動で行います。" } },
         { "@type": "Question", "name": "書き出したファイル名はそのまま申請に使えますか？", "acceptedAnswer": { "@type": "Answer", "text": "ZIPの中身は01.png〜（スタンプ数）.png、main.png、tab.pngの名前で入っています。LINE Creators Marketの申請画面で、ZIPのままアップロードする形式に対応しています。" } },
+        { "@type": "Question", "name": "LINE絵文字も作れますか？", "acceptedAnswer": { "@type": "Answer", "text": "上部の切り替えで「絵文字」を選ぶと、180×180pxの正方形キャンバスになり、8〜40個の絵文字を001.png〜とtab.pngのZIPで書き出せます。スタンプと絵文字の作業データは別々に保存されます。" } },
         { "@type": "Question", "name": "スマホでも使えますか？", "acceptedAnswer": { "@type": "Answer", "text": "iPhone・Androidのブラウザで使えます。指でドラッグして画像や文字を動かせます。細かい消しゴム作業はパソコンのほうが楽です。" } }
       ]
     }
@@ -189,6 +190,11 @@
   .time{font-size:9px;color:rgba(255,255,255,.85)}
   .me{display:flex;justify-content:flex-end;align-items:flex-end;gap:5px}
   .me img{width:150px;height:auto}
+  .chat.emo .me #livePreviewImg{width:72px}
+  .mebub{background:#a3e635;border-radius:16px 16px 4px 16px;display:flex;align-items:center;gap:2px}
+  .mebub img{width:22px!important;height:22px;vertical-align:middle}
+  .seg.kind{grid-auto-columns:auto}
+  .seg.kind button{padding:6px 14px;font-size:13px}
   .phone .bar{background:#fff;padding:7px 10px;font-size:11px;color:#94a3b8}
   .wall{display:flex;justify-content:center;gap:8px;margin-top:10px}
   .wall button{width:26px;height:26px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px var(--line)}
@@ -245,32 +251,31 @@
 
 <header class="hd">
   <div class="wrap">
-    <a class="brand" href="https://zero-kobo.github.io/">🛠️ <b>ちいさなツール工房</b> › LINEスタンプメーカー</a>
+    <a class="brand" href="https://zero-kobo.github.io/">🛠️ <b>ちいさなツール工房</b> › LINEスタンプ・絵文字メーカー</a>
     <span class="muted">画像はあなたのブラウザ内だけで処理されます</span>
   </div>
 </header>
 
 <div class="wrap">
   <div class="hero">
-    <h1>LINEスタンプメーカー<small>無料・登録不要</small></h1>
-    <p>AIイラストやまとめ画像から、LINEスタンプ一式（01.png〜・main.png・tab.png）をZIPで書き出せるツール。背景透過・白フチ・文字入れ・審査チェックまでここで完結します。</p>
-    <div class="badges"><span>✂️ シート自動分割</span><span>🫥 背景を自動で透過</span><span>⚪ イラストに白フチ</span><span>🔤 縦書き・斜め・虹色文字</span><span>✅ 余白10px・偶数px・1MBを自動チェック</span><span>📦 ZIP一括書き出し</span></div>
+    <h1>LINEスタンプ・絵文字メーカー<small>無料・登録不要</small></h1>
+    <p>AIイラストやまとめ画像から、LINEスタンプ一式（01.png〜・main.png・tab.png）やLINE絵文字一式（001.png〜・tab.png）をZIPで書き出せるツール。背景透過・白フチ・文字入れ・審査チェックまでここで完結します。</p>
+    <div class="badges"><span>✂️ シート自動分割</span><span>🫥 背景を自動で透過</span><span>⚪ イラストに白フチ</span><span>🔤 縦書き・斜め・虹色文字</span><span>✅ 余白10px・偶数px・1MBを自動チェック</span><span>📦 ZIP一括書き出し</span><span>😀 LINE絵文字（180×180）にも対応</span></div>
   </div>
 
   <!-- ===== Strip ===== -->
   <div class="card pad strip">
     <div class="top">
       <div class="row">
-        <strong style="font-size:14px">スタンプ一覧</strong>
-        <select id="setCount" style="width:auto;padding:5px 8px;font-size:13px" aria-label="スタンプの個数">
-          <option value="8">8個セット</option>
-          <option value="16">16個セット</option>
-          <option value="24">24個セット</option>
-        </select>
+        <div class="seg kind" id="kindSeg" role="tablist" aria-label="作るものの種類">
+          <button data-kind="stamp" class="on">スタンプ</button>
+          <button data-kind="emoji">絵文字</button>
+        </div>
+        <select id="setCount" style="width:auto;padding:5px 8px;font-size:13px" aria-label="個数"></select>
         <span class="muted" id="setSummaryShort"></span>
       </div>
       <div class="row">
-        <button class="btn sm" data-act="downloadPng">🖼️ このスタンプをPNG保存</button>
+        <button class="btn sm" data-act="downloadPng" id="pngBtn">🖼️ このスタンプをPNG保存</button>
         <button class="btn pri" data-act="downloadZip">📦 ZIPで一括書き出し</button>
       </div>
     </div>
@@ -469,12 +474,12 @@
             <label class="muted">枠線を避ける内側カット(%)<input type="number" id="sheetInset" min="0" max="15" value="2"></label>
           </div>
           <label class="chk" style="margin-top:8px"><input type="checkbox" id="sheetBg" checked>各コマの背景を自動で消す</label>
-          <button class="btn pri full" style="margin-top:8px" data-act="splitSheet">分割してスタンプに入れる</button>
+          <button class="btn pri full" style="margin-top:8px" data-act="splitSheet">分割して順番に入れる</button>
         </div>
 
         <div class="box a">
           <div class="h3">📝 セリフを一括入力</div>
-          <p class="muted" style="margin:0 0 6px">1行＝1スタンプ。01番から順に入ります（空行はそのまま）。2行にしたいときは全角の「／」で区切ります（例：おつかれ…／絶滅しそう）。</p>
+          <p class="muted" style="margin:0 0 6px">1行＝1個。1番から順に入ります（空行はそのまま）。2行にしたいときは全角の「／」で区切ります（例：おつかれ…／絶滅しそう）。</p>
           <textarea id="bulkText" rows="6" placeholder="OK！&#10;ありがとう！&#10;りょうかい！"></textarea>
           <div class="row" style="margin-top:6px">
             <button class="btn sm" data-act="fillLineup">定番セリフ案を入れる</button>
@@ -483,21 +488,21 @@
         </div>
 
         <div class="box">
-          <div class="h3">🏷️ メイン画像・タブ画像</div>
+          <div class="h3" id="mainTabTitle">🏷️ メイン画像・タブ画像</div>
           <div class="grid2">
-            <label class="muted">メイン（240×240）<select id="mainSel"></select></label>
+            <label class="muted" id="mainSelWrap">メイン（240×240）<select id="mainSel"></select></label>
             <label class="muted">タブ（96×74）<select id="tabSel"></select></label>
           </div>
           <label class="chk" style="margin-top:6px"><input type="checkbox" id="mainNoText" checked>メイン・タブは文字なし（キャラだけ）にする</label>
           <div class="mt">
-            <div style="text-align:center"><canvas id="mainPrev" width="240" height="240" style="width:120px;height:120px"></canvas><div class="muted">main.png</div></div>
+            <div style="text-align:center" id="mainPrevWrap"><canvas id="mainPrev" width="240" height="240" style="width:120px;height:120px"></canvas><div class="muted">main.png</div></div>
             <div style="text-align:center"><canvas id="tabPrev" width="96" height="74" style="width:96px;height:74px"></canvas><div class="muted">tab.png</div></div>
           </div>
         </div>
 
         <div class="box">
           <div class="h3">⚙️ 書き出し設定</div>
-          <label class="chk"><input type="checkbox" id="trimExport" checked>余分な透明部分をトリミング（10px余白は残して偶数pxに調整）</label>
+          <label class="chk" id="trimWrap"><input type="checkbox" id="trimExport" checked>余分な透明部分をトリミング（10px余白は残して偶数pxに調整）</label>
           <p class="muted" style="margin:6px 0 0">トリミングすると、トーク画面で絵が少し大きく見えます。オフにすると全て370×320pxで書き出します。</p>
         </div>
 
@@ -522,7 +527,7 @@
           <div class="notch"><i></i></div>
           <div class="chat pt" id="chat">
             <div class="msg"><div class="av">🐻</div><div class="bub">今どこ〜？スタンプ送って！</div><span class="time">12:34</span></div>
-            <div class="me"><div style="text-align:right"><div class="time">既読</div><div class="time">12:35</div></div><img id="livePreviewImg" alt="スタンプのプレビュー"></div>
+            <div class="me"><div style="text-align:right"><div class="time">既読</div><div class="time">12:35</div></div><img id="livePreviewImg" alt="スタンプのプレビュー"><div class="bub mebub hidden" id="emojiBub">今日もおつかれ<img id="emojiInline" alt=""></div></div>
           </div>
           <div class="bar">メッセージを入力</div>
         </div>
@@ -568,6 +573,15 @@
           <tr><td>トークルームタブ画像</td><td>1個</td><td>96×74px</td><td>tab.png</td></tr>
         </tbody>
       </table>
+      <h3 id="emoji-spec">LINE絵文字の規格</h3>
+      <table>
+        <thead><tr><th>画像</th><th>数</th><th>サイズ</th><th>ファイル名</th></tr></thead>
+        <tbody>
+          <tr><td>絵文字画像</td><td>8〜40個</td><td>180×180px</td><td>001.png〜</td></tr>
+          <tr><td>トークルームタブ画像</td><td>1個</td><td>96×74px</td><td>tab.png</td></tr>
+        </tbody>
+      </table>
+      <p>絵文字にはメイン画像がありません。余白は空けずに、180×180pxいっぱいに描くのが推奨です。上の切り替えで「絵文字」を選ぶと、この規格で書き出します（<a href="#emoji" onclick="setTimeout(()=>location.reload(),0)">絵文字モードで開く</a>）。</p>
       <p>共通ルール：PNG形式・背景は透過・縦横とも偶数px・1枚1MB以下。上下左右に10pxほどの余白を空けるのが推奨です。このツールは書き出し時に偶数pxとファイル名を自動で合わせます。規格は変わることがあるので、申請前に<a href="https://creator.line.me/ja/guideline/messagesticker/" target="_blank" rel="noopener">公式の制作ガイドライン</a>も確認してください。</p>
     </section>
 
@@ -591,6 +605,7 @@
       <details><summary>LINEスタンプの画像サイズは？</summary><p>スタンプ画像は最大370×320px、メイン画像は240×240px、タブ画像は96×74pxです。縦横とも偶数px、背景透過のPNG、1枚1MB以下にします。書き出し時に自動で合わせます。</p></details>
       <details><summary>AIで作った1枚のまとめ画像を分割できますか？</summary><p>「一括作成」タブのシート分割で、列数と行数を指定すると1コマずつスタンプに割り当て、背景透過と配置まで自動で行います。</p></details>
       <details><summary>書き出したファイル名はそのまま申請に使えますか？</summary><p>ZIPの中身は01.png〜、main.png、tab.pngの名前で入っています。申請画面でZIPのままアップロードできます。</p></details>
+      <details><summary>LINE絵文字も作れますか？</summary><p>上部の切り替えで「絵文字」を選ぶと、180×180pxの正方形キャンバスになり、8〜40個の絵文字を001.png〜とtab.pngのZIPで書き出せます。絵文字は文中に文字と同じ大きさで出るので、文字なしの顔や絵だけがおすすめです。スタンプと絵文字の作業データは別々に保存されます。</p></details>
       <details><summary>スマホでも使えますか？</summary><p>iPhone・Androidのブラウザで使えます。指でドラッグして画像や文字を動かせます。細かい消しゴム作業はパソコンのほうが楽です。</p></details>
       <details><summary>途中で閉じても大丈夫？</summary><p>作業内容はこのブラウザに自動保存され、次に開いたときに復元されます。別の端末で続けるときは「作業データ」からファイルに保存してください。</p></details>
     </section>
@@ -640,7 +655,14 @@
 <script>
 (() => {
   'use strict';
-  const W = 370, H = 320, M = 10, MAXN = 24;
+  const SPEC = {
+    stamp: { W: 370, H: 320, M: 10, counts: [8, 16, 24], label: 'スタンプ', noLen: 2, outlineW: 5, textSize: 48 },
+    emoji: { W: 180, H: 180, M: 2, counts: [8, 16, 24, 32, 40], label: '絵文字', noLen: 3, outlineW: 3, textSize: 34 }
+  };
+  let KIND = 'stamp', W = 370, H = 320, M = 10;
+  const MAXN = 40;
+  const maxN = () => SPEC[KIND].counts[SPEC[KIND].counts.length - 1];
+  const fileNo = n => String(n).padStart(SPEC[KIND].noLen, '0');
   const $ = id => document.getElementById(id);
   const mk = (w, h) => { const c = document.createElement('canvas'); c.width = w; c.height = h; return c; };
   const cloneCanvas = c => { const n = mk(c.width, c.height); n.getContext('2d').drawImage(c, 0, 0); return n; };
@@ -673,10 +695,10 @@
   const VROT = new Set(['ー', '〜', '～', '-', '―', '…', '‥', '（', '）', '(', ')', '「', '」', '→', '←', '=', '＝']);
 
   // ---------- State ----------
-  const defaultText = () => ({ content: '', font: FONTS[0].f, size: 48, x: 50, y: 82, dir: 'horizontal', fx: 'none', fxInt: 50,
+  const defaultText = () => ({ content: '', font: FONTS[0].f, size: SPEC[KIND].textSize, x: 50, y: 82, dir: 'horizontal', fx: 'none', fxInt: 50,
     colorMode: 'solid', c1: '#ffffff', c2: '#fde047', stroke: '#059669', strokeW: 8, outer: true, outerColor: '#ffffff', shadow: true });
   const newStamp = () => ({ raw: null, img: null, x: W / 2, y: H / 2 - 10, scale: 100, rot: 0, flip: false,
-    outline: true, outlineW: 5, outlineColor: '#ffffff', text: defaultText(), hist: [], status: 'empty', issues: [], _tbox: null });
+    outline: true, outlineW: SPEC[KIND].outlineW, outlineColor: '#ffffff', text: defaultText(), hist: [], status: 'empty', issues: [], _tbox: null });
 
   let stamps = Array.from({ length: MAXN }, newStamp);
   let N = 8, cur = 0, mode = 'move', brush = 20;
@@ -686,7 +708,8 @@
 
   const cvs = $('stampCanvas');
   const ctx = cvs.getContext('2d', { willReadFrequently: true });
-  const LA = mk(W, H), LB = mk(W, H), TL = mk(W, H);
+  let LA = mk(W, H), LB = mk(W, H), TL = mk(W, H);
+  const projects = { stamp: null, emoji: null };
 
   // ---------- Utilities ----------
   let toastT;
@@ -844,7 +867,7 @@
 
   let rq = false;
   function requestRender() { if (rq) return; rq = true; requestAnimationFrame(() => { rq = false; render(); }); }
-  function render() { composeStamp(S(), ctx); $('livePreviewImg').src = cvs.toDataURL('image/png'); }
+  function render() { composeStamp(S(), ctx); const u = cvs.toDataURL('image/png'); $('livePreviewImg').src = u; if (KIND === 'emoji') $('emojiInline').src = u; }
 
   // ---------- Content box / export ----------
   function contentBox(cv, th = 0) {
@@ -865,7 +888,7 @@
     const cv = renderFull(s);
     const b = contentBox(cv, 0);
     if (!b) return null;
-    if (!trimExport) return cv;
+    if (!trimExport || KIND === 'emoji') return cv;
     let [x0, x1] = evenSpan(Math.max(0, b.x0 - M), Math.min(W, b.x1 + M), W);
     let [y0, y1] = evenSpan(Math.max(0, b.y0 - M), Math.min(H, b.y1 + M), H);
     const out = mk(x1 - x0, y1 - y0);
@@ -968,12 +991,13 @@
     for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
       const a = d[(y * W + x) * 4 + 3];
       if (a > 200) opaque++;
-      if (a > 8 && (x < M || x >= W - M || y < M || y >= H - M)) edge++;
+      if (KIND === 'stamp' && a > 8 && (x < M || x >= W - M || y < M || y >= H - M)) edge++;
     }
     const corners = [[0, 0], [W - 1, 0], [0, H - 1], [W - 1, H - 1]].filter(([x, y]) => d[(y * W + x) * 4 + 3] > 200).length;
     if (corners >= 3 || opaque / (W * H) > 0.85) issues.push({ lv: 'ng', m: '背景が透過されていないようです。「画像」タブで背景を消してください' });
     if (edge > 20) issues.push({ lv: 'warn', m: '上下左右10pxの余白に絵や文字がはみ出しています。「自動配置」で直せます' });
-    if (s.text.content.trim() && s.text.size < 30) issues.push({ lv: 'warn', m: '文字が小さめです。スマホでは読みにくくなります' });
+    if (KIND === 'stamp' && s.text.content.trim() && s.text.size < 30) issues.push({ lv: 'warn', m: '文字が小さめです。スマホでは読みにくくなります' });
+    if (KIND === 'emoji' && s.text.content.trim()) issues.push({ lv: 'info', m: '絵文字は文字と同じ大きさで表示されるので、文字は読みにくくなります。顔や絵だけがおすすめです' });
     if (s.img && s.scale > 150) issues.push({ lv: 'warn', m: '元画像を1.5倍以上に拡大しています。ぼやけていないか確認を' });
     if (s.img && s.text.content.trim() && s._tbox) {
       // text over very busy area is fine; nothing
@@ -984,7 +1008,7 @@
       if (bytes > 1024 * 1024) issues.push({ lv: 'ng', m: 'ファイルが1MBを超えています' });
       s._size = `${ex.width}×${ex.height}px・${Math.max(1, Math.round(bytes / 1024))}KB`;
     }
-    if (!issues.length) issues.push({ lv: 'ok', m: '透過・余白・サイズ・容量、すべてOK' });
+    if (!issues.some(i => i.lv !== 'info')) issues.unshift({ lv: 'ok', m: KIND === 'emoji' ? '透過・サイズ(180×180)・容量、すべてOK' : '透過・余白・サイズ・容量、すべてOK' });
     s.status = issues.some(i => i.lv === 'ng') ? 'ng' : issues.some(i => i.lv === 'warn') ? 'warn' : 'ok';
     s.issues = issues;
   }
@@ -1004,11 +1028,11 @@
     const box = $('thumbs'); box.innerHTML = ''; thumbEls = [];
     for (let i = 0; i < N; i++) {
       const d = document.createElement('div'); d.className = 'thumb' + (i === cur ? ' on' : '');
-      d.innerHTML = `<canvas width="111" height="96"></canvas><span class="no">${pad2(i + 1)}</span><span class="dot"></span>`;
+      d.innerHTML = `<canvas width="${Math.round(W * .3)}" height="${Math.round(H * .3)}"></canvas><span class="no">${fileNo(i + 1)}</span><span class="dot"></span>`;
       d.addEventListener('click', () => select(i));
       box.appendChild(d); thumbEls.push(d); drawThumb(i);
     }
-    const opts = Array.from({ length: N }, (_, i) => `<option value="${i}">${pad2(i + 1)}番を使う</option>`).join('');
+    const opts = Array.from({ length: N }, (_, i) => `<option value="${i}">${fileNo(i + 1)}番を使う</option>`).join('');
     mainIdx = Math.min(mainIdx, N - 1); tabIdx = Math.min(tabIdx, N - 1);
     $('mainSel').innerHTML = opts; $('tabSel').innerHTML = opts;
     $('mainSel').value = mainIdx; $('tabSel').value = tabIdx;
@@ -1022,6 +1046,7 @@
     el.classList.toggle('on', i === cur);
   }
   function updateMainTab() {
+    if (KIND === 'stamp') { const m0 = $('mainPrev').getContext('2d'); m0.clearRect(0, 0, 240, 240); }
     const m = $('mainPrev').getContext('2d'); m.clearRect(0, 0, 240, 240); m.drawImage(makeMain(), 0, 0);
     const t = $('tabPrev').getContext('2d'); t.clearRect(0, 0, 96, 74); t.drawImage(makeTab(), 0, 0);
   }
@@ -1060,7 +1085,7 @@
     $('fxRow').classList.toggle('hidden', s.text.fx === 'none');
     $('c2Row').classList.toggle('dim', s.text.colorMode !== 'grad');
     $('c1Label').textContent = s.text.colorMode === 'grad' ? '上側の色' : s.text.colorMode === 'rainbow' ? '（虹色が優先）' : '文字の色';
-    $('stampTitle').textContent = `スタンプ ${pad2(cur + 1)} / ${N}`;
+    $('stampTitle').textContent = `${SPEC[KIND].label} ${fileNo(cur + 1)} / ${N}`;
     syncShows();
   }
   document.querySelectorAll('[data-bind]').forEach(el => {
@@ -1194,7 +1219,7 @@
       i++;
     }
     if (list.length > done) toast(`${done}枚を読み込みました（セットの個数を超えた分は入っていません）`);
-    else toast(done > 1 ? `${done}枚を${pad2(cur + 1)}番から順に読み込みました` : '画像を読み込みました');
+    else toast(done > 1 ? `${done}枚を${fileNo(cur + 1)}番から順に読み込みました` : '画像を読み込みました');
     track('image_load', { count: done });
     syncUI(); await checkAll(); scheduleSave();
   }
@@ -1243,7 +1268,7 @@
     next: () => select(cur + 1),
     autoFit: () => { const s = S(); if (!s.img) return toast('画像がありません'); autoFit(s); syncUI(); changed(); toast('余白に収まるように配置しました'); },
     undo: () => { const s = S(); if (!s.hist.length) return toast('戻せる操作がありません'); s.img = s.hist.pop(); imgEdited(s); changed(); },
-    clearStamp: () => { if (!confirm(`${pad2(cur + 1)}番を空にしますか？`)) return; stamps[cur] = newStamp(); syncUI(); changed(); },
+    clearStamp: () => { if (!confirm(`${fileNo(cur + 1)}番を空にしますか？`)) return; stamps[cur] = newStamp(); syncUI(); changed(); },
     autoBg: () => { const s = S(); if (!s.img) return toast('画像がありません'); pushHist(s); const n = autoRemoveBg(s, Number($('tol').value), $('erode').checked); changed(); toast(n ? '外側の背景を透明にしました' : '四隅がすでに透明か、背景色が見つかりませんでした'); },
     removeWhite: () => { const s = S(); if (!s.img) return toast('画像がありません'); pushHist(s); removeGlobal(s, [255, 255, 255], Number($('tol').value)); changed(); },
     removeBlack: () => { const s = S(); if (!s.img) return toast('画像がありません'); pushHist(s); removeGlobal(s, [0, 0, 0], Number($('tol').value)); changed(); },
@@ -1264,14 +1289,14 @@
     splitSheet: splitSheet,
     downloadPng: async () => {
       const ex = exportStamp(S()); if (!ex) return toast('このスタンプは空です');
-      dl(await toBlob(ex), `${pad2(cur + 1)}.png`); track('download_png');
+      dl(await toBlob(ex), `${fileNo(cur + 1)}.png`); track('download_png', { kind: KIND });
     },
     downloadZip: downloadZip,
-    toggleGuide: () => { showGuide = !showGuide; $('guide').style.display = showGuide ? '' : 'none'; $('guideBtn').textContent = '余白ガイド：' + (showGuide ? '表示' : '非表示'); },
+    toggleGuide: () => { if (KIND === 'emoji') return; showGuide = !showGuide; $('guide').style.display = showGuide ? '' : 'none'; $('guideBtn').textContent = '余白ガイド：' + (showGuide ? '表示' : '非表示'); },
     cycleBg: () => { bgMode = (bgMode + 1) % 3; $('stage').className = 'stage ' + ['ck', 'dk', 'ln'][bgMode]; $('bgBtn').textContent = '背景：' + ['明', '暗', 'トーク色'][bgMode]; },
     saveProject: async () => { dl(new Blob([JSON.stringify(serialize())], { type: 'application/json' }), 'line-stamp-project.json'); toast('作業データを保存しました'); },
     loadProject: () => $('projectInput').click(),
-    newProject: () => { if (!confirm('今の作業を消して、新しく作り直しますか？（保存していないデータは消えます）')) return; loadSample(); N = 8; $('setCount').value = 8; cur = 0; buildStrip(); select(0); checkAll(); scheduleSave(); }
+    newProject: () => { if (!confirm(`今の${SPEC[KIND].label}の作業を消して、新しく作り直しますか？（保存していないデータは消えます）`)) return; if (KIND === 'stamp') loadSample(); else stamps = Array.from({ length: MAXN }, newStamp); N = 8; $('setCount').value = 8; cur = 0; buildStrip(); select(0); checkAll(); scheduleSave(); }
   };
   document.addEventListener('click', e => { const b = e.target.closest('[data-act]'); if (b && ACT[b.dataset.act]) ACT[b.dataset.act](); });
   document.addEventListener('keydown', e => {
@@ -1283,11 +1308,11 @@
     const f = $('sheetInput').files[0];
     if (!f) return toast('まとめ画像を選んでください');
     const cols = clamp(Number($('sheetCols').value) || 1, 1, 8), rows = clamp(Number($('sheetRows').value) || 1, 1, 8);
-    const start = clamp(Number($('sheetStart').value) || 1, 1, MAXN), inset = clamp(Number($('sheetInset').value) || 0, 0, 15) / 100;
+    const start = clamp(Number($('sheetStart').value) || 1, 1, maxN()), inset = clamp(Number($('sheetInset').value) || 0, 0, 15) / 100;
     const need = start - 1 + cols * rows;
     if (need > N) {
-      const nn = Math.min(MAXN, Math.ceil(need / 8) * 8);
-      if (nn !== N && confirm(`${cols * rows}コマ入れるには${nn}個セットが必要です。${nn}個セットに変更しますか？`)) { N = nn; $('setCount').value = N; buildStrip(); }
+      const nn = Math.min(maxN(), Math.ceil(need / 8) * 8);
+      if (nn > N && confirm(`${cols * rows}コマ入れるには${nn}個セットが必要です。${nn}個セットに変更しますか？`)) { N = nn; $('setCount').value = N; buildStrip(); }
     }
     toast('分割しています…');
     const sheet = await fileToCanvas(f, 4096);
@@ -1341,50 +1366,103 @@
     await checkAll();
     const list = stamps.slice(0, N);
     const empty = [], ng = [];
-    list.forEach((s, i) => { if (s.status === 'empty') empty.push(pad2(i + 1)); if (s.status === 'ng') ng.push(pad2(i + 1)); });
+    list.forEach((s, i) => { if (s.status === 'empty') empty.push(fileNo(i + 1)); if (s.status === 'ng') ng.push(fileNo(i + 1)); });
     let warn = '';
-    if (empty.length) warn += `・空のスタンプ：${empty.join(', ')}（申請には${N}個すべて必要です）\n`;
+    if (empty.length) warn += `・空の${SPEC[KIND].label}：${empty.join(', ')}（申請には${N}個すべて必要です）\n`;
     if (ng.length) warn += `・NG判定：${ng.join(', ')}\n`;
     if (warn && !confirm(`このまま書き出しますか？\n\n${warn}`)) return;
     toast('ZIPを作っています…');
     const files = [];
-    for (let i = 0; i < N; i++) { const ex = exportStamp(stamps[i]); if (ex) files.push({ name: pad2(i + 1) + '.png', blob: await toBlob(ex) }); }
-    files.push({ name: 'main.png', blob: await toBlob(makeMain()) });
+    for (let i = 0; i < N; i++) { const ex = exportStamp(stamps[i]); if (ex) files.push({ name: fileNo(i + 1) + '.png', blob: await toBlob(ex) }); }
+    if (KIND === 'stamp') files.push({ name: 'main.png', blob: await toBlob(makeMain()) });
     files.push({ name: 'tab.png', blob: await toBlob(makeTab()) });
-    dl(await makeZip(files), `line_stamp_${N}set.zip`);
-    track('download_zip', { count: N });
+    dl(await makeZip(files), `line_${KIND}_${N}set.zip`);
+    track('download_zip', { count: N, kind: KIND });
     toast('ZIPを書き出しました');
   }
 
   // ---------- Persistence ----------
-  function serialize() {
+  function serProj(p) {
     return {
-      v: 1, N, mainIdx, tabIdx, mainNoText, trimExport,
-      stamps: stamps.map(s => {
+      N: p.N, mainIdx: p.mainIdx, tabIdx: p.tabIdx,
+      stamps: p.stamps.map(s => {
         if (s.raw && !s._rawURL) s._rawURL = s.raw.toDataURL('image/png');
         if (s.img && !s._imgURL) s._imgURL = s.img.toDataURL('image/png');
         return { raw: s.raw ? s._rawURL : null, img: s.img ? s._imgURL : null, x: s.x, y: s.y, scale: s.scale, rot: s.rot, flip: s.flip,
           outline: s.outline, outlineW: s.outlineW, outlineColor: s.outlineColor, text: Object.assign({}, s.text) };
-      })
+      }).filter((d, i) => i < p.N || d.raw || d.text.content)
     };
   }
-  async function deserialize(o) {
-    N = [8, 16, 24].includes(o.N) ? o.N : 8;
-    mainIdx = o.mainIdx || 0; tabIdx = o.tabIdx || 0;
-    mainNoText = o.mainNoText !== false; trimExport = o.trimExport !== false;
+  const liveProj = () => ({ stamps, N, mainIdx, tabIdx, cur });
+  function serialize() {
+    const all = Object.assign({}, projects, { [KIND]: liveProj() });
+    const out = { v: 2, kind: KIND, mainNoText, trimExport, projects: {} };
+    for (const k of ['stamp', 'emoji']) if (all[k]) out.projects[k] = serProj(all[k]);
+    return out;
+  }
+  async function loadProj(o, kind) {
+    const keep = KIND; KIND = kind; // newStamp() uses the spec of the target kind
+    const counts = SPEC[kind].counts;
     const fresh = Array.from({ length: MAXN }, newStamp);
+    KIND = keep;
     await Promise.all((o.stamps || []).slice(0, MAXN).map(async (d, i) => {
       const s = fresh[i];
       ['x', 'y', 'scale', 'rot', 'flip', 'outline', 'outlineW', 'outlineColor'].forEach(k => { if (d[k] !== undefined) s[k] = d[k]; });
-      s.text = Object.assign(defaultText(), d.text || {});
+      s.text = Object.assign({}, fresh[i].text, d.text || {});
       if (d.raw) { s.raw = await urlToCanvas(d.raw); s._rawURL = d.raw; }
       if (d.img) { s.img = await urlToCanvas(d.img); s._imgURL = d.img; }
       else if (s.raw) s.img = cloneCanvas(s.raw);
     }));
-    stamps = fresh;
-    $('setCount').value = N; $('mainNoText').checked = mainNoText; $('trimExport').checked = trimExport;
-    cur = 0; buildStrip(); select(0); await checkAll();
+    return { stamps: fresh, N: counts.includes(o.N) ? o.N : 8, mainIdx: o.mainIdx || 0, tabIdx: o.tabIdx || 0, cur: 0 };
   }
+  async function deserialize(o) {
+    mainNoText = o.mainNoText !== false; trimExport = o.trimExport !== false;
+    $('mainNoText').checked = mainNoText; $('trimExport').checked = trimExport;
+    projects.stamp = projects.emoji = null;
+    if (o.v === 2 && o.projects) {
+      for (const k of ['stamp', 'emoji']) if (o.projects[k]) projects[k] = await loadProj(o.projects[k], k);
+    } else {
+      projects.stamp = await loadProj(o, 'stamp'); // 旧形式（スタンプのみ）
+    }
+    const want = o.kind === 'emoji' ? 'emoji' : 'stamp';
+    KIND = want === 'stamp' ? 'emoji' : 'stamp'; // force a full switch
+    await switchKind(want, true);
+  }
+
+  // ---------- Stamp / Emoji switch ----------
+  function applySpec() {
+    const sp = SPEC[KIND];
+    W = sp.W; H = sp.H; M = sp.M;
+    cvs.width = W; cvs.height = H;
+    LA = mk(W, H); LB = mk(W, H); TL = mk(W, H);
+    const st = $('stage'); st.style.aspectRatio = `${W} / ${H}`; st.style.maxWidth = KIND === 'emoji' ? '300px' : '370px';
+    $('guide').style.display = KIND === 'emoji' || !showGuide ? 'none' : '';
+    $('guideBtn').classList.toggle('hidden', KIND === 'emoji');
+    $('setCount').innerHTML = sp.counts.map(c => `<option value="${c}">${c}個セット</option>`).join('');
+    $('kindSeg').querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.kind === KIND));
+    $('pngBtn').textContent = `🖼️ この${sp.label}をPNG保存`;
+    $('mainSelWrap').classList.toggle('hidden', KIND === 'emoji');
+    $('mainPrevWrap').classList.toggle('hidden', KIND === 'emoji');
+    $('mainTabTitle').textContent = KIND === 'emoji' ? '🏷️ タブ画像（絵文字にメイン画像はありません）' : '🏷️ メイン画像・タブ画像';
+    $('trimWrap').classList.toggle('hidden', KIND === 'emoji');
+    $('chat').classList.toggle('emo', KIND === 'emoji');
+    $('emojiBub').classList.toggle('hidden', KIND !== 'emoji');
+    $('sheetStart').max = maxN();
+  }
+  async function switchKind(k, restoring) {
+    if (k === KIND) return;
+    if (!restoring) projects[KIND] = liveProj();
+    KIND = k; applySpec();
+    const p = projects[k];
+    if (p) { stamps = p.stamps; N = p.N; mainIdx = p.mainIdx; tabIdx = p.tabIdx; cur = Math.min(p.cur || 0, N - 1); }
+    else { stamps = Array.from({ length: MAXN }, newStamp); N = 8; mainIdx = 0; tabIdx = 0; cur = 0; }
+    projects[k] = null;
+    $('setCount').value = N;
+    buildStrip(); select(cur); await checkAll();
+    if (!restoring) { scheduleSave(); track('switch_kind', { kind: k }); toast(k === 'emoji' ? '絵文字モード（180×180）に切り替えました' : 'スタンプモードに切り替えました'); }
+  }
+  $('kindSeg').addEventListener('click', e => { const b = e.target.closest('button[data-kind]'); if (b) switchKind(b.dataset.kind); });
+
   const DB = 'zk-line-stamp', STORE = 'p';
   function idb() { return new Promise((res, rej) => { const r = indexedDB.open(DB, 1); r.onupgradeneeded = () => r.result.createObjectStore(STORE); r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); }); }
   async function idbSet(v) { try { const db = await idb(); await new Promise((res, rej) => { const tx = db.transaction(STORE, 'readwrite'); tx.objectStore(STORE).put(v, 'project'); tx.oncomplete = res; tx.onerror = () => rej(tx.error); }); } catch (e) { /* storage unavailable */ } }
@@ -1424,10 +1502,12 @@
 
   // ---------- Init ----------
   (async () => {
+    applySpec();
     const saved = await idbGet();
-    if (saved && saved.stamps) {
+    if (saved && (saved.stamps || saved.projects)) {
       try { await deserialize(saved); toast('前回の作業を復元しました'); } catch (e) { loadSample(); buildStrip(); select(0); }
     } else { loadSample(); buildStrip(); select(0); }
+    if (location.hash === '#emoji') await switchKind('emoji');
     if (document.fonts) {
       await Promise.race([Promise.all(FONTS.map(f => document.fonts.load(`${f.w} 40px ${f.f}`, 'あいう！ABC'))).catch(() => {}), new Promise(r => setTimeout(r, 2500))]);
     }
