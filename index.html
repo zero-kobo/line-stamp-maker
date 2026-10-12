@@ -766,7 +766,15 @@
         c.font = fontStr(t, fs);
         return { ch, fs, adv: t.dir === 'vertical' ? fs * 1.05 : c.measureText(ch).width };
       });
-      const total = infos.reduce((a, b) => a + b.adv, 0);
+      let total = infos.reduce((a, b) => a + b.adv, 0);
+      // 長いセリフは余白10px＋フチの内側に収まるよう自動で縮める
+      const edge = (t.outer ? t.strokeW + 5 : t.strokeW) + M + 4;
+      const avail = (t.dir === 'vertical' ? H : W / Math.cos(ang)) - edge * 2;
+      if (total > avail) {
+        const k2 = avail / total;
+        infos.forEach(g => { g.fs = Math.max(12, Math.round(g.fs * k2)); g.adv *= k2; });
+        total = avail;
+      }
       const lo = (li - (n - 1) / 2) * gap;
       let off = -total / 2;
       infos.forEach((g, i) => {
