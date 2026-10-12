@@ -227,6 +227,16 @@
   .related small{display:block;color:var(--sub);font-weight:500;font-size:12px}
   .pr{border:1px dashed #cbd5e1;border-radius:14px;padding:16px;text-align:center;background:#fff}
   .pr .tag{font-size:11px;color:var(--sub);display:block;margin-bottom:6px}
+  .pr-h{font-size:16px;font-weight:900;margin:0 0 12px}
+  .pr-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px;text-align:left}
+  .pr-item{display:flex;gap:12px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:10px;text-decoration:none;color:var(--ink);background:#fff;transition:.15s}
+  .pr-item:hover{border-color:var(--ac);background:var(--ac-ll)}
+  .pr-item img{width:96px;height:96px;object-fit:contain;flex:0 0 auto;border-radius:8px}
+  .pr-txt{display:flex;flex-direction:column;gap:2px;min-width:0}
+  .pr-lab{font-size:11px;font-weight:900;color:var(--ac-d);background:var(--ac-l);border-radius:99px;padding:1px 8px;align-self:flex-start}
+  .pr-txt b{font-size:14px}
+  .pr-price{font-size:13px;color:#be123c;font-weight:700}
+  .pr-go{font-size:12px;color:var(--ac-d);font-weight:700}
   footer{margin:30px 0 40px;font-size:12px;color:var(--sub);text-align:center}
   footer p{margin:4px 0}
 </style>
@@ -603,9 +613,19 @@
 
     <!-- 楽天アフィリエイト枠（最下段・PR表記つき） -->
     <div class="pr">
-      <span class="tag">※PR</span>
-      <!-- ここに楽天アフィリエイトのコードを貼る（例：ペンタブレット、iPad用ペン など） -->
-      <p class="muted" style="margin:0">スタンプ作りに便利な道具（広告枠）</p>
+      <span class="tag">※PR（楽天アフィリエイト）</span>
+      <h2 class="pr-h">手描きでスタンプを作るなら</h2>
+      <div class="pr-grid">
+        <a class="pr-item" href="https://hb.afl.rakuten.co.jp/ichiba/58701314.ccfa8643.58701315.2f358f67/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fxppen-official%2Fjpdeco01v2%2F&amp;link_type=picttext&amp;ut=eyJwYWdlIjoiaXRlbSIsInR5cGUiOiJwaWN0dGV4dCIsInNpemUiOiIxMjh4MTI4IiwibmFtIjoxLCJuYW1wIjoicmlnaHQiLCJjb20iOjEsImNvbXAiOiJkb3duIiwicHJpY2UiOjEsImJvciI6MSwiY29sIjoxLCJiYnRuIjoxLCJwcm9kIjowLCJhbXAiOmZhbHNlfQ%3D%3D" target="_blank" rel="nofollow sponsored noopener" onclick="track('affiliate_click',{item:'deco01v2'})">
+          <img src="https://hbb.afl.rakuten.co.jp/hgb/58701314.ccfa8643.58701315.2f358f67/?me_id=1440424&amp;item_id=10000001&amp;pc=https%3A%2F%2Fthumbnail.image.rakuten.co.jp%2F%400_mall%2Fxppen-official%2Fcabinet%2F12943555%2Fimgrc0104603168.jpg%3F_ex%3D128x128&amp;s=128x128&amp;t=picttext" width="128" height="128" alt="XPPen ペンタブ Deco01 V2" loading="lazy">
+          <span class="pr-txt"><span class="pr-lab">まずはお手頃に</span><b>XPPen ペンタブ Deco01 V2</b><span class="pr-price">6,980円〜（税込・送料無料）</span><span class="pr-go">楽天市場で見る ›</span></span>
+        </a>
+        <a class="pr-item" href="https://hb.afl.rakuten.co.jp/ichiba/58701314.ccfa8643.58701315.2f358f67/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fxppen-official%2Fcpchcd121fh%2F&amp;link_type=picttext&amp;ut=eyJwYWdlIjoiaXRlbSIsInR5cGUiOiJwaWN0dGV4dCIsInNpemUiOiIxMjh4MTI4IiwibmFtIjoxLCJuYW1wIjoicmlnaHQiLCJjb20iOjEsImNvbXAiOiJkb3duIiwicHJpY2UiOjEsImJvciI6MSwiY29sIjoxLCJiYnRuIjoxLCJwcm9kIjowLCJhbXAiOmZhbHNlfQ%3D%3D" target="_blank" rel="nofollow sponsored noopener" onclick="track('affiliate_click',{item:'artist12-3rd'})">
+          <img src="https://hbb.afl.rakuten.co.jp/hgb/58701314.ccfa8643.58701315.2f358f67/?me_id=1440424&amp;item_id=10000000&amp;pc=https%3A%2F%2Fthumbnail.image.rakuten.co.jp%2F%400_mall%2Fxppen-official%2Fcabinet%2F01.jpg%3F_ex%3D128x128&amp;s=128x128&amp;t=picttext" width="128" height="128" alt="XPPen 液タブ Artist 12 3rd" loading="lazy">
+          <span class="pr-txt"><span class="pr-lab">画面に直接描きたい</span><b>XPPen 液タブ Artist 12 3rd</b><span class="pr-price">33,230円〜（税込・送料無料）</span><span class="pr-go">楽天市場で見る ›</span></span>
+        </a>
+      </div>
+      <p class="muted" style="margin:8px 0 0">価格は2026/10/12時点のものです。最新の価格はリンク先でご確認ください。</p>
     </div>
   </div>
 
