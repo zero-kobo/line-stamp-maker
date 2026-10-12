@@ -474,7 +474,7 @@
 
         <div class="box a">
           <div class="h3">📝 セリフを一括入力</div>
-          <p class="muted" style="margin:0 0 6px">1行＝1スタンプ。01番から順に入ります（空行はそのまま）。</p>
+          <p class="muted" style="margin:0 0 6px">1行＝1スタンプ。01番から順に入ります（空行はそのまま）。2行にしたいときは全角の「／」で区切ります（例：おつかれ…／絶滅しそう）。</p>
           <textarea id="bulkText" rows="6" placeholder="OK！&#10;ありがとう！&#10;りょうかい！"></textarea>
           <div class="row" style="margin-top:6px">
             <button class="btn sm" data-act="fillLineup">定番セリフ案を入れる</button>
@@ -788,6 +788,15 @@
         gi++;
       });
     });
+    // 文字のかたまりが余白10pxの外に出るときは、内側へずらす
+    if (glyphs.length) {
+      const e = (t.outer ? t.strokeW + 5 : t.strokeW) + M + 2;
+      let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+      glyphs.forEach(g => { const r = g.fs * .56; x0 = Math.min(x0, g.x - r); x1 = Math.max(x1, g.x + r + (t.shadow ? 3 : 0)); y0 = Math.min(y0, g.y - r); y1 = Math.max(y1, g.y + r + (t.shadow ? 5 : 0)); });
+      const dx = x0 < e ? e - x0 : x1 > W - e ? (W - e) - x1 : 0;
+      const dy = y0 < e ? e - y0 : y1 > H - e ? (H - e) - y1 : 0;
+      if (dx || dy) glyphs.forEach(g => { g.x += dx; g.y += dy; });
+    }
     return glyphs;
   }
 
@@ -937,7 +946,8 @@
     const pad = M + (s.outline ? s.outlineW : 0) + 3;
     const t = s.text, hasText = !!t.content.trim();
     let ry0 = pad, ry1 = H - pad, rx0 = pad, rx1 = W - pad;
-    if (hasText && t.dir !== 'vertical') { if (t.y >= 55) ry1 = H * 0.72; else if (t.y <= 45) ry0 = H * 0.28; }
+    const nl = hasText ? t.content.trim().split('\n').length : 0, band = 0.28 + 0.14 * Math.max(0, nl - 1);
+    if (hasText && t.dir !== 'vertical') { if (t.y >= 55) ry1 = H * (1 - band); else if (t.y <= 45) ry0 = H * band; }
     if (hasText && t.dir === 'vertical') { if (t.x >= 55) rx1 = W * 0.70; else if (t.x <= 45) rx0 = W * 0.30; }
     const aw = rx1 - rx0, ah = ry1 - ry0;
     const bw = b.x1 - b.x0, bh = b.y1 - b.y0;
@@ -1248,7 +1258,7 @@
     fillLineup: () => { $('bulkText').value = LINEUP.slice(0, N).join('\n'); },
     applyBulk: () => {
       const lines = $('bulkText').value.replace(/\r/g, '').split('\n');
-      lines.slice(0, N).forEach((l, i) => { stamps[i].text.content = l.trim(); });
+      lines.slice(0, N).forEach((l, i) => { stamps[i].text.content = l.trim().replace(/\s*[／]\s*/g, '\n'); });
       syncUI(); checkAll(); scheduleSave(); toast(`${Math.min(lines.length, N)}個のセリフを反映しました`);
     },
     splitSheet: splitSheet,
