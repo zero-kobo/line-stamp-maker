@@ -1,0 +1,1401 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>無料LINEスタンプメーカー｜AIイラストを分割・背景透過・文字入れしてZIP一括書き出し</title>
+<meta name="description" content="AIで作ったイラストやまとめ画像を、LINEスタンプの規格（最大370×320px・偶数サイズ・透過PNG）に自動で整える無料ツール。シート分割、背景透過、白フチ、文字演出、審査チェック、01.png〜main.png・tab.pngのZIP一括書き出しまでブラウザだけで完結。登録不要・画像はサーバーに送信されません。">
+<link rel="canonical" href="https://zero-kobo.github.io/line-stamp-maker/">
+<meta name="theme-color" content="#10b981">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ちいさなツール工房">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:title" content="無料LINEスタンプメーカー｜AIイラストからスタンプ一式をZIPで書き出し">
+<meta property="og:description" content="まとめ画像の分割・背景透過・白フチ・文字入れ・審査チェック・ZIP書き出しまでブラウザだけで。登録不要・無料。">
+<meta property="og:url" content="https://zero-kobo.github.io/line-stamp-maker/">
+<meta property="og:image" content="https://zero-kobo.github.io/line-stamp-maker/ogp.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@zero_kobo_">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "LINEスタンプメーカー",
+      "url": "https://zero-kobo.github.io/line-stamp-maker/",
+      "applicationCategory": "DesignApplication",
+      "operatingSystem": "Windows, macOS, iOS, Android（ブラウザ）",
+      "inLanguage": "ja",
+      "isAccessibleForFree": true,
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" },
+      "description": "AIイラストやまとめ画像をLINEスタンプ規格に整え、背景透過・白フチ・文字入れ・審査チェック・ZIP一括書き出しまで行える無料Webツール。",
+      "featureList": ["まとめ画像（シート）の自動分割", "背景の自動透過・スポイト・消しゴム", "イラストの白フチ", "文字の縦書き・斜め・グラデ・虹色・震え・波打ち", "余白10px・偶数サイズ・1MBの自動チェック", "01.png〜24.png・main.png・tab.pngのZIP一括書き出し"],
+      "publisher": { "@type": "Organization", "name": "ちいさなツール工房", "url": "https://zero-kobo.github.io/" }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "ちいさなツール工房", "item": "https://zero-kobo.github.io/" },
+        { "@type": "ListItem", "position": 2, "name": "LINEスタンプメーカー", "item": "https://zero-kobo.github.io/line-stamp-maker/" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        { "@type": "Question", "name": "無料で使えますか？会員登録は必要ですか？", "acceptedAnswer": { "@type": "Answer", "text": "すべての機能が無料で、登録も不要です。画像の処理はブラウザの中だけで行い、サーバーには送信しません。" } },
+        { "@type": "Question", "name": "LINEスタンプの画像サイズは？", "acceptedAnswer": { "@type": "Answer", "text": "スタンプ画像は最大370×320px、メイン画像は240×240px、トークルームタブ画像は96×74pxです。縦横とも偶数px、背景透過のPNG、1枚1MB以下にします。このツールは書き出し時に自動で合わせます。" } },
+        { "@type": "Question", "name": "AIで作った1枚のまとめ画像を分割できますか？", "acceptedAnswer": { "@type": "Answer", "text": "「一括作成」タブのシート分割で、列数と行数を指定すると1コマずつスタンプに割り当て、背景透過と配置まで自動で行います。" } },
+        { "@type": "Question", "name": "書き出したファイル名はそのまま申請に使えますか？", "acceptedAnswer": { "@type": "Answer", "text": "ZIPの中身は01.png〜（スタンプ数）.png、main.png、tab.pngの名前で入っています。LINE Creators Marketの申請画面で、ZIPのままアップロードする形式に対応しています。" } },
+        { "@type": "Question", "name": "スマホでも使えますか？", "acceptedAnswer": { "@type": "Answer", "text": "iPhone・Androidのブラウザで使えます。指でドラッグして画像や文字を動かせます。細かい消しゴム作業はパソコンのほうが楽です。" } }
+      ]
+    }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Hachi+Maru+Pop&family=Kiwi+Maru:wght@500&family=Mochiy+Pop+One&family=RocknRoll+One&family=Yuji+Boku&family=Zen+Maru+Gothic:wght@500;700;900&display=swap" rel="stylesheet">
+
+<!-- GA4（ちいさなツール工房 共通） -->
+<script>
+  const GA_ID = 'G-40QSGNSQEL';
+  if (GA_ID) {
+    const s = document.createElement('script');
+    s.async = true; s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+    document.head.appendChild(s);
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function(){ dataLayer.push(arguments); };
+    gtag('js', new Date()); gtag('config', GA_ID);
+  }
+  window.track = (name, params) => { try { if (window.gtag) gtag('event', name, params || {}); } catch (e) {} };
+</script>
+
+<style>
+  :root{
+    --bg:#f3f6f4; --card:#fff; --ink:#1e293b; --sub:#64748b; --line:#e2e8f0;
+    --ac:#10b981; --ac-d:#047857; --ac-l:#ecfdf5; --ac-ll:#f6fffb;
+    --pur:#7c3aed; --amb:#d97706; --warn:#f59e0b; --ng:#ef4444; --ok:#10b981;
+    --r:14px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Zen Maru Gothic',system-ui,-apple-system,"Hiragino Sans",sans-serif;font-weight:500;background:var(--bg);color:var(--ink);line-height:1.65;-webkit-text-size-adjust:100%}
+  a{color:var(--ac-d)}
+  button,select,input,textarea{font:inherit;color:inherit}
+  button{cursor:pointer}
+  .wrap{max-width:1280px;margin:0 auto;padding:0 14px}
+
+  /* header */
+  .hd{background:#fff;border-bottom:1px solid var(--line)}
+  .hd .wrap{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-top:10px;padding-bottom:10px;flex-wrap:wrap}
+  .brand{font-size:12px;color:var(--sub);text-decoration:none;display:flex;align-items:center;gap:6px}
+  .brand b{color:var(--ink)}
+  .hero{padding:18px 0 6px}
+  .hero h1{margin:0;font-size:clamp(22px,3.4vw,30px);font-weight:900;letter-spacing:.01em}
+  .hero h1 small{display:inline-block;font-size:12px;background:var(--ac-l);color:var(--ac-d);padding:2px 10px;border-radius:99px;margin-left:8px;vertical-align:middle}
+  .hero p{margin:6px 0 0;color:var(--sub);font-size:14px}
+  .badges{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+  .badges span{font-size:12px;background:#fff;border:1px solid var(--line);padding:3px 10px;border-radius:99px}
+
+  /* common */
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:0 1px 2px rgba(15,23,42,.04)}
+  .pad{padding:14px}
+  .h3{font-size:13px;font-weight:900;margin:0 0 8px;display:flex;align-items:center;justify-content:space-between;gap:6px}
+  .muted{color:var(--sub);font-size:12px}
+  .btn{border:1px solid var(--line);background:#fff;border-radius:10px;padding:7px 12px;font-size:13px;font-weight:700;transition:.15s}
+  .btn:hover{border-color:var(--ac);background:var(--ac-ll)}
+  .btn:active{transform:scale(.97)}
+  .btn.pri{background:var(--ac);border-color:var(--ac);color:#fff;box-shadow:0 4px 12px rgba(16,185,129,.25)}
+  .btn.pri:hover{background:var(--ac-d)}
+  .btn.sm{padding:4px 9px;font-size:12px;border-radius:8px}
+  .btn.full{width:100%}
+  .btn.ghost{border-color:transparent;background:transparent;color:var(--sub)}
+  .btn.danger{color:var(--ng)}
+  .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .box{border:1px solid var(--line);border-radius:12px;padding:12px;background:#fbfcfd}
+  .box.g{background:var(--ac-ll);border-color:#a7f3d0}
+  .box.p{background:#faf7ff;border-color:#ddd6fe}
+  .box.a{background:#fffcf3;border-color:#fde68a}
+  label.lb{display:flex;justify-content:space-between;font-size:12px;font-weight:700;margin:8px 0 3px}
+  label.lb span:last-child{font-family:ui-monospace,monospace;color:var(--ac-d)}
+  input[type=range]{width:100%;accent-color:var(--ac)}
+  input[type=color]{width:34px;height:30px;border:1px solid var(--line);border-radius:8px;padding:0;background:#fff;cursor:pointer}
+  select,textarea,input[type=number],input[type=text]{width:100%;border:1px solid #cbd5e1;border-radius:10px;padding:8px 10px;font-size:14px;background:#fff}
+  textarea{resize:vertical;font-weight:700}
+  .chk{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;cursor:pointer}
+  .chk input{accent-color:var(--ac);width:16px;height:16px}
+  .seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:4px}
+  .seg button{border:1px solid var(--line);background:#fff;border-radius:9px;padding:6px 4px;font-size:12px;font-weight:700;color:var(--sub)}
+  .seg button.on{border-color:var(--ac);color:var(--ac-d);background:var(--ac-l)}
+  .box.p .seg button.on{border-color:var(--pur);color:var(--pur);background:#f3efff}
+  .box.a .seg button.on{border-color:var(--amb);color:#92400e;background:#fef3c7}
+  .chips{display:flex;flex-wrap:wrap;gap:4px}
+  .chips button{border:0;background:#f1f5f9;border-radius:8px;padding:4px 8px;font-size:12px;font-weight:700}
+  .chips button:hover{background:var(--ac-l);color:var(--ac-d)}
+  .colorrow{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700}
+  .dim{opacity:.35;pointer-events:none}
+  .hidden{display:none!important}
+
+  /* strip */
+  .strip{margin-top:14px}
+  .strip .top{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+  .thumbs{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 8px;scrollbar-width:thin}
+  .thumb{flex:0 0 auto;width:80px;border:2px solid transparent;border-radius:12px;background:#fff;padding:3px;position:relative;cursor:pointer}
+  .thumb canvas{width:100%;display:block;border-radius:8px;background:repeating-conic-gradient(#eef2f6 0 25%,#fff 0 50%) 0 0/12px 12px}
+  .thumb .no{position:absolute;left:6px;top:4px;font-size:10px;font-weight:900;color:var(--sub)}
+  .thumb .dot{position:absolute;right:6px;top:6px;width:9px;height:9px;border-radius:50%;background:#cbd5e1}
+  .thumb .dot.ok{background:var(--ok)} .thumb .dot.warn{background:var(--warn)} .thumb .dot.ng{background:var(--ng)}
+  .thumb.on{border-color:var(--ac)}
+
+  /* app grid */
+  .app{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,4fr) minmax(0,3fr);gap:14px;margin-top:6px;align-items:start}
+  @media (max-width:1100px){.app{grid-template-columns:minmax(0,1fr) minmax(0,1fr)} .side{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:14px}}
+  @media (max-width:760px){.app{grid-template-columns:minmax(0,1fr)} .side{grid-template-columns:1fr}}
+
+  .stagebox{background:#f8fafc;border:1px dashed var(--line);border-radius:12px;padding:14px;display:flex;justify-content:center}
+  .stage{position:relative;width:100%;max-width:370px;aspect-ratio:370/320;border-radius:8px;overflow:hidden;box-shadow:0 8px 24px rgba(15,23,42,.12);border:1px solid #cbd5e1}
+  .stage.ck{background:repeating-conic-gradient(#e2e8f0 0 25%,#f8fafc 0 50%) 0 0/16px 16px}
+  .stage.dk{background:repeating-conic-gradient(#334155 0 25%,#1e293b 0 50%) 0 0/16px 16px}
+  .stage.ln{background:#8cabd9}
+  .stage canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:grab}
+  .guide{position:absolute;top:3.125%;bottom:3.125%;left:2.7027%;right:2.7027%;border:1.5px dashed rgba(16,185,129,.85);pointer-events:none}
+  .guide span{position:absolute;left:4px;top:3px;font-size:9px;font-weight:900;color:var(--ac-d);background:rgba(255,255,255,.85);padding:0 4px;border-radius:4px}
+  .stagebar{display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+  .navrow{display:flex;justify-content:space-between;align-items:center;margin-top:10px;gap:6px;flex-wrap:wrap}
+
+  .tabs{display:flex;gap:4px;padding:6px;background:#f8fafc;border-bottom:1px solid var(--line);border-radius:var(--r) var(--r) 0 0}
+  .tabs button{flex:1;border:0;background:transparent;border-radius:10px;padding:8px 2px;font-size:13px;font-weight:900;color:var(--sub)}
+  .tabs button.on{background:#fff;color:var(--ac-d);box-shadow:0 1px 3px rgba(15,23,42,.1)}
+  .pane{padding:14px;display:flex;flex-direction:column;gap:12px;max-height:720px;overflow-y:auto}
+  @media (max-width:760px){.pane{max-height:none}}
+
+  .drop{border:2px dashed #6ee7b7;background:var(--ac-ll);border-radius:14px;padding:16px;text-align:center;cursor:pointer;transition:.15s}
+  .drop:hover,.drop.over{border-color:var(--ac);background:var(--ac-l)}
+  .drop b{display:block;font-size:14px}
+  .drop small{color:var(--sub)}
+
+  /* phone */
+  .phone{width:100%;max-width:290px;margin:0 auto;border:5px solid #1e293b;border-radius:28px;overflow:hidden;background:#1e293b}
+  .phone .notch{height:16px;display:flex;justify-content:center;align-items:center}
+  .phone .notch i{width:56px;height:6px;border-radius:9px;background:#334155}
+  .chat{height:330px;padding:12px;display:flex;flex-direction:column;justify-content:flex-end;gap:10px;background:#8cabd9;transition:background .2s}
+  .chat.pt{background-color:#8cabd9;background-image:radial-gradient(rgba(255,255,255,.22) 1.5px,transparent 1.5px);background-size:20px 20px}
+  .msg{display:flex;align-items:flex-end;gap:6px}
+  .av{width:28px;height:28px;border-radius:50%;background:#fde68a;display:flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto}
+  .bub{background:#fff;border-radius:16px 16px 16px 4px;padding:6px 10px;font-size:12px;max-width:170px}
+  .time{font-size:9px;color:rgba(255,255,255,.85)}
+  .me{display:flex;justify-content:flex-end;align-items:flex-end;gap:5px}
+  .me img{width:150px;height:auto}
+  .phone .bar{background:#fff;padding:7px 10px;font-size:11px;color:#94a3b8}
+  .wall{display:flex;justify-content:center;gap:8px;margin-top:10px}
+  .wall button{width:26px;height:26px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px var(--line)}
+
+  .issues{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+  .issues li{font-size:12px;padding:7px 10px;border-radius:10px;display:flex;gap:6px;align-items:flex-start}
+  .issues li.ok{background:var(--ac-l);color:var(--ac-d)}
+  .issues li.warn{background:#fffbeb;color:#92400e}
+  .issues li.ng{background:#fef2f2;color:#b91c1c}
+  .issues li.info{background:#f1f5f9;color:var(--sub)}
+  .sum{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;text-align:center;margin-top:8px}
+  .sum div{background:#f8fafc;border-radius:10px;padding:6px 2px;font-size:11px;color:var(--sub)}
+  .sum b{display:block;font-size:17px;color:var(--ink)}
+  .mt{display:flex;gap:12px;align-items:flex-end;justify-content:center;margin:8px 0}
+  .mt canvas{background:repeating-conic-gradient(#eef2f6 0 25%,#fff 0 50%) 0 0/10px 10px;border:1px solid var(--line);border-radius:8px}
+
+  .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(20px);background:#0f172a;color:#fff;padding:10px 16px;border-radius:12px;font-size:13px;font-weight:700;opacity:0;pointer-events:none;transition:.25s;z-index:50;max-width:90vw;text-align:center}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  /* content (SEO) */
+  .content{margin-top:36px;display:grid;gap:16px}
+  .content section{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:20px}
+  .content h2{font-size:19px;margin:0 0 10px;font-weight:900}
+  .content h3{font-size:15px;margin:16px 0 4px}
+  .content p,.content li{font-size:14px}
+  .content ol,.content ul{padding-left:1.3em;margin:6px 0}
+  .content table{width:100%;border-collapse:collapse;font-size:14px}
+  .content th,.content td{border:1px solid var(--line);padding:8px 10px;text-align:left}
+  .content th{background:#f8fafc}
+  details{border-bottom:1px solid var(--line);padding:10px 0}
+  details summary{font-weight:900;cursor:pointer;font-size:14px}
+  details p{margin:6px 0 0}
+  .related{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+  .related a{display:block;border:1px solid var(--line);border-radius:12px;padding:12px;text-decoration:none;color:var(--ink);font-weight:700;font-size:14px}
+  .related a:hover{border-color:var(--ac);background:var(--ac-ll)}
+  .related small{display:block;color:var(--sub);font-weight:500;font-size:12px}
+  .pr{border:1px dashed #cbd5e1;border-radius:14px;padding:16px;text-align:center;background:#fff}
+  .pr .tag{font-size:11px;color:var(--sub);display:block;margin-bottom:6px}
+  footer{margin:30px 0 40px;font-size:12px;color:var(--sub);text-align:center}
+  footer p{margin:4px 0}
+</style>
+</head>
+<body>
+
+<header class="hd">
+  <div class="wrap">
+    <a class="brand" href="https://zero-kobo.github.io/">🛠️ <b>ちいさなツール工房</b> › LINEスタンプメーカー</a>
+    <span class="muted">画像はあなたのブラウザ内だけで処理されます</span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="hero">
+    <h1>LINEスタンプメーカー<small>無料・登録不要</small></h1>
+    <p>AIイラストやまとめ画像から、LINEスタンプ一式（01.png〜・main.png・tab.png）をZIPで書き出せるツール。背景透過・白フチ・文字入れ・審査チェックまでここで完結します。</p>
+    <div class="badges"><span>✂️ シート自動分割</span><span>🫥 背景を自動で透過</span><span>⚪ イラストに白フチ</span><span>🔤 縦書き・斜め・虹色文字</span><span>✅ 余白10px・偶数px・1MBを自動チェック</span><span>📦 ZIP一括書き出し</span></div>
+  </div>
+
+  <!-- ===== Strip ===== -->
+  <div class="card pad strip">
+    <div class="top">
+      <div class="row">
+        <strong style="font-size:14px">スタンプ一覧</strong>
+        <select id="setCount" style="width:auto;padding:5px 8px;font-size:13px" aria-label="スタンプの個数">
+          <option value="8">8個セット</option>
+          <option value="16">16個セット</option>
+          <option value="24">24個セット</option>
+        </select>
+        <span class="muted" id="setSummaryShort"></span>
+      </div>
+      <div class="row">
+        <button class="btn sm" data-act="downloadPng">🖼️ このスタンプをPNG保存</button>
+        <button class="btn pri" data-act="downloadZip">📦 ZIPで一括書き出し</button>
+      </div>
+    </div>
+    <div class="thumbs" id="thumbs"></div>
+  </div>
+
+  <main class="app">
+    <!-- ===== Editor ===== -->
+    <section class="card pad" aria-label="編集キャンバス">
+      <div class="stagebar">
+        <strong style="font-size:13px" id="stampTitle">スタンプ 01</strong>
+        <div class="row">
+          <button class="btn sm" data-act="toggleGuide" id="guideBtn">余白ガイド：表示</button>
+          <button class="btn sm" data-act="cycleBg" id="bgBtn">背景：明</button>
+        </div>
+      </div>
+      <div class="stagebox">
+        <div class="stage ck" id="stage">
+          <canvas id="stampCanvas" width="370" height="320" aria-label="スタンプ編集エリア"></canvas>
+          <div class="guide" id="guide"><span>余白10px</span></div>
+        </div>
+      </div>
+      <div class="navrow">
+        <button class="btn sm" data-act="prev">◀ 前へ</button>
+        <span class="muted" id="modeHint">ドラッグで移動（文字の上をつかむと文字だけ動く）・ホイールで拡大縮小</span>
+        <button class="btn sm" data-act="next">次へ ▶</button>
+      </div>
+      <div class="row" style="margin-top:8px;justify-content:center">
+        <button class="btn sm" data-act="autoFit">🎯 余白に合わせて自動配置</button>
+        <button class="btn sm" data-act="undo">↩️ 画像を1つ戻す</button>
+        <button class="btn sm danger" data-act="clearStamp">🗑️ このスタンプを空にする</button>
+      </div>
+    </section>
+
+    <!-- ===== Controls ===== -->
+    <section class="card" aria-label="編集ツール">
+      <div class="tabs" id="tabs">
+        <button class="on" data-tab="image">画像</button>
+        <button data-tab="text">文字</button>
+        <button data-tab="deco">装飾</button>
+        <button data-tab="bulk">一括作成</button>
+      </div>
+
+      <!-- Image -->
+      <div class="pane" id="pane-image">
+        <div class="drop" id="drop">
+          <b>📥 画像を読み込む</b>
+          <small>クリック or ドラッグ＆ドロップ（複数可：今のスタンプから順に入ります）</small>
+          <input type="file" id="fileInput" accept="image/*" multiple hidden>
+        </div>
+        <div class="row">
+          <label class="chk"><input type="checkbox" id="autoBgOnLoad" checked>読み込み時に背景を自動で消す</label>
+          <label class="chk"><input type="checkbox" id="autoFitOnLoad" checked>自動で配置</label>
+        </div>
+
+        <div class="box">
+          <div class="h3">🧽 背景を消す・整える</div>
+          <div class="seg" id="modeSeg">
+            <button class="on" data-mode="move">✋ 移動</button>
+            <button data-mode="pick">💧 スポイト</button>
+            <button data-mode="erase">🩹 消しゴム</button>
+            <button data-mode="restore">🖌️ 戻す</button>
+          </div>
+          <div id="brushRow" class="hidden">
+            <label class="lb"><span>ブラシの大きさ</span><span id="brushVal">20px</span></label>
+            <input type="range" id="brush" min="4" max="80" value="20">
+          </div>
+          <div class="row" style="margin-top:10px">
+            <button class="btn sm" data-act="autoBg">✨ 背景を自動で消す</button>
+            <button class="btn sm" data-act="removeWhite">白を全部消す</button>
+            <button class="btn sm" data-act="removeBlack">黒を全部消す</button>
+          </div>
+          <label class="lb"><span>消す範囲（許容値）</span><span id="tolVal">40</span></label>
+          <input type="range" id="tol" min="5" max="120" value="40">
+          <label class="chk" style="margin-top:6px"><input type="checkbox" id="erode">輪郭の色にじみを1px削る</label>
+          <p class="muted" style="margin:6px 0 0">「自動」は外側からつながった背景だけを消すので、白目や白い服は残ります。残った背景は💧スポイトでクリック。</p>
+          <div class="row" style="margin-top:8px"><button class="btn sm ghost" data-act="resetImage">最初の画像に戻す</button></div>
+        </div>
+
+        <div class="box">
+          <div class="h3">📐 位置・大きさ</div>
+          <label class="lb"><span>拡大・縮小</span><span data-show="scale" data-suffix="%"></span></label>
+          <input type="range" min="5" max="300" data-bind="scale">
+          <label class="lb"><span>回転</span><span data-show="rot" data-suffix="°"></span></label>
+          <input type="range" min="-180" max="180" data-bind="rot">
+          <label class="chk" style="margin-top:6px"><input type="checkbox" data-bind="flip">左右反転</label>
+        </div>
+
+        <div class="box g">
+          <div class="h3">⚪ イラストのフチ取り <button class="btn sm" data-act="outlineAll">全スタンプに適用</button></div>
+          <label class="chk"><input type="checkbox" data-bind="outline">フチを付ける（暗いトーク背景でも絵が沈まない）</label>
+          <label class="lb"><span>フチの太さ</span><span data-show="outlineW" data-suffix="px"></span></label>
+          <input type="range" min="1" max="16" data-bind="outlineW">
+          <div class="colorrow" style="margin-top:6px"><input type="color" data-bind="outlineColor">フチの色</div>
+        </div>
+      </div>
+
+      <!-- Text -->
+      <div class="pane hidden" id="pane-text">
+        <div>
+          <div class="h3">💬 セリフ <button class="btn sm ghost" data-act="clearText">消去</button></div>
+          <textarea rows="2" data-bind="text.content" placeholder="スタンプのセリフ（改行で2行にできます）"></textarea>
+        </div>
+        <div>
+          <div class="muted" style="margin-bottom:4px">よく使われるセリフ（タップで入力）</div>
+          <div class="chips" id="quickChips"></div>
+        </div>
+        <div>
+          <div class="h3">フォント</div>
+          <select data-bind="text.font" id="fontSelect"></select>
+        </div>
+        <div>
+          <label class="lb"><span>文字サイズ</span><span data-show="text.size" data-suffix="px"></span></label>
+          <input type="range" min="18" max="110" data-bind="text.size">
+        </div>
+        <div class="box">
+          <div class="h3">↗️ 文字の向き</div>
+          <div class="seg" data-bind="text.dir">
+            <button data-val="horizontal">横書き</button>
+            <button data-val="vertical">縦書き</button>
+            <button data-val="slantUp">右上がり</button>
+            <button data-val="slantDown">右下がり</button>
+          </div>
+        </div>
+        <div class="box p">
+          <div class="h3">🪄 動きのある演出</div>
+          <div class="seg" data-bind="text.fx">
+            <button data-val="none">通常</button>
+            <button data-val="grow">だんだん大</button>
+            <button data-val="shake">震え</button>
+            <button data-val="wave">波打ち</button>
+          </div>
+          <div id="fxRow">
+            <label class="lb"><span>演出の強さ</span><span data-show="text.fxInt" data-suffix="%"></span></label>
+            <input type="range" min="10" max="100" data-bind="text.fxInt" style="accent-color:var(--pur)">
+          </div>
+        </div>
+        <div class="grid2">
+          <div>
+            <label class="lb"><span>左右位置</span><span data-show="text.x" data-suffix="%"></span></label>
+            <input type="range" min="0" max="100" data-bind="text.x">
+          </div>
+          <div>
+            <label class="lb"><span>上下位置</span><span data-show="text.y" data-suffix="%"></span></label>
+            <input type="range" min="0" max="100" data-bind="text.y">
+          </div>
+        </div>
+        <p class="muted" style="margin:0">💡 キャンバス上で文字を直接ドラッグしても動かせます。</p>
+      </div>
+
+      <!-- Deco -->
+      <div class="pane hidden" id="pane-deco">
+        <div class="box a">
+          <div class="h3">🎨 文字の色</div>
+          <div class="seg" data-bind="text.colorMode">
+            <button data-val="solid">単色</button>
+            <button data-val="grad">グラデ</button>
+            <button data-val="rainbow">虹色</button>
+          </div>
+          <div class="grid2" style="margin-top:10px">
+            <div class="colorrow"><input type="color" data-bind="text.c1"><span id="c1Label">文字の色</span></div>
+            <div class="colorrow" id="c2Row"><input type="color" data-bind="text.c2">下側の色</div>
+          </div>
+        </div>
+        <div class="box g">
+          <div class="h3">🖍️ 文字のフチ</div>
+          <div class="grid2">
+            <div class="colorrow"><input type="color" data-bind="text.stroke">内側のフチ</div>
+            <div class="colorrow"><input type="color" data-bind="text.outerColor">外側のフチ</div>
+          </div>
+          <label class="lb"><span>フチの太さ</span><span data-show="text.strokeW" data-suffix="px"></span></label>
+          <input type="range" min="0" max="20" data-bind="text.strokeW">
+          <div class="row" style="margin-top:6px">
+            <label class="chk"><input type="checkbox" data-bind="text.outer">外側フチ（二重フチ）</label>
+            <label class="chk"><input type="checkbox" data-bind="text.shadow">ぷっくり影</label>
+          </div>
+        </div>
+        <div>
+          <div class="h3">おすすめ配色</div>
+          <div class="grid2" id="themes"></div>
+        </div>
+        <button class="btn full" data-act="styleAll">📋 この文字デザインを全スタンプにコピー（セリフはそのまま）</button>
+        <p class="muted" style="margin:0">セット全体でフォント・色・位置をそろえると、ストアで「ちゃんとしたスタンプ」に見えて選ばれやすくなります。</p>
+      </div>
+
+      <!-- Bulk -->
+      <div class="pane hidden" id="pane-bulk">
+        <div class="box g">
+          <div class="h3">✂️ まとめ画像（シート）を分割</div>
+          <p class="muted" style="margin:0 0 8px">AIに「4列×6行で24コマ」のように1枚で描かせた画像を、1コマずつスタンプに割り当てます。</p>
+          <input type="file" id="sheetInput" accept="image/*">
+          <div class="grid2" style="margin-top:8px">
+            <label class="muted">列（横）<input type="number" id="sheetCols" min="1" max="8" value="4"></label>
+            <label class="muted">行（縦）<input type="number" id="sheetRows" min="1" max="8" value="2"></label>
+            <label class="muted">何番から入れる<input type="number" id="sheetStart" min="1" max="24" value="1"></label>
+            <label class="muted">枠線を避ける内側カット(%)<input type="number" id="sheetInset" min="0" max="15" value="2"></label>
+          </div>
+          <label class="chk" style="margin-top:8px"><input type="checkbox" id="sheetBg" checked>各コマの背景を自動で消す</label>
+          <button class="btn pri full" style="margin-top:8px" data-act="splitSheet">分割してスタンプに入れる</button>
+        </div>
+
+        <div class="box a">
+          <div class="h3">📝 セリフを一括入力</div>
+          <p class="muted" style="margin:0 0 6px">1行＝1スタンプ。01番から順に入ります（空行はそのまま）。</p>
+          <textarea id="bulkText" rows="6" placeholder="OK！&#10;ありがとう！&#10;りょうかい！"></textarea>
+          <div class="row" style="margin-top:6px">
+            <button class="btn sm" data-act="fillLineup">定番セリフ案を入れる</button>
+            <button class="btn sm pri" data-act="applyBulk">スタンプに反映</button>
+          </div>
+        </div>
+
+        <div class="box">
+          <div class="h3">🏷️ メイン画像・タブ画像</div>
+          <div class="grid2">
+            <label class="muted">メイン（240×240）<select id="mainSel"></select></label>
+            <label class="muted">タブ（96×74）<select id="tabSel"></select></label>
+          </div>
+          <label class="chk" style="margin-top:6px"><input type="checkbox" id="mainNoText" checked>メイン・タブは文字なし（キャラだけ）にする</label>
+          <div class="mt">
+            <div style="text-align:center"><canvas id="mainPrev" width="240" height="240" style="width:120px;height:120px"></canvas><div class="muted">main.png</div></div>
+            <div style="text-align:center"><canvas id="tabPrev" width="96" height="74" style="width:96px;height:74px"></canvas><div class="muted">tab.png</div></div>
+          </div>
+        </div>
+
+        <div class="box">
+          <div class="h3">⚙️ 書き出し設定</div>
+          <label class="chk"><input type="checkbox" id="trimExport" checked>余分な透明部分をトリミング（10px余白は残して偶数pxに調整）</label>
+          <p class="muted" style="margin:6px 0 0">トリミングすると、トーク画面で絵が少し大きく見えます。オフにすると全て370×320pxで書き出します。</p>
+        </div>
+
+        <div class="box">
+          <div class="h3">💾 作業データ</div>
+          <p class="muted" style="margin:0 0 6px">作業はこのブラウザに自動保存されます。別の端末に移すときはファイルに保存してください。</p>
+          <div class="row">
+            <button class="btn sm" data-act="saveProject">ファイルに保存</button>
+            <button class="btn sm" data-act="loadProject">ファイルから開く</button>
+            <button class="btn sm danger" data-act="newProject">新しく作り直す</button>
+            <input type="file" id="projectInput" accept="application/json,.json" hidden>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Side ===== -->
+    <aside class="side">
+      <div class="card pad">
+        <div class="h3">📱 トーク画面プレビュー <span class="muted">リアルタイム</span></div>
+        <div class="phone">
+          <div class="notch"><i></i></div>
+          <div class="chat pt" id="chat">
+            <div class="msg"><div class="av">🐻</div><div class="bub">今どこ〜？スタンプ送って！</div><span class="time">12:34</span></div>
+            <div class="me"><div style="text-align:right"><div class="time">既読</div><div class="time">12:35</div></div><img id="livePreviewImg" alt="スタンプのプレビュー"></div>
+          </div>
+          <div class="bar">メッセージを入力</div>
+        </div>
+        <div class="wall" aria-label="トーク背景の切り替え">
+          <button style="background:#8cabd9" data-chat="pt" title="水色"></button>
+          <button style="background:#1f2937" data-chat="#1f2937" title="ダーク"></button>
+          <button style="background:#f1f5f9" data-chat="#f1f5f9" title="ライト"></button>
+          <button style="background:#d9c4a3" data-chat="#d9c4a3" title="ベージュ"></button>
+          <button style="background:linear-gradient(135deg,#f472b6,#6366f1)" data-chat="linear-gradient(135deg,#f472b6,#6366f1)" title="写真風"></button>
+        </div>
+      </div>
+
+      <div class="card pad">
+        <div class="h3">✅ 審査チェック <span class="muted" id="stampInfo"></span></div>
+        <ul class="issues" id="issues"></ul>
+        <div class="sum" id="sum"></div>
+        <p class="muted" style="margin:10px 0 0">※形式面の自動チェックです。内容の審査基準は<a href="https://creator.line.me/ja/review_guideline/" target="_blank" rel="noopener">公式の審査ガイドライン</a>で確認してください。</p>
+      </div>
+    </aside>
+  </main>
+
+  <!-- ===== SEO content ===== -->
+  <div class="content">
+    <section id="howto">
+      <h2>LINEスタンプの作り方（このツールでの手順）</h2>
+      <ol>
+        <li><strong>個数を決める</strong>：上の「スタンプ一覧」で8個・16個・24個から選びます。はじめてなら8個がおすすめです。</li>
+        <li><strong>画像を入れる</strong>：「画像」タブにイラストを読み込みます。AIで1枚にまとめて描かせた画像なら「一括作成」タブのシート分割で一気に割り当てられます。</li>
+        <li><strong>背景を消す</strong>：読み込み時に外側の背景を自動で透過します。残った部分はスポイトか消しゴムで仕上げます。</li>
+        <li><strong>セリフを入れる</strong>：「文字」タブで入力。縦書き・斜め・だんだん大きく・震えなど、スタンプらしい演出が選べます。</li>
+        <li><strong>審査チェックを見る</strong>：右側の判定がすべて緑になればOK。サムネイルの点の色でも確認できます。</li>
+        <li><strong>ZIPで書き出す</strong>：01.png〜、main.png、tab.pngが入ったZIPができます。LINE Creators Marketにそのままアップロードできます。</li>
+      </ol>
+    </section>
+
+    <section id="spec">
+      <h2>LINEスタンプの画像サイズ・規格早見表</h2>
+      <table>
+        <thead><tr><th>画像</th><th>数</th><th>サイズ</th><th>ファイル名</th></tr></thead>
+        <tbody>
+          <tr><td>スタンプ画像</td><td>8／16／24個</td><td>最大 370×320px</td><td>01.png〜</td></tr>
+          <tr><td>メイン画像</td><td>1個</td><td>240×240px</td><td>main.png</td></tr>
+          <tr><td>トークルームタブ画像</td><td>1個</td><td>96×74px</td><td>tab.png</td></tr>
+        </tbody>
+      </table>
+      <p>共通ルール：PNG形式・背景は透過・縦横とも偶数px・1枚1MB以下。上下左右に10pxほどの余白を空けるのが推奨です。このツールは書き出し時に偶数pxとファイル名を自動で合わせます。規格は変わることがあるので、申請前に<a href="https://creator.line.me/ja/guideline/messagesticker/" target="_blank" rel="noopener">公式の制作ガイドライン</a>も確認してください。</p>
+    </section>
+
+    <section id="tips">
+      <h2>売れる・使われるスタンプにするコツ</h2>
+      <h3>1. 「毎日使う言葉」から作る</h3>
+      <p>OK・ありがとう・りょうかい・おつかれさま・ごめんね・おやすみ、のような返事系は、どんなキャラでも使われます。8個セットならまずこの6つを入れて、残りでキャラの個性を出すと失敗しにくくなります。</p>
+      <h3>2. 小さく表示されても読める文字に</h3>
+      <p>スマホのトーク画面ではスタンプはかなり小さく見えます。文字は太いフォントで大きめに、外側に白フチを付けると暗い背景でも読めます。右のプレビューで背景を切り替えて確認しましょう。</p>
+      <h3>3. セット全体でデザインをそろえる</h3>
+      <p>フォント・色・フチ・文字位置がバラバラだと素人っぽく見えます。「装飾」タブの「全スタンプにコピー」で一気にそろえられます。</p>
+      <h3>4. メイン画像はキャラの顔が主役</h3>
+      <p>ストアで最初に目に入るのがメイン画像です。文字なしでキャラが大きく写っているコマを選ぶと、一覧の中で目立ちます。</p>
+      <h3>5. AIイラストを使うときの注意</h3>
+      <p>使った画像生成サービスの利用規約で、商用利用やスタンプ販売が認められているかを必ず確認してください。実在の人物・既存キャラクター・他人の作品に似たものは審査で却下される原因になります。</p>
+    </section>
+
+    <section id="faq">
+      <h2>よくある質問</h2>
+      <details><summary>無料で使えますか？会員登録は必要ですか？</summary><p>すべての機能が無料で、登録も不要です。画像の処理はブラウザの中だけで行い、サーバーには送信しません。</p></details>
+      <details><summary>LINEスタンプの画像サイズは？</summary><p>スタンプ画像は最大370×320px、メイン画像は240×240px、タブ画像は96×74pxです。縦横とも偶数px、背景透過のPNG、1枚1MB以下にします。書き出し時に自動で合わせます。</p></details>
+      <details><summary>AIで作った1枚のまとめ画像を分割できますか？</summary><p>「一括作成」タブのシート分割で、列数と行数を指定すると1コマずつスタンプに割り当て、背景透過と配置まで自動で行います。</p></details>
+      <details><summary>書き出したファイル名はそのまま申請に使えますか？</summary><p>ZIPの中身は01.png〜、main.png、tab.pngの名前で入っています。申請画面でZIPのままアップロードできます。</p></details>
+      <details><summary>スマホでも使えますか？</summary><p>iPhone・Androidのブラウザで使えます。指でドラッグして画像や文字を動かせます。細かい消しゴム作業はパソコンのほうが楽です。</p></details>
+      <details><summary>途中で閉じても大丈夫？</summary><p>作業内容はこのブラウザに自動保存され、次に開いたときに復元されます。別の端末で続けるときは「作業データ」からファイルに保存してください。</p></details>
+    </section>
+
+    <section id="related">
+      <h2>ほかのツール</h2>
+      <div class="related">
+        <a href="https://zero-kobo.github.io/photo-to-nurie/">写真から一発ぬりえ＆アイコンメーカー<small>写真を線画に。アイコン作りにも</small></a>
+        <a href="https://zero-kobo.github.io/dot-art/">写真をドット絵に変換<small>ドット絵風スタンプの素材にも</small></a>
+        <a href="https://zero-kobo.github.io/">ツール一覧を見る<small>ちいさなツール工房のトップへ</small></a>
+      </div>
+    </section>
+
+    <!-- 意見募集（note記事ができたらURLを入れる） -->
+    <section id="feedback" style="text-align:center">
+      <h2>使ってみた感想・改善してほしいこと</h2>
+      <p>「こんな機能がほしい」があれば、紹介記事のコメントで教えてください。</p>
+      <a class="btn pri" href="https://note.com/zero_kobo" target="_blank" rel="noopener">noteで感想を送る</a>
+    </section>
+
+    <!-- 楽天アフィリエイト枠（最下段・PR表記つき） -->
+    <div class="pr">
+      <span class="tag">※PR</span>
+      <!-- ここに楽天アフィリエイトのコードを貼る（例：ペンタブレット、iPad用ペン など） -->
+      <p class="muted" style="margin:0">スタンプ作りに便利な道具（広告枠）</p>
+    </div>
+  </div>
+
+  <footer>
+    <p>© ちいさなツール工房　｜　<a href="https://zero-kobo.github.io/">ツール一覧</a>　｜　<a href="https://zero-kobo.github.io/privacy.html">プライバシーポリシー</a></p>
+    <p>「LINE」はLINEヤフー株式会社の商標です。本ツールは個人が作った非公式ツールで、LINEヤフー株式会社とは関係ありません。</p>
+  </footer>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(() => {
+  'use strict';
+  const W = 370, H = 320, M = 10, MAXN = 24;
+  const $ = id => document.getElementById(id);
+  const mk = (w, h) => { const c = document.createElement('canvas'); c.width = w; c.height = h; return c; };
+  const cloneCanvas = c => { const n = mk(c.width, c.height); n.getContext('2d').drawImage(c, 0, 0); return n; };
+  const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+  const pad2 = n => String(n).padStart(2, '0');
+
+  const FONTS = [
+    { f: "'Mochiy Pop One'", w: 400, l: 'モッチーポップ（ぷっくり極太・定番）' },
+    { f: "'Dela Gothic One'", w: 400, l: 'デラゴシック（ド迫力）' },
+    { f: "'RocknRoll One'", w: 400, l: 'ロックンロール（元気なポップ体）' },
+    { f: "'Zen Maru Gothic'", w: 900, l: 'Zen丸ゴシック（読みやすい丸文字）' },
+    { f: "'Hachi Maru Pop'", w: 400, l: 'はちまるポップ（ゆる手書き）' },
+    { f: "'Kiwi Maru'", w: 500, l: 'キウイ丸（レトロ手書き）' },
+    { f: "'Yuji Boku'", w: 400, l: 'Yuji Boku（筆文字・叫び）' }
+  ];
+  const FONT_W = Object.fromEntries(FONTS.map(x => [x.f, x.w]));
+  const QUICK = ['OK！', 'ありがとう！', 'りょうかい！', 'おつかれさま！', 'ごめんね…', 'おはよう！', 'おやすみ〜', 'よろしく！', 'えっ！？', 'すごい！！', 'ちょっと待って', '今向かってる！'];
+  const LINEUP = ['OK！', 'ありがとう！', 'りょうかい！', 'おつかれさま！', 'ごめんね…', 'おはよう！', 'おやすみ〜', 'よろしく！',
+                  'いってきます', 'ただいま！', 'おめでとう！', 'すごい！！', 'えっ！？', 'なるほど…', 'いいね！', 'ちょっと待って',
+                  '今向かってる！', 'がんばって！', '大丈夫？', 'えらい！', 'うれしい！', '笑', 'またね！', 'たすけて〜'];
+  const THEMES = [
+    ['エメラルド', '#ffffff', '#fde047', '#059669', '#ffffff'],
+    ['ラブリーピンク', '#ffffff', '#fbcfe8', '#db2777', '#ffffff'],
+    ['元気オレンジ', '#ffffff', '#fed7aa', '#ea580c', '#ffffff'],
+    ['スカイブルー', '#ffffff', '#bae6fd', '#0284c7', '#ffffff'],
+    ['ゆるブラウン', '#fff7ed', '#fde68a', '#78350f', '#ffffff'],
+    ['くっきり黒', '#facc15', '#f97316', '#111827', '#ffffff']
+  ];
+  const RAINBOW = ['#ef4444', '#f97316', '#eab308', '#22c55e', '#06b6d4', '#3b82f6', '#a855f7', '#ec4899'];
+  const VROT = new Set(['ー', '〜', '～', '-', '―', '…', '‥', '（', '）', '(', ')', '「', '」', '→', '←', '=', '＝']);
+
+  // ---------- State ----------
+  const defaultText = () => ({ content: '', font: FONTS[0].f, size: 48, x: 50, y: 82, dir: 'horizontal', fx: 'none', fxInt: 50,
+    colorMode: 'solid', c1: '#ffffff', c2: '#fde047', stroke: '#059669', strokeW: 8, outer: true, outerColor: '#ffffff', shadow: true });
+  const newStamp = () => ({ raw: null, img: null, x: W / 2, y: H / 2 - 10, scale: 100, rot: 0, flip: false,
+    outline: true, outlineW: 5, outlineColor: '#ffffff', text: defaultText(), hist: [], status: 'empty', issues: [], _tbox: null });
+
+  let stamps = Array.from({ length: MAXN }, newStamp);
+  let N = 8, cur = 0, mode = 'move', brush = 20;
+  let mainIdx = 0, tabIdx = 0, mainNoText = true, trimExport = true;
+  let showGuide = true, bgMode = 0;
+  const S = () => stamps[cur];
+
+  const cvs = $('stampCanvas');
+  const ctx = cvs.getContext('2d', { willReadFrequently: true });
+  const LA = mk(W, H), LB = mk(W, H), TL = mk(W, H);
+
+  // ---------- Utilities ----------
+  let toastT;
+  function toast(msg) { const t = $('toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2600); }
+  const getP = (o, p) => p.split('.').reduce((a, k) => (a == null ? a : a[k]), o);
+  const setP = (o, p, v) => { const ks = p.split('.'); let a = o; for (let i = 0; i < ks.length - 1; i++) a = a[ks[i]]; a[ks[ks.length - 1]] = v; };
+  const fontStr = (t, fs) => `${FONT_W[t.font] || 400} ${fs}px ${t.font}, "Hiragino Maru Gothic ProN", sans-serif`;
+  function limitSize(cv, max) {
+    const r = Math.min(1, max / Math.max(cv.width, cv.height));
+    if (r >= 1) return cv;
+    const o = mk(Math.round(cv.width * r), Math.round(cv.height * r));
+    const c = o.getContext('2d'); c.imageSmoothingQuality = 'high'; c.drawImage(cv, 0, 0, o.width, o.height); return o;
+  }
+  function fileToCanvas(file, max) {
+    return new Promise((res, rej) => {
+      const url = URL.createObjectURL(file); const im = new Image();
+      im.onload = () => { const c = mk(im.naturalWidth, im.naturalHeight); c.getContext('2d').drawImage(im, 0, 0); URL.revokeObjectURL(url); res(limitSize(c, max)); };
+      im.onerror = () => { URL.revokeObjectURL(url); rej(new Error('画像を読み込めませんでした')); };
+      im.src = url;
+    });
+  }
+  function urlToCanvas(url) {
+    return new Promise((res, rej) => { const im = new Image(); im.onload = () => { const c = mk(im.naturalWidth, im.naturalHeight); c.getContext('2d').drawImage(im, 0, 0); res(c); }; im.onerror = rej; im.src = url; });
+  }
+  const toBlob = cv => new Promise(r => cv.toBlob(r, 'image/png'));
+  function dl(blob, name) { const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 4000); }
+  function imgEdited(s) { s._imgURL = null; }
+
+  const fontSeen = new Set();
+  function ensureFont(t) {
+    if (!t.content.trim() || !document.fonts) return Promise.resolve(false);
+    const key = t.font + '|' + t.content;
+    if (fontSeen.has(key)) return Promise.resolve(false);
+    fontSeen.add(key);
+    return document.fonts.load(fontStr(t, 40), t.content).then(() => true).catch(() => false);
+  }
+
+  // ---------- Rendering ----------
+  function imageLayer(s) {
+    if (!s.img) return null;
+    const a = LA.getContext('2d');
+    a.clearRect(0, 0, W, H); a.save();
+    a.translate(s.x, s.y); a.rotate(s.rot * Math.PI / 180);
+    const sc = s.scale / 100; a.scale(s.flip ? -sc : sc, sc);
+    a.imageSmoothingEnabled = true; a.imageSmoothingQuality = 'high';
+    a.drawImage(s.img, -s.img.width / 2, -s.img.height / 2);
+    a.restore();
+    if (!s.outline || s.outlineW <= 0) return LA;
+    const b = LB.getContext('2d'); b.clearRect(0, 0, W, H);
+    const r = s.outlineW, steps = Math.max(16, Math.round(r * 4));
+    for (const rr of [r, r * 0.5]) for (let i = 0; i < steps; i++) { const t = i / steps * Math.PI * 2; b.drawImage(LA, Math.cos(t) * rr, Math.sin(t) * rr); }
+    b.globalCompositeOperation = 'source-in'; b.fillStyle = s.outlineColor; b.fillRect(0, 0, W, H);
+    b.globalCompositeOperation = 'source-over'; b.drawImage(LA, 0, 0);
+    return LB;
+  }
+
+  function jit(i, k) {
+    const a = Math.sin(i * 133.7 + 1) * 43758.5453, b = Math.cos(i * 73.1 + 1) * 23421.631;
+    const fa = a - Math.floor(a), fb = b - Math.floor(b);
+    return { x: (fa - .5) * 16 * k, y: (fb - .5) * 16 * k, r: (((fa + fb) % 1) - .5) * .45 * k };
+  }
+
+  function layoutText(c, t) {
+    const k = t.fxInt / 50;
+    const lines = t.content.replace(/\r/g, '').split('\n');
+    while (lines.length > 1 && !lines[lines.length - 1].trim()) lines.pop();
+    const ox = W * t.x / 100, oy = H * t.y / 100;
+    const ang = t.dir === 'slantUp' ? -0.22 : t.dir === 'slantDown' ? 0.22 : 0;
+    const n = lines.length, gap = t.size * 1.18;
+    const glyphs = []; let gi = 0;
+    lines.forEach((line, li) => {
+      const chars = Array.from(line), L = chars.length;
+      const infos = chars.map((ch, i) => {
+        let f = 1;
+        if (t.fx === 'grow') f = 0.65 + (i / Math.max(1, L - 1)) * 0.95 * k;
+        const fs = Math.max(12, Math.round(t.size * f));
+        c.font = fontStr(t, fs);
+        return { ch, fs, adv: t.dir === 'vertical' ? fs * 1.05 : c.measureText(ch).width };
+      });
+      const total = infos.reduce((a, b) => a + b.adv, 0);
+      const lo = (li - (n - 1) / 2) * gap;
+      let off = -total / 2;
+      infos.forEach((g, i) => {
+        const cc = off + g.adv / 2; off += g.adv;
+        let x, y, r = 0;
+        if (t.dir === 'vertical') { x = ox - lo; y = oy + cc; if (VROT.has(g.ch)) r = Math.PI / 2; }
+        else { x = ox + Math.cos(ang) * cc - Math.sin(ang) * lo; y = oy + Math.sin(ang) * cc + Math.cos(ang) * lo; r = ang; }
+        if (t.fx === 'wave') { const w = Math.sin((i / Math.max(1, L)) * Math.PI * 2) * 14 * k; if (t.dir === 'vertical') x += w; else y += w; }
+        if (t.fx === 'shake') { const j = jit(gi, k); x += j.x; y += j.y; r += j.r; }
+        if (g.ch.trim()) glyphs.push({ ch: g.ch, fs: g.fs, x, y, r, i: gi });
+        gi++;
+      });
+    });
+    return glyphs;
+  }
+
+  function drawText(c, t) {
+    const gs = layoutText(c, t);
+    if (!gs.length) return null;
+    const outerW = (t.strokeW + 5) * 2;
+    const each = (cc, fn) => gs.forEach(g => { cc.save(); cc.translate(g.x, g.y); cc.rotate(g.r); cc.font = fontStr(t, g.fs); fn(cc, g); cc.restore(); });
+    const prep = cc => { cc.textAlign = 'center'; cc.textBaseline = 'middle'; cc.lineJoin = 'round'; cc.miterLimit = 2; };
+
+    if (t.shadow) {
+      const s = TL.getContext('2d'); s.clearRect(0, 0, W, H); prep(s);
+      each(s, (cc, g) => {
+        cc.fillStyle = cc.strokeStyle = '#000';
+        const lw = t.outer ? outerW : t.strokeW * 2;
+        if (lw > 0) { cc.lineWidth = lw; cc.strokeText(g.ch, 0, 0); }
+        cc.fillText(g.ch, 0, 0);
+      });
+      c.save(); c.globalAlpha = 0.28; c.drawImage(TL, 2, 4); c.restore();
+    }
+    c.save(); prep(c);
+    if (t.outer) each(c, (cc, g) => { cc.strokeStyle = t.outerColor; cc.lineWidth = outerW; cc.strokeText(g.ch, 0, 0); });
+    if (t.strokeW > 0) each(c, (cc, g) => { cc.strokeStyle = t.stroke; cc.lineWidth = t.strokeW * 2; cc.strokeText(g.ch, 0, 0); });
+    each(c, (cc, g) => {
+      if (t.colorMode === 'rainbow') cc.fillStyle = RAINBOW[g.i % RAINBOW.length];
+      else if (t.colorMode === 'grad') { const gr = cc.createLinearGradient(0, -g.fs * .5, 0, g.fs * .5); gr.addColorStop(0, t.c1); gr.addColorStop(1, t.c2); cc.fillStyle = gr; }
+      else cc.fillStyle = t.c1;
+      cc.fillText(g.ch, 0, 0);
+    });
+    c.restore();
+
+    const p = (t.outer ? outerW : t.strokeW * 2) / 2 + 4;
+    let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+    gs.forEach(g => { const h = g.fs * .6 + p; x0 = Math.min(x0, g.x - h); x1 = Math.max(x1, g.x + h); y0 = Math.min(y0, g.y - h); y1 = Math.max(y1, g.y + h); });
+    return { x0, y0, x1, y1 };
+  }
+
+  function composeStamp(s, c, opt = {}) {
+    c.clearRect(0, 0, W, H);
+    const layer = imageLayer(s);
+    if (layer) c.drawImage(layer, 0, 0);
+    if (!opt.noText) s._tbox = s.text.content.trim() ? drawText(c, s.text) : null;
+  }
+  function renderFull(s, opt) { const cv = mk(W, H); composeStamp(s, cv.getContext('2d'), opt); return cv; }
+
+  let rq = false;
+  function requestRender() { if (rq) return; rq = true; requestAnimationFrame(() => { rq = false; render(); }); }
+  function render() { composeStamp(S(), ctx); $('livePreviewImg').src = cvs.toDataURL('image/png'); }
+
+  // ---------- Content box / export ----------
+  function contentBox(cv, th = 0) {
+    const d = cv.getContext('2d', { willReadFrequently: true }).getImageData(0, 0, cv.width, cv.height).data;
+    const w = cv.width, h = cv.height; let x0 = w, y0 = h, x1 = -1, y1 = -1;
+    for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+      if (d[(y * w + x) * 4 + 3] > th) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+    }
+    return x1 < 0 ? null : { x0, y0, x1: x1 + 1, y1: y1 + 1 };
+  }
+  function evenSpan(a, b, max) {
+    if ((b - a) % 2 === 0) return [a, b];
+    if (b < max) return [a, b + 1];
+    if (a > 0) return [a - 1, b];
+    return [a, b - 1];
+  }
+  function exportStamp(s) {
+    const cv = renderFull(s);
+    const b = contentBox(cv, 0);
+    if (!b) return null;
+    if (!trimExport) return cv;
+    let [x0, x1] = evenSpan(Math.max(0, b.x0 - M), Math.min(W, b.x1 + M), W);
+    let [y0, y1] = evenSpan(Math.max(0, b.y0 - M), Math.min(H, b.y1 + M), H);
+    const out = mk(x1 - x0, y1 - y0);
+    out.getContext('2d').drawImage(cv, -x0, -y0);
+    return out;
+  }
+  function fitInto(src, tw, th, padding) {
+    const out = mk(tw, th); const b = contentBox(src, 0); if (!b) return out;
+    const bw = b.x1 - b.x0, bh = b.y1 - b.y0;
+    const sc = Math.min((tw - padding * 2) / bw, (th - padding * 2) / bh);
+    const c = out.getContext('2d'); c.imageSmoothingQuality = 'high';
+    const dw = bw * sc, dh = bh * sc;
+    c.drawImage(src, b.x0, b.y0, bw, bh, (tw - dw) / 2, (th - dh) / 2, dw, dh);
+    return out;
+  }
+  function sourceFor(idx) {
+    const s = stamps[idx];
+    let src = renderFull(s, { noText: mainNoText });
+    if (!contentBox(src, 0)) src = renderFull(s);
+    return src;
+  }
+  const makeMain = () => fitInto(sourceFor(mainIdx), 240, 240, 8);
+  const makeTab = () => fitInto(sourceFor(tabIdx), 96, 74, 2);
+
+  // ---------- Background removal ----------
+  function floodRemove(cv, seeds, ref, tol, erode) {
+    const c = cv.getContext('2d', { willReadFrequently: true });
+    const w = cv.width, h = cv.height;
+    const id = c.getImageData(0, 0, w, h), d = id.data;
+    const T2 = tol * tol, rm = new Uint8Array(w * h), st = [];
+    const dist2 = p => { const i = p * 4; const dr = d[i] - ref[0], dg = d[i + 1] - ref[1], db = d[i + 2] - ref[2]; return dr * dr + dg * dg + db * db; };
+    const near = p => d[p * 4 + 3] === 0 || dist2(p) <= T2;
+    const tryP = q => { if (!rm[q] && near(q)) { rm[q] = 1; st.push(q); } };
+    seeds.forEach(tryP);
+    while (st.length) {
+      const p = st.pop(), x = p % w, y = (p / w) | 0;
+      if (x > 0) tryP(p - 1); if (x < w - 1) tryP(p + 1); if (y > 0) tryP(p - w); if (y < h - 1) tryP(p + w);
+    }
+    let count = 0;
+    for (let p = 0; p < w * h; p++) if (rm[p]) { if (d[p * 4 + 3]) count++; d[p * 4 + 3] = 0; }
+    // edge: feather or erode
+    for (let p = 0; p < w * h; p++) {
+      if (rm[p]) continue;
+      const x = p % w, y = (p / w) | 0;
+      const nb = (x > 0 && rm[p - 1]) || (x < w - 1 && rm[p + 1]) || (y > 0 && rm[p - w]) || (y < h - 1 && rm[p + w]);
+      if (!nb) continue;
+      if (erode) { d[p * 4 + 3] = 0; continue; }
+      const dd = Math.sqrt(dist2(p));
+      if (dd < tol * 2) d[p * 4 + 3] = Math.round(d[p * 4 + 3] * clamp((dd - tol) / (tol + 1), 0, 1));
+    }
+    c.putImageData(id, 0, 0);
+    return count;
+  }
+  function pixelAt(cv, x, y) { return cv.getContext('2d', { willReadFrequently: true }).getImageData(x, y, 1, 1).data; }
+  function autoRemoveBg(s, tol, erode) {
+    const cv = s.img, w = cv.width, h = cv.height;
+    const cs = [[0, 0], [w - 1, 0], [0, h - 1], [w - 1, h - 1]].map(([x, y]) => pixelAt(cv, x, y));
+    const opaque = cs.filter(p => p[3] > 200);
+    if (!opaque.length) return 0; // already transparent
+    const ref = [0, 1, 2].map(i => Math.round(opaque.reduce((a, p) => a + p[i], 0) / opaque.length));
+    const seeds = [];
+    for (let x = 0; x < w; x++) { seeds.push(x, (h - 1) * w + x); }
+    for (let y = 0; y < h; y++) { seeds.push(y * w, y * w + w - 1); }
+    const n = floodRemove(cv, seeds, ref, tol, erode); imgEdited(s); return n;
+  }
+  function removeGlobal(s, ref, tol) {
+    const c = s.img.getContext('2d', { willReadFrequently: true });
+    const id = c.getImageData(0, 0, s.img.width, s.img.height), d = id.data, T2 = tol * tol;
+    for (let i = 0; i < d.length; i += 4) { const dr = d[i] - ref[0], dg = d[i + 1] - ref[1], db = d[i + 2] - ref[2]; if (dr * dr + dg * dg + db * db <= T2) d[i + 3] = 0; }
+    c.putImageData(id, 0, 0); imgEdited(s);
+  }
+  function pushHist(s) { if (!s.img) return; s.hist.push(cloneCanvas(s.img)); if (s.hist.length > 15) s.hist.shift(); }
+
+  // ---------- Auto fit ----------
+  function autoFit(s) {
+    if (!s.img) return;
+    const b = contentBox(s.img, 20); if (!b) return;
+    const pad = M + (s.outline ? s.outlineW : 0) + 3;
+    const t = s.text, hasText = !!t.content.trim();
+    let ry0 = pad, ry1 = H - pad, rx0 = pad, rx1 = W - pad;
+    if (hasText && t.dir !== 'vertical') { if (t.y >= 55) ry1 = H * 0.72; else if (t.y <= 45) ry0 = H * 0.28; }
+    if (hasText && t.dir === 'vertical') { if (t.x >= 55) rx1 = W * 0.70; else if (t.x <= 45) rx0 = W * 0.30; }
+    const aw = rx1 - rx0, ah = ry1 - ry0;
+    const bw = b.x1 - b.x0, bh = b.y1 - b.y0;
+    const sc = Math.min(aw / bw, ah / bh);
+    s.scale = Math.round(sc * 1000) / 10; s.rot = 0;
+    const bcx = (b.x0 + b.x1) / 2 - s.img.width / 2, bcy = (b.y0 + b.y1) / 2 - s.img.height / 2;
+    s.x = (rx0 + rx1) / 2 - bcx * sc * (s.flip ? -1 : 1);
+    s.y = (ry0 + ry1) / 2 - bcy * sc;
+  }
+
+  // ---------- Checks ----------
+  function checkStamp(s) {
+    const issues = [];
+    if (!s.img && !s.text.content.trim()) { s.status = 'empty'; s.issues = [{ lv: 'info', m: 'まだ空です。画像かセリフを入れてください' }]; s._size = ''; return; }
+    const cv = renderFull(s);
+    const d = cv.getContext('2d').getImageData(0, 0, W, H).data;
+    let edge = 0, opaque = 0;
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+      const a = d[(y * W + x) * 4 + 3];
+      if (a > 200) opaque++;
+      if (a > 8 && (x < M || x >= W - M || y < M || y >= H - M)) edge++;
+    }
+    const corners = [[0, 0], [W - 1, 0], [0, H - 1], [W - 1, H - 1]].filter(([x, y]) => d[(y * W + x) * 4 + 3] > 200).length;
+    if (corners >= 3 || opaque / (W * H) > 0.85) issues.push({ lv: 'ng', m: '背景が透過されていないようです。「画像」タブで背景を消してください' });
+    if (edge > 20) issues.push({ lv: 'warn', m: '上下左右10pxの余白に絵や文字がはみ出しています。「自動配置」で直せます' });
+    if (s.text.content.trim() && s.text.size < 30) issues.push({ lv: 'warn', m: '文字が小さめです。スマホでは読みにくくなります' });
+    if (s.img && s.scale > 150) issues.push({ lv: 'warn', m: '元画像を1.5倍以上に拡大しています。ぼやけていないか確認を' });
+    if (s.img && s.text.content.trim() && s._tbox) {
+      // text over very busy area is fine; nothing
+    }
+    const ex = exportStamp(s);
+    if (ex) {
+      const bytes = Math.round((ex.toDataURL('image/png').length - 22) * 0.75);
+      if (bytes > 1024 * 1024) issues.push({ lv: 'ng', m: 'ファイルが1MBを超えています' });
+      s._size = `${ex.width}×${ex.height}px・${Math.max(1, Math.round(bytes / 1024))}KB`;
+    }
+    if (!issues.length) issues.push({ lv: 'ok', m: '透過・余白・サイズ・容量、すべてOK' });
+    s.status = issues.some(i => i.lv === 'ng') ? 'ng' : issues.some(i => i.lv === 'warn') ? 'warn' : 'ok';
+    s.issues = issues;
+  }
+  function updateCheckUI() {
+    const s = S();
+    $('issues').innerHTML = s.issues.map(i => `<li class="${i.lv}">${{ ok: '✅', warn: '⚠️', ng: '⛔', info: '・' }[i.lv]} ${i.m}</li>`).join('');
+    $('stampInfo').textContent = s._size || '';
+    const list = stamps.slice(0, N);
+    const c = { ok: 0, warn: 0, ng: 0, empty: 0 }; list.forEach(x => c[x.status]++);
+    $('sum').innerHTML = `<div><b>${c.ok}</b>OK</div><div><b>${c.warn}</b>要確認</div><div><b>${c.ng}</b>NG</div><div><b>${c.empty}</b>空</div>`;
+    $('setSummaryShort').textContent = `${N}個中 ${c.ok}個OK` + (c.empty ? `・あと${c.empty}個` : '');
+  }
+
+  // ---------- Thumbnails ----------
+  let thumbEls = [];
+  function buildStrip() {
+    const box = $('thumbs'); box.innerHTML = ''; thumbEls = [];
+    for (let i = 0; i < N; i++) {
+      const d = document.createElement('div'); d.className = 'thumb' + (i === cur ? ' on' : '');
+      d.innerHTML = `<canvas width="111" height="96"></canvas><span class="no">${pad2(i + 1)}</span><span class="dot"></span>`;
+      d.addEventListener('click', () => select(i));
+      box.appendChild(d); thumbEls.push(d); drawThumb(i);
+    }
+    const opts = Array.from({ length: N }, (_, i) => `<option value="${i}">${pad2(i + 1)}番を使う</option>`).join('');
+    mainIdx = Math.min(mainIdx, N - 1); tabIdx = Math.min(tabIdx, N - 1);
+    $('mainSel').innerHTML = opts; $('tabSel').innerHTML = opts;
+    $('mainSel').value = mainIdx; $('tabSel').value = tabIdx;
+  }
+  function drawThumb(i) {
+    const el = thumbEls[i]; if (!el) return;
+    const tc = el.querySelector('canvas'), c = tc.getContext('2d');
+    c.clearRect(0, 0, tc.width, tc.height);
+    c.drawImage(renderFull(stamps[i]), 0, 0, tc.width, tc.height);
+    el.querySelector('.dot').className = 'dot ' + (stamps[i].status === 'empty' ? '' : stamps[i].status);
+    el.classList.toggle('on', i === cur);
+  }
+  function updateMainTab() {
+    const m = $('mainPrev').getContext('2d'); m.clearRect(0, 0, 240, 240); m.drawImage(makeMain(), 0, 0);
+    const t = $('tabPrev').getContext('2d'); t.clearRect(0, 0, 96, 74); t.drawImage(makeTab(), 0, 0);
+  }
+
+  let chkT;
+  function scheduleChecks() {
+    clearTimeout(chkT);
+    chkT = setTimeout(() => { checkStamp(S()); drawThumb(cur); updateCheckUI(); if (cur === mainIdx || cur === tabIdx) updateMainTab(); }, 300);
+  }
+  async function checkAll() {
+    await Promise.all(stamps.slice(0, N).map(s => ensureFont(s.text)));
+    for (let i = 0; i < N; i++) { checkStamp(stamps[i]); drawThumb(i); }
+    updateCheckUI(); updateMainTab(); requestRender();
+  }
+
+  function changed() {
+    requestRender(); scheduleChecks(); scheduleSave();
+    ensureFont(S().text).then(n => { if (n) { requestRender(); scheduleChecks(); } });
+  }
+
+  // ---------- UI binding ----------
+  function syncShows() {
+    document.querySelectorAll('[data-show]').forEach(el => {
+      let v = getP(S(), el.dataset.show); if (typeof v === 'number') v = Math.round(v);
+      el.textContent = v + (el.dataset.suffix || '');
+    });
+  }
+  function syncUI() {
+    const s = S();
+    document.querySelectorAll('[data-bind]').forEach(el => {
+      const v = getP(s, el.dataset.bind);
+      if (el.classList.contains('seg')) el.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.val === v));
+      else if (el.type === 'checkbox') el.checked = !!v;
+      else el.value = v;
+    });
+    $('fxRow').classList.toggle('hidden', s.text.fx === 'none');
+    $('c2Row').classList.toggle('dim', s.text.colorMode !== 'grad');
+    $('c1Label').textContent = s.text.colorMode === 'grad' ? '上側の色' : s.text.colorMode === 'rainbow' ? '（虹色が優先）' : '文字の色';
+    $('stampTitle').textContent = `スタンプ ${pad2(cur + 1)} / ${N}`;
+    syncShows();
+  }
+  document.querySelectorAll('[data-bind]').forEach(el => {
+    if (el.classList.contains('seg')) {
+      el.addEventListener('click', e => {
+        const b = e.target.closest('button[data-val]'); if (!b) return;
+        const s = S(), prev = getP(s, el.dataset.bind);
+        setP(s, el.dataset.bind, b.dataset.val);
+        if (el.dataset.bind === 'text.dir' && prev !== b.dataset.val) {
+          // 向きを変えたら、はみ出さない定位置に置き直して絵も合わせる
+          if (b.dataset.val === 'vertical') { s.text.x = 84; s.text.y = 50; }
+          else if (prev === 'vertical') { s.text.x = 50; s.text.y = 82; }
+          if (s.img) autoFit(s);
+        }
+        syncUI(); changed();
+      });
+    } else {
+      el.addEventListener('input', () => {
+        const v = el.type === 'checkbox' ? el.checked : (el.type === 'range' || el.type === 'number') ? Number(el.value) : el.value;
+        setP(S(), el.dataset.bind, v); syncShows(); changed();
+      });
+    }
+  });
+
+  function select(i) {
+    cur = clamp(i, 0, N - 1);
+    thumbEls.forEach((el, k) => el.classList.toggle('on', k === cur));
+    thumbEls[cur] && thumbEls[cur].scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
+    syncUI(); requestRender(); updateCheckUI();
+    ensureFont(S().text).then(n => { if (n) { requestRender(); scheduleChecks(); } });
+  }
+
+  // ---------- Pointer ----------
+  let drag = null;
+  function pos(e) { const r = cvs.getBoundingClientRect(); return { x: (e.clientX - r.left) * W / r.width, y: (e.clientY - r.top) * H / r.height }; }
+  function toSrc(s, p) {
+    const sc = s.scale / 100, a = -s.rot * Math.PI / 180;
+    const dx = p.x - s.x, dy = p.y - s.y;
+    let rx = (dx * Math.cos(a) - dy * Math.sin(a)) / sc, ry = (dx * Math.sin(a) + dy * Math.cos(a)) / sc;
+    if (s.flip) rx = -rx;
+    return { x: rx + s.img.width / 2, y: ry + s.img.height / 2 };
+  }
+  function brushAt(s, p) {
+    const q = toSrc(s, p), r = brush / (s.scale / 100) / 2;
+    const c = s.img.getContext('2d');
+    if (mode === 'erase') {
+      c.save(); c.globalCompositeOperation = 'destination-out'; c.beginPath(); c.arc(q.x, q.y, r, 0, Math.PI * 2); c.fill(); c.restore();
+    } else if (mode === 'restore' && s.raw) {
+      c.save(); c.beginPath(); c.arc(q.x, q.y, r, 0, Math.PI * 2); c.clip(); c.clearRect(q.x - r, q.y - r, r * 2, r * 2); c.drawImage(s.raw, 0, 0); c.restore();
+    }
+  }
+  cvs.addEventListener('pointerdown', e => {
+    const p = pos(e), s = S();
+    cvs.setPointerCapture(e.pointerId);
+    if (mode === 'move') {
+      const tb = s._tbox;
+      if (tb && p.x >= tb.x0 && p.x <= tb.x1 && p.y >= tb.y0 && p.y <= tb.y1) drag = { type: 'text', sx: p.x, sy: p.y, ox: s.text.x, oy: s.text.y };
+      else if (s.img) drag = { type: 'img', sx: p.x, sy: p.y, ox: s.x, oy: s.y };
+      if (drag) cvs.style.cursor = 'grabbing';
+      return;
+    }
+    if (!s.img) { toast('先に画像を読み込んでください'); return; }
+    if (mode === 'pick') {
+      const q = toSrc(s, p), x = Math.floor(q.x), y = Math.floor(q.y);
+      if (x < 0 || y < 0 || x >= s.img.width || y >= s.img.height) return;
+      pushHist(s);
+      const px = pixelAt(s.img, x, y);
+      if (px[3] === 0) { toast('そこはすでに透明です'); return; }
+      const n = floodRemove(s.img, [y * s.img.width + x], [px[0], px[1], px[2]], Number($('tol').value), $('erode').checked);
+      imgEdited(s); changed(); toast(`${n.toLocaleString()}px を透明にしました`);
+      return;
+    }
+    pushHist(s); drag = { type: 'brush', last: p }; brushAt(s, p); requestRender();
+  });
+  cvs.addEventListener('pointermove', e => {
+    if (!drag) return;
+    const p = pos(e), s = S();
+    if (drag.type === 'text') { s.text.x = clamp(drag.ox + (p.x - drag.sx) / W * 100, 0, 100); s.text.y = clamp(drag.oy + (p.y - drag.sy) / H * 100, 0, 100); syncShows(); requestRender(); }
+    else if (drag.type === 'img') { s.x = drag.ox + (p.x - drag.sx); s.y = drag.oy + (p.y - drag.sy); requestRender(); }
+    else if (drag.type === 'brush') {
+      const l = drag.last, dist = Math.hypot(p.x - l.x, p.y - l.y), step = Math.max(1, brush / 4), n = Math.ceil(dist / step);
+      for (let i = 1; i <= n; i++) brushAt(s, { x: l.x + (p.x - l.x) * i / n, y: l.y + (p.y - l.y) * i / n });
+      drag.last = p; requestRender();
+    }
+  });
+  const endDrag = () => {
+    if (!drag) return;
+    if (drag.type === 'brush') imgEdited(S());
+    drag = null; cvs.style.cursor = mode === 'move' ? 'grab' : 'crosshair';
+    syncUI(); changed();
+  };
+  cvs.addEventListener('pointerup', endDrag);
+  cvs.addEventListener('pointercancel', endDrag);
+  cvs.addEventListener('wheel', e => {
+    const s = S(); if (mode !== 'move' || !s.img) return;
+    e.preventDefault();
+    s.scale = clamp(Math.round(s.scale * (e.deltaY < 0 ? 1.05 : 0.95) * 10) / 10, 5, 300);
+    syncShows(); document.querySelector('[data-bind="scale"]').value = s.scale; changed();
+  }, { passive: false });
+
+  $('modeSeg').addEventListener('click', e => {
+    const b = e.target.closest('button[data-mode]'); if (!b) return;
+    mode = b.dataset.mode;
+    $('modeSeg').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
+    $('brushRow').classList.toggle('hidden', !(mode === 'erase' || mode === 'restore'));
+    cvs.style.cursor = mode === 'move' ? 'grab' : 'crosshair';
+    $('modeHint').textContent = {
+      move: 'ドラッグで移動（文字の上をつかむと文字だけ動く）・ホイールで拡大縮小',
+      pick: '消したい背景の色をクリック → つながった同じ色を透明に',
+      erase: 'なぞった部分を透明にします',
+      restore: 'なぞった部分を元の画像に戻します'
+    }[mode];
+  });
+  $('brush').addEventListener('input', e => { brush = Number(e.target.value); $('brushVal').textContent = brush + 'px'; });
+  $('tol').addEventListener('input', e => { $('tolVal').textContent = e.target.value; });
+
+  // ---------- Image loading ----------
+  async function setImage(s, cv) {
+    s.raw = cv; s.img = cloneCanvas(cv); s.hist = []; s._rawURL = null; imgEdited(s);
+    if ($('autoBgOnLoad').checked) autoRemoveBg(s, Number($('tol').value), $('erode').checked);
+    if ($('autoFitOnLoad').checked) autoFit(s);
+    else { s.x = W / 2; s.y = H / 2 - 10; s.rot = 0; s.scale = Math.round(Math.min((W * .75) / cv.width, (H * .75) / cv.height) * 1000) / 10; }
+  }
+  async function loadFiles(files) {
+    const list = Array.from(files).filter(f => f.type.startsWith('image/'));
+    if (!list.length) return;
+    let i = cur, done = 0;
+    for (const f of list) {
+      if (i >= N) break;
+      try { await setImage(stamps[i], await fileToCanvas(f, 1000)); done++; } catch (e) { toast(e.message); }
+      i++;
+    }
+    if (list.length > done) toast(`${done}枚を読み込みました（セットの個数を超えた分は入っていません）`);
+    else toast(done > 1 ? `${done}枚を${pad2(cur + 1)}番から順に読み込みました` : '画像を読み込みました');
+    track('image_load', { count: done });
+    syncUI(); await checkAll(); scheduleSave();
+  }
+  $('drop').addEventListener('click', () => $('fileInput').click());
+  $('fileInput').addEventListener('change', e => { loadFiles(e.target.files); e.target.value = ''; });
+  ['dragenter', 'dragover'].forEach(ev => $('drop').addEventListener(ev, e => { e.preventDefault(); $('drop').classList.add('over'); }));
+  ['dragleave', 'drop'].forEach(ev => $('drop').addEventListener(ev, e => { e.preventDefault(); $('drop').classList.remove('over'); }));
+  $('drop').addEventListener('drop', e => loadFiles(e.dataTransfer.files));
+  // drop on canvas too
+  $('stage').addEventListener('dragover', e => e.preventDefault());
+  $('stage').addEventListener('drop', e => { e.preventDefault(); loadFiles(e.dataTransfer.files); });
+
+  // ---------- Sample ----------
+  function drawStar(c, cx, cy, spikes, outer, inner) {
+    let rot = Math.PI / 2 * 3; const step = Math.PI / spikes;
+    c.beginPath(); c.moveTo(cx, cy - outer);
+    for (let i = 0; i < spikes; i++) { c.lineTo(cx + Math.cos(rot) * outer, cy + Math.sin(rot) * outer); rot += step; c.lineTo(cx + Math.cos(rot) * inner, cy + Math.sin(rot) * inner); rot += step; }
+    c.closePath(); c.fill();
+  }
+  function sampleBear() {
+    const cv = mk(240, 240), c = cv.getContext('2d');
+    c.fillStyle = '#f59e0b'; c.beginPath(); c.arc(65, 75, 30, 0, 7); c.arc(175, 75, 30, 0, 7); c.fill();
+    c.fillStyle = '#fef3c7'; c.beginPath(); c.arc(65, 75, 16, 0, 7); c.arc(175, 75, 16, 0, 7); c.fill();
+    c.fillStyle = '#fbbf24'; c.beginPath(); c.arc(120, 125, 72, 0, 7); c.fill();
+    c.fillStyle = '#f472b6'; c.beginPath(); c.arc(75, 140, 14, 0, 7); c.arc(165, 140, 14, 0, 7); c.fill();
+    c.fillStyle = '#fff'; c.beginPath(); c.ellipse(120, 140, 32, 24, 0, 0, 7); c.fill();
+    c.fillStyle = '#78350f'; c.beginPath(); c.ellipse(120, 130, 10, 7, 0, 0, 7); c.fill();
+    c.strokeStyle = '#78350f'; c.lineWidth = 4; c.lineCap = 'round';
+    c.beginPath(); c.arc(112, 142, 8, 0, Math.PI); c.stroke(); c.beginPath(); c.arc(128, 142, 8, 0, Math.PI); c.stroke();
+    c.fillStyle = '#1e293b'; c.beginPath(); c.arc(92, 115, 12, 0, 7); c.arc(148, 115, 12, 0, 7); c.fill();
+    c.fillStyle = '#fff'; c.beginPath(); c.arc(90, 112, 4.5, 0, 7); c.arc(146, 112, 4.5, 0, 7); c.arc(95, 117, 2, 0, 7); c.arc(151, 117, 2, 0, 7); c.fill();
+    c.fillStyle = '#fde047'; drawStar(c, 35, 45, 4, 12, 5); drawStar(c, 205, 50, 4, 14, 6);
+    return cv;
+  }
+  function loadSample() {
+    stamps = Array.from({ length: MAXN }, newStamp);
+    const s = stamps[0];
+    s.text.content = 'わーい！！';
+    s.raw = sampleBear(); s.img = cloneCanvas(s.raw);
+    autoFit(s);
+  }
+
+  // ---------- Actions ----------
+  const ACT = {
+    prev: () => select(cur - 1),
+    next: () => select(cur + 1),
+    autoFit: () => { const s = S(); if (!s.img) return toast('画像がありません'); autoFit(s); syncUI(); changed(); toast('余白に収まるように配置しました'); },
+    undo: () => { const s = S(); if (!s.hist.length) return toast('戻せる操作がありません'); s.img = s.hist.pop(); imgEdited(s); changed(); },
+    clearStamp: () => { if (!confirm(`${pad2(cur + 1)}番を空にしますか？`)) return; stamps[cur] = newStamp(); syncUI(); changed(); },
+    autoBg: () => { const s = S(); if (!s.img) return toast('画像がありません'); pushHist(s); const n = autoRemoveBg(s, Number($('tol').value), $('erode').checked); changed(); toast(n ? '外側の背景を透明にしました' : '四隅がすでに透明か、背景色が見つかりませんでした'); },
+    removeWhite: () => { const s = S(); if (!s.img) return toast('画像がありません'); pushHist(s); removeGlobal(s, [255, 255, 255], Number($('tol').value)); changed(); },
+    removeBlack: () => { const s = S(); if (!s.img) return toast('画像がありません'); pushHist(s); removeGlobal(s, [0, 0, 0], Number($('tol').value)); changed(); },
+    resetImage: () => { const s = S(); if (!s.raw) return; pushHist(s); s.img = cloneCanvas(s.raw); imgEdited(s); changed(); },
+    outlineAll: () => { const s = S(); stamps.forEach(x => { x.outline = s.outline; x.outlineW = s.outlineW; x.outlineColor = s.outlineColor; }); checkAll(); scheduleSave(); toast('フチ設定を全スタンプに適用しました'); },
+    clearText: () => { S().text.content = ''; syncUI(); changed(); },
+    styleAll: () => {
+      const t = S().text;
+      stamps.forEach((x, i) => { if (i !== cur) { const c = x.text.content; x.text = Object.assign({}, t, { content: c }); } });
+      checkAll(); scheduleSave(); toast('文字デザインを全スタンプにコピーしました');
+    },
+    fillLineup: () => { $('bulkText').value = LINEUP.slice(0, N).join('\n'); },
+    applyBulk: () => {
+      const lines = $('bulkText').value.replace(/\r/g, '').split('\n');
+      lines.slice(0, N).forEach((l, i) => { stamps[i].text.content = l.trim(); });
+      syncUI(); checkAll(); scheduleSave(); toast(`${Math.min(lines.length, N)}個のセリフを反映しました`);
+    },
+    splitSheet: splitSheet,
+    downloadPng: async () => {
+      const ex = exportStamp(S()); if (!ex) return toast('このスタンプは空です');
+      dl(await toBlob(ex), `${pad2(cur + 1)}.png`); track('download_png');
+    },
+    downloadZip: downloadZip,
+    toggleGuide: () => { showGuide = !showGuide; $('guide').style.display = showGuide ? '' : 'none'; $('guideBtn').textContent = '余白ガイド：' + (showGuide ? '表示' : '非表示'); },
+    cycleBg: () => { bgMode = (bgMode + 1) % 3; $('stage').className = 'stage ' + ['ck', 'dk', 'ln'][bgMode]; $('bgBtn').textContent = '背景：' + ['明', '暗', 'トーク色'][bgMode]; },
+    saveProject: async () => { dl(new Blob([JSON.stringify(serialize())], { type: 'application/json' }), 'line-stamp-project.json'); toast('作業データを保存しました'); },
+    loadProject: () => $('projectInput').click(),
+    newProject: () => { if (!confirm('今の作業を消して、新しく作り直しますか？（保存していないデータは消えます）')) return; loadSample(); N = 8; $('setCount').value = 8; cur = 0; buildStrip(); select(0); checkAll(); scheduleSave(); }
+  };
+  document.addEventListener('click', e => { const b = e.target.closest('[data-act]'); if (b && ACT[b.dataset.act]) ACT[b.dataset.act](); });
+  document.addEventListener('keydown', e => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !/INPUT|TEXTAREA/.test(document.activeElement.tagName)) { e.preventDefault(); ACT.undo(); }
+  });
+
+  // ---------- Sheet split ----------
+  async function splitSheet() {
+    const f = $('sheetInput').files[0];
+    if (!f) return toast('まとめ画像を選んでください');
+    const cols = clamp(Number($('sheetCols').value) || 1, 1, 8), rows = clamp(Number($('sheetRows').value) || 1, 1, 8);
+    const start = clamp(Number($('sheetStart').value) || 1, 1, MAXN), inset = clamp(Number($('sheetInset').value) || 0, 0, 15) / 100;
+    const need = start - 1 + cols * rows;
+    if (need > N) {
+      const nn = Math.min(MAXN, Math.ceil(need / 8) * 8);
+      if (nn !== N && confirm(`${cols * rows}コマ入れるには${nn}個セットが必要です。${nn}個セットに変更しますか？`)) { N = nn; $('setCount').value = N; buildStrip(); }
+    }
+    toast('分割しています…');
+    const sheet = await fileToCanvas(f, 4096);
+    const cw = sheet.width / cols, ch = sheet.height / rows;
+    const tol = Number($('tol').value), erode = $('erode').checked, bg = $('sheetBg').checked;
+    let k = 0, done = 0;
+    outer: for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
+      const idx = start - 1 + k; k++;
+      if (idx >= N) break outer;
+      const sx = c * cw + cw * inset, sy = r * ch + ch * inset, w = cw * (1 - 2 * inset), h = ch * (1 - 2 * inset);
+      let cell = mk(Math.max(1, Math.round(w)), Math.max(1, Math.round(h)));
+      cell.getContext('2d').drawImage(sheet, sx, sy, w, h, 0, 0, cell.width, cell.height);
+      cell = limitSize(cell, 1000);
+      const s = stamps[idx];
+      s.raw = cell; s.img = cloneCanvas(cell); s.hist = []; s._rawURL = null; imgEdited(s);
+      if (bg) autoRemoveBg(s, tol, erode);
+      autoFit(s); done++;
+    }
+    track('sheet_split', { cells: done });
+    buildStrip(); select(start - 1); await checkAll(); scheduleSave();
+    toast(`${done}コマをスタンプに割り当てました`);
+  }
+
+  // ---------- ZIP ----------
+  // 外部ライブラリなしの最小ZIP（無圧縮・PNGはもともと圧縮済み）
+  const CRC = (() => { const t = new Uint32Array(256); for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; } return t; })();
+  const crc32 = u => { let c = 0xFFFFFFFF; for (let i = 0; i < u.length; i++) c = CRC[(c ^ u[i]) & 255] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; };
+  async function makeZip(files) {
+    const enc = new TextEncoder(), parts = [], central = []; let off = 0;
+    for (const f of files) {
+      const data = new Uint8Array(await f.blob.arrayBuffer()), name = enc.encode(f.name), crc = crc32(data);
+      const lh = new DataView(new ArrayBuffer(30));
+      lh.setUint32(0, 0x04034b50, true); lh.setUint16(4, 20, true); lh.setUint16(8, 0, true);
+      lh.setUint16(10, 0, true); lh.setUint16(12, 0x21, true);
+      lh.setUint32(14, crc, true); lh.setUint32(18, data.length, true); lh.setUint32(22, data.length, true); lh.setUint16(26, name.length, true);
+      parts.push(lh.buffer, name, data);
+      const ch = new DataView(new ArrayBuffer(46));
+      ch.setUint32(0, 0x02014b50, true); ch.setUint16(4, 20, true); ch.setUint16(6, 20, true);
+      ch.setUint16(14, 0x21, true); ch.setUint32(16, crc, true); ch.setUint32(20, data.length, true); ch.setUint32(24, data.length, true);
+      ch.setUint16(28, name.length, true); ch.setUint32(42, off, true);
+      central.push(ch.buffer, name);
+      off += 30 + name.length + data.length;
+    }
+    const csize = central.reduce((a, b) => a + b.byteLength, 0);
+    const end = new DataView(new ArrayBuffer(22));
+    end.setUint32(0, 0x06054b50, true); end.setUint16(8, files.length, true); end.setUint16(10, files.length, true);
+    end.setUint32(12, csize, true); end.setUint32(16, off, true);
+    return new Blob([...parts, ...central, end.buffer], { type: 'application/zip' });
+  }
+  async function downloadZip() {
+    await checkAll();
+    const list = stamps.slice(0, N);
+    const empty = [], ng = [];
+    list.forEach((s, i) => { if (s.status === 'empty') empty.push(pad2(i + 1)); if (s.status === 'ng') ng.push(pad2(i + 1)); });
+    let warn = '';
+    if (empty.length) warn += `・空のスタンプ：${empty.join(', ')}（申請には${N}個すべて必要です）\n`;
+    if (ng.length) warn += `・NG判定：${ng.join(', ')}\n`;
+    if (warn && !confirm(`このまま書き出しますか？\n\n${warn}`)) return;
+    toast('ZIPを作っています…');
+    const files = [];
+    for (let i = 0; i < N; i++) { const ex = exportStamp(stamps[i]); if (ex) files.push({ name: pad2(i + 1) + '.png', blob: await toBlob(ex) }); }
+    files.push({ name: 'main.png', blob: await toBlob(makeMain()) });
+    files.push({ name: 'tab.png', blob: await toBlob(makeTab()) });
+    dl(await makeZip(files), `line_stamp_${N}set.zip`);
+    track('download_zip', { count: N });
+    toast('ZIPを書き出しました');
+  }
+
+  // ---------- Persistence ----------
+  function serialize() {
+    return {
+      v: 1, N, mainIdx, tabIdx, mainNoText, trimExport,
+      stamps: stamps.map(s => {
+        if (s.raw && !s._rawURL) s._rawURL = s.raw.toDataURL('image/png');
+        if (s.img && !s._imgURL) s._imgURL = s.img.toDataURL('image/png');
+        return { raw: s.raw ? s._rawURL : null, img: s.img ? s._imgURL : null, x: s.x, y: s.y, scale: s.scale, rot: s.rot, flip: s.flip,
+          outline: s.outline, outlineW: s.outlineW, outlineColor: s.outlineColor, text: Object.assign({}, s.text) };
+      })
+    };
+  }
+  async function deserialize(o) {
+    N = [8, 16, 24].includes(o.N) ? o.N : 8;
+    mainIdx = o.mainIdx || 0; tabIdx = o.tabIdx || 0;
+    mainNoText = o.mainNoText !== false; trimExport = o.trimExport !== false;
+    const fresh = Array.from({ length: MAXN }, newStamp);
+    await Promise.all((o.stamps || []).slice(0, MAXN).map(async (d, i) => {
+      const s = fresh[i];
+      ['x', 'y', 'scale', 'rot', 'flip', 'outline', 'outlineW', 'outlineColor'].forEach(k => { if (d[k] !== undefined) s[k] = d[k]; });
+      s.text = Object.assign(defaultText(), d.text || {});
+      if (d.raw) { s.raw = await urlToCanvas(d.raw); s._rawURL = d.raw; }
+      if (d.img) { s.img = await urlToCanvas(d.img); s._imgURL = d.img; }
+      else if (s.raw) s.img = cloneCanvas(s.raw);
+    }));
+    stamps = fresh;
+    $('setCount').value = N; $('mainNoText').checked = mainNoText; $('trimExport').checked = trimExport;
+    cur = 0; buildStrip(); select(0); await checkAll();
+  }
+  const DB = 'zk-line-stamp', STORE = 'p';
+  function idb() { return new Promise((res, rej) => { const r = indexedDB.open(DB, 1); r.onupgradeneeded = () => r.result.createObjectStore(STORE); r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); }); }
+  async function idbSet(v) { try { const db = await idb(); await new Promise((res, rej) => { const tx = db.transaction(STORE, 'readwrite'); tx.objectStore(STORE).put(v, 'project'); tx.oncomplete = res; tx.onerror = () => rej(tx.error); }); } catch (e) { /* storage unavailable */ } }
+  async function idbGet() { try { const db = await idb(); return await new Promise((res, rej) => { const tx = db.transaction(STORE, 'readonly'); const r = tx.objectStore(STORE).get('project'); r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); }); } catch (e) { return null; } }
+  let saveT;
+  function scheduleSave() { clearTimeout(saveT); saveT = setTimeout(() => idbSet(serialize()), 1500); }
+  $('projectInput').addEventListener('change', async e => {
+    const f = e.target.files[0]; e.target.value = ''; if (!f) return;
+    try { await deserialize(JSON.parse(await f.text())); scheduleSave(); toast('作業データを開きました'); } catch (err) { toast('このファイルは開けませんでした'); }
+  });
+
+  // ---------- Misc controls ----------
+  $('setCount').addEventListener('change', e => { N = Number(e.target.value); if (cur >= N) cur = 0; buildStrip(); select(cur); checkAll(); scheduleSave(); });
+  $('mainSel').addEventListener('change', e => { mainIdx = Number(e.target.value); updateMainTab(); scheduleSave(); });
+  $('tabSel').addEventListener('change', e => { tabIdx = Number(e.target.value); updateMainTab(); scheduleSave(); });
+  $('mainNoText').addEventListener('change', e => { mainNoText = e.target.checked; updateMainTab(); scheduleSave(); });
+  $('trimExport').addEventListener('change', e => { trimExport = e.target.checked; checkAll(); scheduleSave(); });
+  $('tabs').addEventListener('click', e => {
+    const b = e.target.closest('button[data-tab]'); if (!b) return;
+    $('tabs').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
+    ['image', 'text', 'deco', 'bulk'].forEach(n => $('pane-' + n).classList.toggle('hidden', n !== b.dataset.tab));
+  });
+  document.querySelectorAll('[data-chat]').forEach(b => b.addEventListener('click', () => {
+    const chat = $('chat'), v = b.dataset.chat;
+    chat.className = 'chat' + (v === 'pt' ? ' pt' : ''); chat.style.background = v === 'pt' ? '' : v;
+  }));
+  $('fontSelect').innerHTML = FONTS.map(f => `<option value="${f.f}">${f.l}</option>`).join('');
+  $('quickChips').innerHTML = QUICK.map(q => `<button type="button">${q}</button>`).join('');
+  $('quickChips').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; S().text.content = b.textContent; syncUI(); changed(); });
+  $('themes').innerHTML = THEMES.map((t, i) => `<button class="btn sm" data-theme="${i}" style="text-align:left"><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:${t[3]};vertical-align:-1px;margin-right:6px"></span>${t[0]}</button>`).join('');
+  $('themes').addEventListener('click', e => {
+    const b = e.target.closest('[data-theme]'); if (!b) return;
+    const [, c1, c2, st, ou] = THEMES[b.dataset.theme]; const t = S().text;
+    Object.assign(t, { c1, c2, stroke: st, outerColor: ou, colorMode: 'grad', outer: true });
+    syncUI(); changed();
+  });
+
+  // ---------- Init ----------
+  (async () => {
+    const saved = await idbGet();
+    if (saved && saved.stamps) {
+      try { await deserialize(saved); toast('前回の作業を復元しました'); } catch (e) { loadSample(); buildStrip(); select(0); }
+    } else { loadSample(); buildStrip(); select(0); }
+    if (document.fonts) {
+      await Promise.race([Promise.all(FONTS.map(f => document.fonts.load(`${f.w} 40px ${f.f}`, 'あいう！ABC'))).catch(() => {}), new Promise(r => setTimeout(r, 2500))]);
+    }
+    await checkAll();
+  })();
+})();
+</script>
+</body>
+</html>
