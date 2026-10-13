@@ -237,6 +237,15 @@
   .balance{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:6px}
   .balance div{background:#f8fafc;border-radius:10px;padding:8px;font-size:12px}
   .balance b{font-size:16px}
+  .aiad{position:relative;display:flex;align-items:center;gap:12px;border:1px solid #c7d2fe;background:linear-gradient(135deg,#eef2ff,#f5f3ff);border-radius:14px;padding:12px 14px;text-decoration:none;color:var(--ink);transition:.15s}
+  .aiad:hover{border-color:#6366f1;box-shadow:0 4px 14px rgba(99,102,241,.15)}
+  .aiad-pr{flex:0 0 auto;font-size:10px;font-weight:900;color:#4338ca;border:1px solid #a5b4fc;border-radius:6px;padding:1px 6px;background:#fff}
+  .aiad-body{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1}
+  .aiad-lead{font-size:11px;color:#4338ca;font-weight:900}
+  .aiad-body b{font-size:14px}
+  .aiad-note{font-size:11px;color:var(--sub)}
+  .aiad-go{flex:0 0 auto;font-size:12px;font-weight:900;color:#4338ca}
+  @media (max-width:560px){.aiad{flex-wrap:wrap;gap:6px}.aiad-body{flex-basis:100%;order:2}.aiad-pr{order:1}.aiad-go{order:3;margin-left:auto}}
   #promoCanvas{width:100%;height:auto;border:1px solid var(--line);border-radius:10px;background:repeating-conic-gradient(#eef2f6 0 25%,#fff 0 50%) 0 0/14px 14px}
   .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(20px);background:#0f172a;color:#fff;padding:10px 16px;border-radius:12px;font-size:13px;font-weight:700;opacity:0;pointer-events:none;transition:.25s;z-index:50;max-width:90vw;text-align:center}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
@@ -645,6 +654,11 @@
         </div>
         <div id="pOut" style="display:grid;gap:10px"><p class="muted" style="margin:0">ここにプロンプトが出ます。コマ数が多いときは、1枚ずつに分けて出します。</p></div>
       </div>
+      <a class="aiad" href="https://px.a8.net/svt/ejp?a8mat=4BEFL2+AL1KKI+50+7RTY1E" rel="nofollow sponsored noopener" target="_blank" onclick="track('affiliate_click',{item:'conoha-ai-canvas',place:'prompt'})">
+        <span class="aiad-pr">PR</span>
+        <span class="aiad-body"><span class="aiad-lead">画像AIを本格的に使いたい人へ</span><b>ブラウザだけでできる本格的なAI画像生成【ConoHa AI Canvas】</b><span class="aiad-note">インストール不要。スタンプとして販売するときは、使うモデルの商用利用の条件を確認してください。</span></span>
+        <span class="aiad-go">見てみる ›</span>
+      </a><img border="0" width="1" height="1" src="https://www17.a8.net/0.gif?a8mat=4BEFL2+AL1KKI+50+7RTY1E" alt="" style="position:absolute;width:1px;height:1px;opacity:0">
     </div>
 
     <!-- Lines -->
