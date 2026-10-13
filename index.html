@@ -1168,6 +1168,28 @@
     c.putImageData(id, 0, 0);
     return count;
   }
+  // 背景を消したあとに残る、隣のコマの切れ端などの小さな点を消す
+  function removeSpecks(cv) {
+    const c = cv.getContext('2d', { willReadFrequently: true });
+    const w = cv.width, h = cv.height, id = c.getImageData(0, 0, w, h), d = id.data;
+    const lab = new Int32Array(w * h).fill(-1), sizes = [], st = [];
+    for (let p0 = 0; p0 < w * h; p0++) {
+      if (lab[p0] !== -1 || d[p0 * 4 + 3] <= 20) continue;
+      const L = sizes.length; let n = 0; lab[p0] = L; st.push(p0);
+      while (st.length) {
+        const p = st.pop(); n++; const x = p % w, y = (p / w) | 0;
+        for (const q of [x > 0 ? p - 1 : -1, x < w - 1 ? p + 1 : -1, y > 0 ? p - w : -1, y < h - 1 ? p + w : -1])
+          if (q >= 0 && lab[q] === -1 && d[q * 4 + 3] > 20) { lab[q] = L; st.push(q); }
+      }
+      sizes.push(n);
+    }
+    if (sizes.length < 2) return 0;
+    const big = Math.max(...sizes), lim = Math.max(12, big * 0.004);
+    let removed = 0;
+    for (let p = 0; p < w * h; p++) { const L = lab[p]; if (L >= 0 && sizes[L] < lim) { d[p * 4 + 3] = 0; removed++; } }
+    if (removed) c.putImageData(id, 0, 0);
+    return removed;
+  }
   function pixelAt(cv, x, y) { return cv.getContext('2d', { willReadFrequently: true }).getImageData(x, y, 1, 1).data; }
   function autoRemoveBg(s, tol, erode) {
     const cv = s.img, w = cv.width, h = cv.height;
@@ -1178,7 +1200,7 @@
     const seeds = [];
     for (let x = 0; x < w; x++) { seeds.push(x, (h - 1) * w + x); }
     for (let y = 0; y < h; y++) { seeds.push(y * w, y * w + w - 1); }
-    const n = floodRemove(cv, seeds, ref, tol, erode); imgEdited(s); return n;
+    const n = floodRemove(cv, seeds, ref, tol, erode); removeSpecks(cv); imgEdited(s); return n;
   }
   function removeGlobal(s, ref, tol) {
     const c = s.img.getContext('2d', { willReadFrequently: true });
