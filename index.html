@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>無料LINEスタンプ・絵文字メーカー｜AIイラストを分割・背景透過・文字入れしてZIP一括書き出し</title>
-<meta name="description" content="AIで作ったイラストやまとめ画像を、LINEスタンプ（最大370×320px）やLINE絵文字（180×180px）の規格に自動で整える無料ツール。シート分割、背景透過、白フチ、文字演出、審査チェック、01.png〜main.png・tab.pngのZIP一括書き出しまでブラウザだけで完結。登録不要・画像はサーバーに送信されません。">
+<title>AIでLINEスタンプ・絵文字を作る無料ツール｜ChatGPT・Gemini画像の分割・文字入れ・申請サポート</title>
+<meta name="description" content="ChatGPTやGeminiで作ったイラストからLINEスタンプ・絵文字を作る無料ツール。画像AI用プロンプト作成、まとめ画像の自動分割、セリフの一括入力、申請文の文字数チェック、告知画像まで。AIで作ったイラストやまとめ画像を、LINEスタンプ（最大370×320px）やLINE絵文字（180×180px）の規格に自動で整える無料ツール。シート分割、背景透過、白フチ、文字演出、審査チェック、01.png〜main.png・tab.pngのZIP一括書き出しまでブラウザだけで完結。登録不要・画像はサーバーに送信されません。">
 <link rel="canonical" href="https://zero-kobo.github.io/line-stamp-maker/">
 <meta name="theme-color" content="#10b981">
 <meta property="og:type" content="website">
@@ -31,7 +31,7 @@
       "isAccessibleForFree": true,
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" },
       "description": "AIイラストやまとめ画像をLINEスタンプ・LINE絵文字の規格に整え、背景透過・白フチ・文字入れ・審査チェック・ZIP一括書き出しまで行える無料Webツール。",
-      "featureList": ["まとめ画像（シート）の自動分割", "背景の自動透過・スポイト・消しゴム", "イラストの白フチ", "文字の縦書き・斜め・グラデ・虹色・震え・波打ち", "余白10px・偶数サイズ・1MBの自動チェック", "01.png〜24.png・main.png・tab.pngのZIP一括書き出し", "LINE絵文字（180×180px・001.png〜）モード"],
+      "featureList": ["ChatGPT・Gemini用のスタンプ画像プロンプト作成", "セリフのテーマ別セットとバランスチェック", "申請タイトル・説明文の文字数チェックと申請チェックリスト", "告知用の一覧画像（X・Instagram）書き出し", "スタンプから絵文字を作成", "吹き出し・文字デザインの保存", "まとめ画像（シート）の自動分割", "背景の自動透過・スポイト・消しゴム", "イラストの白フチ", "文字の縦書き・斜め・グラデ・虹色・震え・波打ち", "余白10px・偶数サイズ・1MBの自動チェック", "01.png〜24.png・main.png・tab.pngのZIP一括書き出し", "LINE絵文字（180×180px・001.png〜）モード"],
       "publisher": { "@type": "Organization", "name": "ちいさなツール工房", "url": "https://zero-kobo.github.io/" }
     },
     {
@@ -48,6 +48,8 @@
         { "@type": "Question", "name": "LINEスタンプの画像サイズは？", "acceptedAnswer": { "@type": "Answer", "text": "スタンプ画像は最大370×320px、メイン画像は240×240px、トークルームタブ画像は96×74pxです。縦横とも偶数px、背景透過のPNG、1枚1MB以下にします。このツールは書き出し時に自動で合わせます。" } },
         { "@type": "Question", "name": "AIで作った1枚のまとめ画像を分割できますか？", "acceptedAnswer": { "@type": "Answer", "text": "「一括作成」タブのシート分割で、列数と行数を指定すると1コマずつスタンプに割り当て、背景透過と配置まで自動で行います。" } },
         { "@type": "Question", "name": "書き出したファイル名はそのまま申請に使えますか？", "acceptedAnswer": { "@type": "Answer", "text": "ZIPの中身は01.png〜（スタンプ数）.png、main.png、tab.pngの名前で入っています。LINE Creators Marketの申請画面で、ZIPのままアップロードする形式に対応しています。" } },
+        { "@type": "Question", "name": "ChatGPTやGeminiでLINEスタンプを作るにはどうすればいいですか？", "acceptedAnswer": { "@type": "Answer", "text": "「AIプロンプト」でキャラの特徴と表情を入れてプロンプトを作り、ChatGPTやGeminiで4列×2行のまとめ画像を描いてもらいます。その画像を「一括作成」タブで分割すると、背景透過と配置まで自動で行われます。セリフを一括入力してZIPで書き出せば申請用の一式がそろいます。" } },
+        { "@type": "Question", "name": "申請画面で「40文字まで」「利用できない文字」と出ます", "acceptedAnswer": { "@type": "Answer", "text": "最初の言語（English）の欄は半角英数字のみで、全角は2文字として数えられることがあります。日本語は「言語を追加」で別に入れます。「申請サポート」で両方の数え方と半角以外の文字をチェックできます。" } },
         { "@type": "Question", "name": "LINE絵文字も作れますか？", "acceptedAnswer": { "@type": "Answer", "text": "上部の切り替えで「絵文字」を選ぶと、180×180pxの正方形キャンバスになり、8〜40個の絵文字を001.png〜とtab.pngのZIPで書き出せます。スタンプと絵文字の作業データは別々に保存されます。" } },
         { "@type": "Question", "name": "スマホでも使えますか？", "acceptedAnswer": { "@type": "Answer", "text": "iPhone・Androidのブラウザで使えます。指でドラッグして画像や文字を動かせます。細かい消しゴム作業はパソコンのほうが楽です。" } }
       ]
@@ -58,7 +60,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Hachi+Maru+Pop&family=Kiwi+Maru:wght@500&family=Mochiy+Pop+One&family=RocknRoll+One&family=Yuji+Boku&family=Zen+Maru+Gothic:wght@500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=DotGothic16&family=Hachi+Maru+Pop&family=Kiwi+Maru:wght@500&family=Mochiy+Pop+One&family=Reggae+One&family=RocknRoll+One&family=Yuji+Boku&family=Yusei+Magic&family=Zen+Maru+Gothic:wght@500;700;900&display=swap" rel="stylesheet">
 
 <!-- GA4（ちいさなツール工房 共通） -->
 <script>
@@ -211,6 +213,31 @@
   .mt{display:flex;gap:12px;align-items:flex-end;justify-content:center;margin:8px 0}
   .mt canvas{background:repeating-conic-gradient(#eef2f6 0 25%,#fff 0 50%) 0 0/10px 10px;border:1px solid var(--line);border-radius:8px}
 
+
+  /* extras */
+  .extras{margin-top:18px}
+  .extras .tabs{border-radius:var(--r) var(--r) 0 0;flex-wrap:wrap}
+  .extras .tabs button{flex:1 1 auto;min-width:120px}
+  .xpane{padding:16px;display:grid;gap:14px}
+  .xgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;align-items:start}
+  @media (max-width:860px){.xgrid{grid-template-columns:minmax(0,1fr)}}
+  .out{position:relative}
+  .out textarea{font-weight:500;font-size:13px;background:#f8fafc;min-height:150px}
+  .out .btn{position:absolute;right:8px;top:8px}
+  .cnt{font-size:12px;font-family:ui-monospace,monospace;color:var(--sub);margin-top:2px}
+  .cnt.bad{color:var(--ng);font-weight:700}
+  .cnt.ok{color:var(--ac-d)}
+  .checklist{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+  .checklist label{display:flex;gap:8px;align-items:flex-start;font-size:13px;cursor:pointer}
+  .checklist input{accent-color:var(--ac);width:16px;height:16px;margin-top:3px;flex:0 0 auto}
+  .setcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px}
+  .setcards button{text-align:left;border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px;font-size:13px}
+  .setcards button:hover{border-color:var(--ac);background:var(--ac-ll)}
+  .setcards b{display:block;font-size:14px}
+  .balance{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:6px}
+  .balance div{background:#f8fafc;border-radius:10px;padding:8px;font-size:12px}
+  .balance b{font-size:16px}
+  #promoCanvas{width:100%;height:auto;border:1px solid var(--line);border-radius:10px;background:repeating-conic-gradient(#eef2f6 0 25%,#fff 0 50%) 0 0/14px 14px}
   .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(20px);background:#0f172a;color:#fff;padding:10px 16px;border-radius:12px;font-size:13px;font-weight:700;opacity:0;pointer-events:none;transition:.25s;z-index:50;max-width:90vw;text-align:center}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
@@ -260,7 +287,7 @@
   <div class="hero">
     <h1>LINEスタンプ・絵文字メーカー<small>無料・登録不要</small></h1>
     <p>AIイラストやまとめ画像から、LINEスタンプ一式（01.png〜・main.png・tab.png）やLINE絵文字一式（001.png〜・tab.png）をZIPで書き出せるツール。背景透過・白フチ・文字入れ・審査チェックまでここで完結します。</p>
-    <div class="badges"><span>✂️ シート自動分割</span><span>🫥 背景を自動で透過</span><span>⚪ イラストに白フチ</span><span>🔤 縦書き・斜め・虹色文字</span><span>✅ 余白10px・偶数px・1MBを自動チェック</span><span>📦 ZIP一括書き出し</span><span>😀 LINE絵文字（180×180）にも対応</span></div>
+    <div class="badges"><span>✂️ シート自動分割</span><span>🫥 背景を自動で透過</span><span>⚪ イラストに白フチ</span><span>🔤 縦書き・斜め・虹色文字</span><span>✅ 余白10px・偶数px・1MBを自動チェック</span><span>📦 ZIP一括書き出し</span><span>😀 LINE絵文字（180×180）にも対応</span><span>🤖 AI用プロンプト作成</span><span>📮 申請サポート</span><span>📣 告知画像</span></div>
   </div>
 
   <!-- ===== Strip ===== -->
@@ -453,9 +480,28 @@
             <label class="chk"><input type="checkbox" data-bind="text.shadow">ぷっくり影</label>
           </div>
         </div>
+        <div class="box p">
+          <div class="h3">💭 吹き出し</div>
+          <div class="seg" data-bind="text.bubble">
+            <button data-val="none">なし</button>
+            <button data-val="round">角丸</button>
+            <button data-val="ellipse">まる</button>
+            <button data-val="burst">ギザギザ</button>
+          </div>
+          <div class="grid2" style="margin-top:10px">
+            <div class="colorrow"><input type="color" data-bind="text.bubbleColor">吹き出しの色</div>
+            <div class="colorrow"><input type="color" data-bind="text.bubbleLine">線の色</div>
+          </div>
+          <p class="muted" style="margin:6px 0 0">吹き出しのしっぽは自動でキャラの方を向きます。叫ぶセリフはギザギザが似合います。</p>
+        </div>
         <div>
           <div class="h3">おすすめ配色</div>
           <div class="grid2" id="themes"></div>
+        </div>
+        <div class="box">
+          <div class="h3">💾 マイ文字デザイン <button class="btn sm" data-act="savePreset">今のデザインを保存</button></div>
+          <div class="chips" id="presetList"></div>
+          <p class="muted" style="margin:6px 0 0">フォント・色・フチ・吹き出しを保存して、次のスタンプセットでもワンタップで使えます（このブラウザに保存）。</p>
         </div>
         <button class="btn full" data-act="styleAll">📋 この文字デザインを全スタンプにコピー（セリフはそのまま）</button>
         <p class="muted" style="margin:0">セット全体でフォント・色・位置をそろえると、ストアで「ちゃんとしたスタンプ」に見えて選ばれやすくなります。</p>
@@ -473,8 +519,19 @@
             <label class="muted">何番から入れる<input type="number" id="sheetStart" min="1" max="24" value="1"></label>
             <label class="muted">枠線を避ける内側カット(%)<input type="number" id="sheetInset" min="0" max="15" value="2"></label>
           </div>
+          <label class="muted" style="display:block;margin-top:8px">1コマだけ差し替える（使うコマの番号・空なら全部）<input type="number" id="sheetOnly" min="1" max="64" placeholder="例：8 → 8コマ目だけを「何番から入れる」の番号に入れる"></label>
           <label class="chk" style="margin-top:8px"><input type="checkbox" id="sheetBg" checked>各コマの背景を自動で消す</label>
           <button class="btn pri full" style="margin-top:8px" data-act="splitSheet">分割して順番に入れる</button>
+        </div>
+
+        <div class="box p hidden" id="s2eBox">
+          <div class="h3">😀 スタンプから絵文字を作る</div>
+          <p class="muted" style="margin:0 0 8px">スタンプモードで作った絵（文字なし）を、絵文字の1番から順に入れます。</p>
+          <div class="seg" id="s2eMode">
+            <button data-val="face" class="on">顔アップ</button>
+            <button data-val="full">全身</button>
+          </div>
+          <button class="btn pri full" style="margin-top:8px" data-act="stampToEmoji">スタンプの絵を絵文字に入れる</button>
         </div>
 
         <div class="box a">
@@ -549,6 +606,118 @@
     </aside>
   </main>
 
+  <!-- ===== Extras ===== -->
+  <section class="card extras" id="extras" aria-label="便利ツール">
+    <div class="tabs" id="xtabs">
+      <button class="on" data-x="prompt">🤖 AIプロンプト</button>
+      <button data-x="lines">📝 セリフセット</button>
+      <button data-x="apply">📮 申請サポート</button>
+      <button data-x="promo">📣 告知画像</button>
+    </div>
+
+    <!-- Prompt -->
+    <div class="xpane" id="x-prompt">
+      <p class="muted" style="margin:0">ChatGPTやGeminiに「まとめ画像」を描いてもらうためのプロンプトを作ります。できた画像は「一括作成」タブのシート分割にそのまま入れられます。</p>
+      <div class="xgrid">
+        <div style="display:grid;gap:10px">
+          <label class="muted">キャラクターの特徴<textarea id="pChar" rows="2" placeholder="例：黒いボディに青いトラ柄、黄色い目のちびティラノ"></textarea></label>
+          <div class="grid2">
+            <label class="muted">絵柄<select id="pStyle">
+              <option value="chibi">ちびキャラ・アニメ風</option>
+              <option value="yuru">ゆる手描き</option>
+              <option value="water">やさしい水彩風</option>
+              <option value="pixel">ドット絵風</option>
+              <option value="puffy">ぷっくり3D風</option>
+            </select></label>
+            <label class="muted">1枚あたり<select id="pGrid">
+              <option value="4x2">8コマ（4列×2行）</option>
+              <option value="3x2">6コマ（3列×2行）</option>
+              <option value="2x2">4コマ（2列×2行）</option>
+            </select></label>
+          </div>
+          <label class="chk"><input type="checkbox" id="pRef" checked>キャラの参考画像を添付して使う（絵柄がそろいます）</label>
+          <label class="muted">表情・ポーズ（1行＝1コマ）
+            <textarea id="pPoses" rows="8" placeholder="例：笑顔で小さな手を合わせて感謝&#10;首をかしげてキョトン顔"></textarea></label>
+          <div class="row">
+            <button class="btn sm" data-act="posesFromLines">今のセリフから表情を作る</button>
+            <button class="btn sm pri" data-act="makePrompt">プロンプトを作る</button>
+          </div>
+        </div>
+        <div id="pOut" style="display:grid;gap:10px"><p class="muted" style="margin:0">ここにプロンプトが出ます。コマ数が多いときは、1枚ずつに分けて出します。</p></div>
+      </div>
+    </div>
+
+    <!-- Lines -->
+    <div class="xpane hidden" id="x-lines">
+      <p class="muted" style="margin:0">テーマを選ぶと、セリフを1番から順にまとめて入れます（今のセリフは上書きされます）。</p>
+      <div class="setcards" id="setCards"></div>
+      <div>
+        <div class="h3">⚖️ セットのバランスチェック（今のセリフ）</div>
+        <div class="balance" id="balance"></div>
+        <p class="muted" id="balanceTip" style="margin:8px 0 0"></p>
+      </div>
+    </div>
+
+    <!-- Apply -->
+    <div class="xpane hidden" id="x-apply">
+      <div class="xgrid">
+        <div style="display:grid;gap:10px">
+          <div class="h3" style="margin:0">✍️ タイトル・説明文の文字数チェック</div>
+          <p class="muted" style="margin:0">最初の言語（English）の欄は半角英数字だけです。日本語は「言語を追加」で入れます。申請画面では全角が2文字として数えられることがあるので、両方の数え方で表示します。</p>
+          <label class="muted">タイトル（English・40）<input type="text" id="aTitleEn" data-limit="40" data-en="1"></label><div class="cnt" data-for="aTitleEn"></div>
+          <label class="muted">説明文（English・160）<textarea id="aDescEn" rows="3" data-limit="160" data-en="1"></textarea></label><div class="cnt" data-for="aDescEn"></div>
+          <label class="muted">タイトル（日本語・40）<input type="text" id="aTitleJa" data-limit="40"></label><div class="cnt" data-for="aTitleJa"></div>
+          <label class="muted">説明文（日本語・160）<textarea id="aDescJa" rows="3" data-limit="160"></textarea></label><div class="cnt" data-for="aDescJa"></div>
+          <label class="muted">コピーライト（半角・50）<input type="text" id="aCopy" data-limit="50" data-en="1" placeholder="(C)your-name"></label><div class="cnt" data-for="aCopy"></div>
+          <div class="box">
+            <div class="h3">🪄 下書きを作る</div>
+            <div class="grid2">
+              <label class="muted">キャラ名（日本語）<input type="text" id="aName" placeholder="例：あおティラ"></label>
+              <label class="muted">キャラ名（ローマ字）<input type="text" id="aNameEn" placeholder="例：Aotira"></label>
+            </div>
+            <button class="btn sm" style="margin-top:8px" data-act="draftApply">今のセリフから下書きを作る</button>
+          </div>
+        </div>
+        <div style="display:grid;gap:10px">
+          <div class="h3" style="margin:0">✅ 申請チェックリスト</div>
+          <ul class="checklist" id="checklist"></ul>
+          <div class="h3" style="margin:6px 0 0">🤖 「その他、補足事項」の文例（AI使用）</div>
+          <label class="chk"><input type="checkbox" id="aCommercial">商用利用OKの規約・プランで画像を作った</label>
+          <div class="out"><textarea id="aNote" rows="5" readonly></textarea><button class="btn sm" data-copy="aNote">コピー</button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Promo -->
+    <div class="xpane hidden" id="x-promo">
+      <p class="muted" style="margin:0">今のセットを1枚に並べた告知画像を作ります。発売のお知らせにどうぞ。</p>
+      <div class="xgrid">
+        <div style="display:grid;gap:10px">
+          <label class="muted">サイズ<select id="prSize">
+            <option value="1200x675">X（1200×675）</option>
+            <option value="1080x1080">Instagram（1080×1080）</option>
+            <option value="1080x1920">ストーリー（1080×1920）</option>
+            <option value="1280x670">note見出し（1280×670）</option>
+          </select></label>
+          <label class="muted">見出し<input type="text" id="prTitle" value="LINEスタンプ発売しました！"></label>
+          <label class="muted">ひとこと<input type="text" id="prSub" placeholder="例：LINE STOREで「あおティラ」と検索"></label>
+          <div class="grid2">
+            <label class="muted">背景<select id="prBg">
+              <option value="line">トーク画面の水色</option>
+              <option value="white">白</option>
+              <option value="dark">ダーク</option>
+              <option value="custom">好きな色</option>
+            </select></label>
+            <div class="colorrow" style="align-self:end"><input type="color" id="prColor" value="#fde68a">好きな色</div>
+          </div>
+          <label class="chk"><input type="checkbox" id="prCredit" checked>右下に小さく「ちいさなツール工房で作成」を入れる</label>
+          <button class="btn pri" data-act="downloadPromo">🖼️ 告知画像をPNGで保存</button>
+        </div>
+        <div><canvas id="promoCanvas" width="1200" height="675"></canvas></div>
+      </div>
+    </div>
+  </section>
+
   <!-- ===== SEO content ===== -->
   <div class="content">
     <section id="howto">
@@ -585,6 +754,21 @@
       <p>共通ルール：PNG形式・背景は透過・縦横とも偶数px・1枚1MB以下。上下左右に10pxほどの余白を空けるのが推奨です。このツールは書き出し時に偶数pxとファイル名を自動で合わせます。規格は変わることがあるので、申請前に<a href="https://creator.line.me/ja/guideline/messagesticker/" target="_blank" rel="noopener">公式の制作ガイドライン</a>も確認してください。</p>
     </section>
 
+    <section id="ai">
+      <h2>ChatGPT・GeminiでLINEスタンプを作る方法</h2>
+      <ol>
+        <li><strong>プロンプトを作る</strong>：上の「🤖 AIプロンプト」でキャラの特徴と表情を入れます。「📝 セリフセット」でテーマを選ぶと、セリフに合う表情も自動で入ります。</li>
+        <li><strong>画像AIに描いてもらう</strong>：プロンプトをコピーしてChatGPTやGeminiに貼ります。キャラの参考画像を一緒に添付すると、何枚描いても絵柄がそろいます。</li>
+        <li><strong>まとめ画像を分割する</strong>：「一括作成」タブにできた画像を入れて分割します。背景透過・白フチ・配置まで自動です。1コマだけ描き直したいときは「1コマだけ差し替える」を使います。</li>
+        <li><strong>セリフを入れて書き出す</strong>：セリフを一括入力し、文字デザインを全スタンプにそろえてZIPで書き出します。</li>
+        <li><strong>申請する</strong>：「📮 申請サポート」でタイトル・説明文の文字数を確認し、チェックリストに沿って申請します。発売したら「📣 告知画像」でお知らせしましょう。</li>
+      </ol>
+      <h3>公式の作成アプリとの使い分け</h3>
+      <p>スマホで撮った写真や手描きの絵を1個ずつスタンプにするなら、LINE公式の作成アプリが手軽です。画像AIで描いたまとめ画像から8〜40個を一気に仕上げたい、文字デザインや申請文まで細かく整えたい、という場合はこのツールが向いています。</p>
+      <h3>画像AIで描くときの注意</h3>
+      <p>使う画像生成サービスの規約で、生成した画像の商用利用（スタンプ販売）が認められているかを必ず確認してください。申請時は「AIの使用」で「使用しています」を選びます。既存のキャラクターや有名人に似せたものは審査に通りません。</p>
+    </section>
+
     <section id="tips">
       <h2>売れる・使われるスタンプにするコツ</h2>
       <h3>1. 「毎日使う言葉」から作る</h3>
@@ -605,6 +789,8 @@
       <details><summary>LINEスタンプの画像サイズは？</summary><p>スタンプ画像は最大370×320px、メイン画像は240×240px、タブ画像は96×74pxです。縦横とも偶数px、背景透過のPNG、1枚1MB以下にします。書き出し時に自動で合わせます。</p></details>
       <details><summary>AIで作った1枚のまとめ画像を分割できますか？</summary><p>「一括作成」タブのシート分割で、列数と行数を指定すると1コマずつスタンプに割り当て、背景透過と配置まで自動で行います。</p></details>
       <details><summary>書き出したファイル名はそのまま申請に使えますか？</summary><p>ZIPの中身は01.png〜、main.png、tab.pngの名前で入っています。申請画面でZIPのままアップロードできます。</p></details>
+      <details><summary>ChatGPTやGeminiでLINEスタンプを作るにはどうすればいいですか？</summary><p>「AIプロンプト」でキャラの特徴と表情を入れてプロンプトを作り、ChatGPTやGeminiで4列×2行のまとめ画像を描いてもらいます。その画像を「一括作成」タブで分割すると、背景透過と配置まで自動です。セリフを一括入力してZIPで書き出せば申請用の一式がそろいます。</p></details>
+      <details><summary>申請画面で「40文字まで」「利用できない文字が含まれています」と出ます</summary><p>最初の言語（English）の欄は半角英数字のみで、全角は2文字として数えられることがあります。日本語は「言語を追加」で別に入れます。「申請サポート」で両方の数え方と、半角以外の文字が入っていないかをチェックできます。</p></details>
       <details><summary>LINE絵文字も作れますか？</summary><p>上部の切り替えで「絵文字」を選ぶと、180×180pxの正方形キャンバスになり、8〜40個の絵文字を001.png〜とtab.pngのZIPで書き出せます。絵文字は文中に文字と同じ大きさで出るので、文字なしの顔や絵だけがおすすめです。スタンプと絵文字の作業データは別々に保存されます。</p></details>
       <details><summary>スマホでも使えますか？</summary><p>iPhone・Androidのブラウザで使えます。指でドラッグして画像や文字を動かせます。細かい消しゴム作業はパソコンのほうが楽です。</p></details>
       <details><summary>途中で閉じても大丈夫？</summary><p>作業内容はこのブラウザに自動保存され、次に開いたときに復元されます。別の端末で続けるときは「作業データ」からファイルに保存してください。</p></details>
@@ -676,7 +862,10 @@
     { f: "'Zen Maru Gothic'", w: 900, l: 'Zen丸ゴシック（読みやすい丸文字）' },
     { f: "'Hachi Maru Pop'", w: 400, l: 'はちまるポップ（ゆる手書き）' },
     { f: "'Kiwi Maru'", w: 500, l: 'キウイ丸（レトロ手書き）' },
-    { f: "'Yuji Boku'", w: 400, l: 'Yuji Boku（筆文字・叫び）' }
+    { f: "'Yuji Boku'", w: 400, l: 'Yuji Boku（筆文字・叫び）' },
+    { f: "'Reggae One'", w: 400, l: 'レゲエ（太いギザギザ・ゲーム風）' },
+    { f: "'Yusei Magic'", w: 400, l: 'ユセイマジック（マーカー手書き）' },
+    { f: "'DotGothic16'", w: 400, l: 'ドットゴシック（レトロゲーム）' }
   ];
   const FONT_W = Object.fromEntries(FONTS.map(x => [x.f, x.w]));
   const QUICK = ['OK！', 'ありがとう！', 'りょうかい！', 'おつかれさま！', 'ごめんね…', 'おはよう！', 'おやすみ〜', 'よろしく！', 'えっ！？', 'すごい！！', 'ちょっと待って', '今向かってる！'];
@@ -696,7 +885,7 @@
 
   // ---------- State ----------
   const defaultText = () => ({ content: '', font: FONTS[0].f, size: SPEC[KIND].textSize, x: 50, y: 82, dir: 'horizontal', fx: 'none', fxInt: 50,
-    colorMode: 'solid', c1: '#ffffff', c2: '#fde047', stroke: '#059669', strokeW: 8, outer: true, outerColor: '#ffffff', shadow: true });
+    colorMode: 'solid', c1: '#ffffff', c2: '#fde047', stroke: '#059669', strokeW: 8, outer: true, outerColor: '#ffffff', shadow: true, bubble: 'none', bubbleColor: '#ffffff', bubbleLine: '#1e293b' });
   const newStamp = () => ({ raw: null, img: null, x: W / 2, y: H / 2 - 10, scale: 100, rot: 0, flip: false,
     outline: true, outlineW: SPEC[KIND].outlineW, outlineColor: '#ffffff', text: defaultText(), hist: [], status: 'empty', issues: [], _tbox: null });
 
@@ -791,7 +980,7 @@
       });
       let total = infos.reduce((a, b) => a + b.adv, 0);
       // 長いセリフは余白10px＋フチの内側に収まるよう自動で縮める
-      const edge = (t.outer ? t.strokeW + 5 : t.strokeW) + M + 4;
+      const edge = (t.outer ? t.strokeW + 5 : t.strokeW) + M + 4 + bubblePad(t);
       const avail = (t.dir === 'vertical' ? H : W / Math.cos(ang)) - edge * 2;
       if (total > avail) {
         const k2 = avail / total;
@@ -813,7 +1002,7 @@
     });
     // 文字のかたまりが余白10pxの外に出るときは、内側へずらす
     if (glyphs.length) {
-      const e = (t.outer ? t.strokeW + 5 : t.strokeW) + M + 2;
+      const e = (t.outer ? t.strokeW + 5 : t.strokeW) + M + 2 + bubblePad(t);
       let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
       glyphs.forEach(g => { const r = g.fs * .56; x0 = Math.min(x0, g.x - r); x1 = Math.max(x1, g.x + r + (t.shadow ? 3 : 0)); y0 = Math.min(y0, g.y - r); y1 = Math.max(y1, g.y + r + (t.shadow ? 5 : 0)); });
       const dx = x0 < e ? e - x0 : x1 > W - e ? (W - e) - x1 : 0;
@@ -823,9 +1012,46 @@
     return glyphs;
   }
 
+  const bubbleBase = t => Math.max(8, Math.round(t.size * 0.32));
+  const bubbleTail = t => Math.min(18, bubbleBase(t) * 1.4);
+  // 吹き出しが文字のまわりに広がる最大幅（余白の計算に使う）
+  function bubblePad(t) {
+    if (!t.bubble || t.bubble === 'none') return 0;
+    const bp = bubbleBase(t);
+    return Math.ceil(t.bubble === 'burst' ? bp * 2.2 : t.bubble === 'ellipse' ? bp * 1.6 + bubbleTail(t) * .5 : bp * 1.1 + bubbleTail(t) * .5);
+  }
+  function drawBubble(c, t, gs) {
+    const bp = bubbleBase(t);
+    let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+    gs.forEach(g => { const r = g.fs * .55; x0 = Math.min(x0, g.x - r); x1 = Math.max(x1, g.x + r); y0 = Math.min(y0, g.y - r); y1 = Math.max(y1, g.y + r); });
+    x0 -= bp; x1 += bp; y0 -= bp * .8; y1 += bp * .8;
+    const cx = (x0 + x1) / 2, cy = (y0 + y1) / 2, rw = (x1 - x0) / 2, rh = (y1 - y0) / 2;
+    const up = cy > H / 2; // 文字が下にあるときはしっぽを上（キャラ側）へ
+    c.save(); c.beginPath();
+    if (t.bubble === 'burst') {
+      const n = 18, ix = rw + bp * .2, iy = rh + bp * .2, sp = bp * .9;
+      for (let i = 0; i <= n * 2; i++) {
+        const a = i / (n * 2) * Math.PI * 2, o = i % 2 ? 0 : sp;
+        const x = cx + Math.cos(a) * (ix + o), y = cy + Math.sin(a) * (iy + o * .8);
+        i ? c.lineTo(x, y) : c.moveTo(x, y);
+      }
+      c.closePath();
+    } else {
+      const ex = rw + bp * .5, ey = rh + bp * .5;
+      if (t.bubble === 'ellipse') c.ellipse(cx, cy, ex, ey, 0, 0, Math.PI * 2);
+      else { const r = Math.min(rh, 22); c.roundRect ? c.roundRect(x0, y0, x1 - x0, y1 - y0, r) : c.rect(x0, y0, x1 - x0, y1 - y0); }
+      const ty = up ? (t.bubble === 'ellipse' ? cy - ey : y0) : (t.bubble === 'ellipse' ? cy + ey : y1);
+      const tl = bubbleTail(t), d = up ? -1 : 1;
+      c.moveTo(cx - tl * .6, ty - d * 2); c.lineTo(cx + tl * .2, ty + d * tl); c.lineTo(cx + tl * .6, ty - d * 2);
+    }
+    c.fillStyle = t.bubbleColor; c.strokeStyle = t.bubbleLine; c.lineWidth = 3; c.lineJoin = 'round';
+    c.stroke(); c.fill();
+    c.restore();
+  }
   function drawText(c, t) {
     const gs = layoutText(c, t);
     if (!gs.length) return null;
+    if (t.bubble && t.bubble !== 'none') drawBubble(c, t, gs);
     const outerW = (t.strokeW + 5) * 2;
     const each = (cc, fn) => gs.forEach(g => { cc.save(); cc.translate(g.x, g.y); cc.rotate(g.r); cc.font = fontStr(t, g.fs); fn(cc, g); cc.restore(); });
     const prep = cc => { cc.textAlign = 'center'; cc.textBaseline = 'middle'; cc.lineJoin = 'round'; cc.miterLimit = 2; };
@@ -1309,7 +1535,8 @@
     if (!f) return toast('まとめ画像を選んでください');
     const cols = clamp(Number($('sheetCols').value) || 1, 1, 8), rows = clamp(Number($('sheetRows').value) || 1, 1, 8);
     const start = clamp(Number($('sheetStart').value) || 1, 1, maxN()), inset = clamp(Number($('sheetInset').value) || 0, 0, 15) / 100;
-    const need = start - 1 + cols * rows;
+    const only = clamp(Number($('sheetOnly').value) || 0, 0, cols * rows);
+    const need = start - 1 + (only ? 1 : cols * rows);
     if (need > N) {
       const nn = Math.min(maxN(), Math.ceil(need / 8) * 8);
       if (nn > N && confirm(`${cols * rows}コマ入れるには${nn}個セットが必要です。${nn}個セットに変更しますか？`)) { N = nn; $('setCount').value = N; buildStrip(); }
@@ -1320,6 +1547,8 @@
     const tol = Number($('tol').value), erode = $('erode').checked, bg = $('sheetBg').checked;
     let k = 0, done = 0;
     outer: for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
+      const cellNo = r * cols + c + 1;
+      if (only && cellNo !== only) continue;
       const idx = start - 1 + k; k++;
       if (idx >= N) break outer;
       const sx = c * cw + cw * inset, sy = r * ch + ch * inset, w = cw * (1 - 2 * inset), h = ch * (1 - 2 * inset);
@@ -1333,7 +1562,7 @@
     }
     track('sheet_split', { cells: done });
     buildStrip(); select(start - 1); await checkAll(); scheduleSave();
-    toast(`${done}コマをスタンプに割り当てました`);
+    toast(only ? `${only}コマ目を${fileNo(start)}番に差し替えました` : `${done}コマを割り当てました`);
   }
 
   // ---------- ZIP ----------
@@ -1448,6 +1677,7 @@
     $('chat').classList.toggle('emo', KIND === 'emoji');
     $('emojiBub').classList.toggle('hidden', KIND !== 'emoji');
     $('sheetStart').max = maxN();
+    $('s2eBox').classList.toggle('hidden', KIND !== 'emoji');
   }
   async function switchKind(k, restoring) {
     if (k === KIND) return;
@@ -1461,6 +1691,55 @@
     buildStrip(); select(cur); await checkAll();
     if (!restoring) { scheduleSave(); track('switch_kind', { kind: k }); toast(k === 'emoji' ? '絵文字モード（180×180）に切り替えました' : 'スタンプモードに切り替えました'); }
   }
+  // ---------- My text presets ----------
+  const PKEY = 'zk-line-text-presets';
+  const STYLE_KEYS = ['font', 'size', 'dir', 'fx', 'fxInt', 'colorMode', 'c1', 'c2', 'stroke', 'strokeW', 'outer', 'outerColor', 'shadow', 'bubble', 'bubbleColor', 'bubbleLine', 'x', 'y'];
+  const getPresets = () => { try { return JSON.parse(localStorage.getItem(PKEY) || '[]'); } catch (e) { return []; } };
+  const setPresets = a => { try { localStorage.setItem(PKEY, JSON.stringify(a)); } catch (e) {} renderPresets(); };
+  function renderPresets() {
+    const a = getPresets();
+    $('presetList').innerHTML = a.length ? a.map((p, i) => `<button type="button" data-pi="${i}" style="color:${p.stroke};font-family:${p.font.replace(/"/g, '')}">${p.name}<span data-pdel="${i}" style="margin-left:6px;color:#94a3b8">×</span></button>`).join('') : '<span class="muted">まだありません</span>';
+  }
+  $('presetList').addEventListener('click', e => {
+    const del = e.target.closest('[data-pdel]');
+    if (del) { const a = getPresets(); a.splice(Number(del.dataset.pdel), 1); setPresets(a); return; }
+    const b = e.target.closest('[data-pi]'); if (!b) return;
+    const p = getPresets()[Number(b.dataset.pi)]; if (!p) return;
+    STYLE_KEYS.forEach(k => { if (p[k] !== undefined) S().text[k] = p[k]; });
+    syncUI(); changed(); toast(`「${p.name}」を適用しました`);
+  });
+  ACT.savePreset = () => {
+    const a = getPresets(); const t = S().text, p = { name: `マイ設定${a.length + 1}` };
+    STYLE_KEYS.forEach(k => p[k] = t[k]);
+    const nm = prompt('デザインの名前', p.name); if (nm === null) return;
+    p.name = (nm.trim() || p.name).slice(0, 16); a.push(p); setPresets(a.slice(-12)); toast('文字デザインを保存しました');
+  };
+  renderPresets();
+
+  // ---------- Stamp -> Emoji ----------
+  let s2eMode = 'face';
+  $('s2eMode').addEventListener('click', e => { const b = e.target.closest('button[data-val]'); if (!b) return; s2eMode = b.dataset.val; $('s2eMode').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); });
+  ACT.stampToEmoji = async () => {
+    const src = projects.stamp;
+    const list = src ? src.stamps.slice(0, src.N).filter(s => s.img) : [];
+    if (!list.length) return toast('スタンプモードに絵が入っていません');
+    const n = Math.min(list.length, maxN());
+    if (n > N) { N = Math.min(maxN(), Math.ceil(n / 8) * 8); $('setCount').value = N; }
+    list.slice(0, n).forEach((st, i) => {
+      const b = contentBox(st.img, 20); if (!b) return;
+      const bw = b.x1 - b.x0, bh = b.y1 - b.y0;
+      let sx = b.x0, sy = b.y0, sw = bw, sh = bh;
+      if (s2eMode === 'face' && bw <= bh * 1.25) { const side = Math.min(bw, bh * 0.62); sx = (b.x0 + b.x1) / 2 - side / 2; sw = sh = side; }
+      const cell = mk(Math.max(2, Math.round(sw)), Math.max(2, Math.round(sh)));
+      cell.getContext('2d').drawImage(st.img, sx, sy, sw, sh, 0, 0, cell.width, cell.height);
+      const s = stamps[i] = newStamp();
+      s.raw = cell; s.img = cloneCanvas(cell); s.flip = st.flip; autoFit(s);
+    });
+    buildStrip(); select(0); await checkAll(); scheduleSave();
+    track('stamp_to_emoji', { count: n, mode: s2eMode });
+    toast(`${n}個のスタンプから絵文字を作りました。位置や大きさは1個ずつ調整できます`);
+  };
+
   $('kindSeg').addEventListener('click', e => { const b = e.target.closest('button[data-kind]'); if (b) switchKind(b.dataset.kind); });
 
   const DB = 'zk-line-stamp', STORE = 'p';
@@ -1499,6 +1778,254 @@
     Object.assign(t, { c1, c2, stroke: st, outerColor: ou, colorMode: 'grad', outer: true });
     syncUI(); changed();
   });
+
+
+  // ===================== Extras =====================
+  const copyText = async (txt) => {
+    try { await navigator.clipboard.writeText(txt); }
+    catch (e) { const ta = document.createElement('textarea'); ta.value = txt; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); } catch (_) {} ta.remove(); }
+    toast('コピーしました');
+  };
+  document.addEventListener('click', e => {
+    const b = e.target.closest('[data-copy]'); if (!b) return;
+    const el = $(b.dataset.copy); if (el) { copyText(el.value); track('copy', { what: b.dataset.copy }); }
+  });
+  $('xtabs').addEventListener('click', e => {
+    const b = e.target.closest('button[data-x]'); if (!b) return;
+    $('xtabs').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
+    ['prompt', 'lines', 'apply', 'promo'].forEach(n => $('x-' + n).classList.toggle('hidden', n !== b.dataset.x));
+    if (b.dataset.x === 'lines') updateBalance();
+    if (b.dataset.x === 'promo') drawPromo();
+    track('extras_tab', { tab: b.dataset.x });
+  });
+  const curLines = () => stamps.slice(0, N).map(s => s.text.content.replace(/\n/g, '').trim());
+  const LS = (k, v) => { try { if (v === undefined) return JSON.parse(localStorage.getItem(k) || 'null'); localStorage.setItem(k, JSON.stringify(v)); } catch (e) { return null; } };
+
+  // ---------- 1. Prompt ----------
+  const POSE_RULES = [
+    [/ありが|感謝|サンキュ|あざ/, '笑顔で小さな手を合わせて感謝している'],
+    [/承知|かしこまり/, 'きりっとした顔で片手を胸に当てている'],
+    [/OK|ＯＫ|オッケ|了解|りょうかい|わかった|はーい/, '笑顔で片手でOKサイン（丸）を出している'],
+    [/助か|土下座|神…/, '両手を前について頭を下げ、汗マークを1つ付けて感謝している'],
+    [/ごめん|すみません|申し訳|ゆるして/, '両手を合わせて申し訳なさそうに謝っている、汗マーク'],
+    [/おはよ/, '両手を上げて伸びをしながら、さわやかに朝のあいさつ'],
+    [/おやすみ|ねむ|寝/, '目を閉じて眠そう、小さな枕を抱えている'],
+    [/おつかれ|お疲れ/, '肩にタオルをかけて、ぐったりしながらも笑顔'],
+    [/いってき|行ってき/, '小さなカバンを持って手を振っている'],
+    [/ただいま/, 'ほっとした顔で両手を広げている'],
+    [/おめでと|祝/, 'クラッカーを鳴らしてお祝いしている、紙吹雪'],
+    [/怒|おこ|ぷんぷん|ムカ/, '眉をつり上げてほっぺをふくらませて怒っている、湯気マーク'],
+    [/泣|ぴえん|つら|しょんぼり|かなし/, '目をうるうるさせて涙を流している'],
+    [/笑|www|草|ウケ/, 'お腹を抱えて大笑いしている'],
+    [/すご|神|最高|いいね|天才|えらい/, '目をキラキラさせて拍手している'],
+    [/がんば|ファイト|応援/, 'こぶしを握って力強く応援している'],
+    [/よろしく/, 'ぺこりと丁寧にお辞儀している'],
+    [/待って|ちょっと/, '手のひらを前に出して「待って」のポーズ'],
+    [/向かって|今行く|急/, '全力で走っている、汗と動きの線'],
+    [/えっ|え[〜ー～]|！？|!\?|まじ|うそ/, '目を見開いて飛び上がるほど驚いている'],
+    [/[？?]$|ん？|ほえ/, '首をかしげてキョトン顔'],
+    [/……|…$|^無/, '完全な無表情で、点のような目で棒立ち'],
+    [/ニヤ|ふふ|にや/, '目を細めて口元がニヤッとした、いたずらっぽい顔'],
+    [/すき|好き|ラブ|♡/, 'ハートを抱えて照れている、ほっぺが赤い'],
+    [/はい|うん/, '笑顔で大きくうなずいている'],
+    [/いや|むり|無理|NO/, '両手で大きくバツを作っている']
+  ];
+  const poseFor = t => { if (!t) return ''; for (const [re, d] of POSE_RULES) if (re.test(t)) return d; return `「${t}」と言っているような表情とポーズ`; };
+  const STYLE_TXT = {
+    chibi: '2〜3頭身のちびキャラ、太めの黒い輪郭線、フラットな塗り、影は控えめ',
+    yuru: 'ゆるい手描き風の線、少しガタガタした温かみのある輪郭、パステル寄りの塗り',
+    water: 'やさしい水彩風、にじみのある淡い塗り、輪郭は細めの線',
+    pixel: 'ドット絵風、くっきりしたピクセル、少ない色数',
+    puffy: 'ぷっくりした3Dのデフォルメキャラ、つやのある質感、やわらかい影'
+  };
+  ACT.posesFromLines = () => {
+    const ls = curLines().filter(Boolean);
+    if (!ls.length) return toast('先にセリフを入れてください（一括作成タブやセリフセットから）');
+    $('pPoses').value = curLines().map(poseFor).join('\n');
+    toast('セリフから表情・ポーズを作りました。好きに書き換えてOKです');
+  };
+  ACT.makePrompt = () => {
+    const poses = $('pPoses').value.split('\n').map(s => s.trim()).filter(Boolean);
+    if (!poses.length) return toast('表情・ポーズを1行ずつ入れてください');
+    const [cols, rows] = $('pGrid').value.split('x').map(Number), per = cols * rows;
+    const ch = $('pChar').value.trim(), ref = $('pRef').checked, emo = KIND === 'emoji';
+    const who = ref ? `添付画像と同じキャラクター${ch ? `（${ch}）` : ''}で、同じ見た目・同じ絵柄のまま` : `${ch || 'オリジナルのかわいいキャラクター'}を`;
+    const out = [];
+    for (let i = 0; i < poses.length; i += per) {
+      const chunk = poses.slice(i, i + per);
+      const lines = [
+        `${who}、LINE${emo ? '絵文字' : 'スタンプ'}用のイラストを描いてください。`,
+        `・絵柄：${STYLE_TXT[$('pStyle').value]}`,
+        `・1枚の画像に${cols}列×${rows}行で${per}コマ、各コマは同じ大きさ、区切り線なし`,
+        '・背景は真っ白の単色、キャラ同士は離す',
+        emo ? '・各コマは顔のアップ中心で、コマいっぱいに大きく描く（小さく表示されても表情がわかるように）' : '・各コマの下側1/4は文字を入れるため空けておく',
+        '・文字・ロゴ・記号は一切入れない',
+        `・${chunk.length}コマ（左上から右へ）：`,
+        ...chunk.map((d, j) => ` ${'①②③④⑤⑥⑦⑧⑨⑩⑪⑫'[j]}${d}`)
+      ];
+      if (chunk.length < per) lines.push(`・残りの${per - chunk.length}コマは空白のままにする`);
+      out.push(lines.join('\n'));
+    }
+    $('pOut').innerHTML = out.map((t, i) => `<div><div class="h3">${out.length > 1 ? `${i + 1}枚目（${i * per + 1}〜${Math.min((i + 1) * per, poses.length)}番）` : 'プロンプト'}</div><div class="out"><textarea id="pOut${i}" rows="12" readonly></textarea><button class="btn sm" data-copy="pOut${i}">コピー</button></div></div>`).join('')
+      + `<p class="muted" style="margin:0">できた画像は「一括作成」タブで列${cols}・行${rows}にして分割し、${out.length > 1 ? `2枚目は「何番から入れる」を${per + 1}にします。` : 'そのまま入れられます。'}</p>`;
+    out.forEach((t, i) => { $('pOut' + i).value = t; });
+    $('sheetCols').value = cols; $('sheetRows').value = rows;
+    LS('zk-line-prompt', { ch, style: $('pStyle').value, grid: $('pGrid').value });
+    track('make_prompt', { count: poses.length, kind: KIND });
+  };
+  (() => { const v = LS('zk-line-prompt'); if (v) { $('pChar').value = v.ch || ''; $('pStyle').value = v.style || 'chibi'; $('pGrid').value = v.grid || '4x2'; } })();
+
+  // ---------- 2. Line sets ----------
+  const LINE_SETS = [
+    { name: '毎日の返事', desc: '友だち・家族、誰にでも使える定番', lines: ['OK！', 'ありがとう！', 'りょうかい！', 'おつかれさま！', 'ごめんね…', 'おはよう！', 'おやすみ〜', 'よろしく！', 'いってきます', 'ただいま！', 'おめでとう！', 'すごい！！', 'えっ！？', 'なるほど…', 'いいね！', 'ちょっと待って', '今向かってる！', 'がんばって！', '大丈夫？', 'えらい！', 'うれしい！', '笑', 'またね！', 'たすけて〜'] },
+    { name: '敬語・仕事', desc: '職場やバイトで気軽に使える丁寧版', lines: ['承知しました', 'ありがとうございます', 'お疲れさまです', '申し訳ございません', 'よろしくお願いします', 'おはようございます', '確認します', '少々お待ちください', '了解です！', '助かります！', 'お先に失礼します', '今向かっています', '遅れます…', 'お大事に', 'かしこまりました', '大丈夫です！', 'いいですね！', 'さすがです！', '検討します', 'お願いします', 'おめでとうございます', '会議中です', 'すぐ戻ります', '本日もよろしくお願いします'] },
+    { name: '家族・パートナー', desc: '帰る連絡・買い物・ごはんの返事に', lines: ['いまから帰るよ', 'ごはんなに？', '買ってくるものある？', 'おかえり！', 'ありがとう♡', 'いってらっしゃい', 'おつかれさま', 'すぐ帰る！', 'ちょっと遅くなる', 'ごめんね', 'だいすき', '駅についた', 'おやすみ', 'おはよう', '了解！', '楽しみ！', 'お風呂わいたよ', '起きてる？', 'がんばってね', '寝坊した！', 'ゆっくりしてね', 'いいよ〜', 'どこにいる？', 'またあとで'] },
+    { name: '遊びに誘う', desc: '誘う・のる・ことわるがそろうセット', lines: ['カラオケいく？', 'ボーリングいく？', '焼肉いく？', 'ラーメンいこ', 'カフェいこ', '飲みいこ！', '映画みよ！', 'ゲームしよ', '旅行いきたい', '買い物いこ', 'いく！！', '今日ひま？', '何時にする？', 'どこ集合？', '着いた！', '遅れる〜', '行けない…ごめん', 'また誘って！', '楽しかった！', 'また行こ！', 'どこでもいい', '任せた！', '今週末あいてる？', 'それな！'] },
+    { name: '絵文字向け（顔だけ）', desc: '文字なし前提の表情セット（8個）', lines: ['', '', '', '', '', '', '', ''], poses: ['にっこり笑顔', 'ウインク', '泣き顔', '怒り顔', '驚き顔', 'ハートの目', '眠そうな顔', 'ドヤ顔'] }
+  ];
+  $('setCards').innerHTML = LINE_SETS.map((s, i) => `<button type="button" data-set="${i}"><b>${s.name}</b><span class="muted">${s.desc}</span></button>`).join('');
+  $('setCards').addEventListener('click', async e => {
+    const b = e.target.closest('[data-set]'); if (!b) return;
+    const set = LINE_SETS[Number(b.dataset.set)];
+    if (!confirm(`「${set.name}」のセリフを1番から入れますか？（今のセリフは上書きされます）`)) return;
+    const n = Math.min(set.lines.length, maxN());
+    if (n > N) { N = SPEC[KIND].counts.find(c => c >= n) || maxN(); $('setCount').value = N; buildStrip(); }
+    set.lines.slice(0, n).forEach((l, i) => { stamps[i].text.content = l; });
+    $('bulkText').value = set.lines.slice(0, n).join('\n');
+    if (set.poses) $('pPoses').value = set.poses.join('\n'); else $('pPoses').value = set.lines.slice(0, n).map(poseFor).join('\n');
+    syncUI(); await checkAll(); scheduleSave(); updateBalance();
+    track('line_set', { set: set.name });
+    toast(`「${set.name}」を入れました。AIプロンプトの表情も自動で用意しました`);
+  });
+  const BAL = [
+    ['返事', /OK|ＯＫ|了解|りょうかい|承知|かしこまり|はい|うん|わかった|いいよ|確認/],
+    ['感謝', /ありが|感謝|助か|サンキュ|あざ/],
+    ['謝る', /ごめん|すみません|申し訳|失礼/],
+    ['あいさつ', /おはよ|おやすみ|おつかれ|お疲れ|こんにち|ただいま|おかえり|いってき|いってらっしゃい|またね|よろしく/],
+    ['気持ち', /すご|うれし|楽し|笑|泣|怒|おこ|えっ|え[〜ー]|！？|？|すき|好き|最高|いいね/]
+  ];
+  function updateBalance() {
+    const ls = curLines().filter(Boolean);
+    const cnt = BAL.map(([n, re]) => [n, ls.filter(l => re.test(l)).length]);
+    $('balance').innerHTML = cnt.map(([n, c]) => `<div>${c ? '✅' : '⚠️'} ${n}<br><b>${c}</b>個</div>`).join('') + `<div>📝 セリフあり<br><b>${ls.length}</b>/${N}個</div>`;
+    const miss = cnt.filter(([, c]) => !c).map(([n]) => n);
+    $('balanceTip').textContent = !ls.length ? 'セリフがまだありません。上のテーマを選ぶか、一括作成タブで入れてください。'
+      : miss.length ? `「${miss.join('・')}」のセリフがありません。毎日使う言葉が入っていると、買ったあとも使われ続けて、LINEスタンプ プレミアムの収益にもつながります。`
+      : 'バランスOK！毎日の会話で使えるセリフがそろっています。残りはキャラの個性やネタで遊びましょう。';
+  }
+
+  // ---------- 3. Apply support ----------
+  const isFull = ch => !/[\x20-\x7E]/.test(ch);
+  function countField(id) {
+    const el = $(id), v = el.value, lim = Number(el.dataset.limit), en = !!el.dataset.en;
+    const chars = Array.from(v), n = chars.length, n2 = chars.reduce((a, c) => a + (isFull(c) ? 2 : 1), 0);
+    const bad = en ? [...new Set(chars.filter(c => !/[\x20-\x7E]/.test(c)))] : [];
+    const box = document.querySelector(`.cnt[data-for="${id}"]`);
+    let msg = `${n}文字` + (n2 !== n ? `（全角を2と数えると ${n2}）` : '') + ` / ${lim}`;
+    let cls = 'ok';
+    if (bad.length) { msg += `　⛔ 半角以外の文字：${bad.slice(0, 8).join(' ')}`; cls = 'bad'; }
+    else if (n2 > lim) { msg += n > lim ? '　⛔ 文字数オーバー' : '　⚠️ 全角を2と数えるとオーバー（申請画面で赤字が出たら短く）'; cls = 'bad'; }
+    box.textContent = msg; box.className = 'cnt ' + (v ? cls : '');
+  }
+  const AFIELDS = ['aTitleEn', 'aDescEn', 'aTitleJa', 'aDescJa', 'aCopy'];
+  const saveApply = () => { const o = {}; [...AFIELDS, 'aName', 'aNameEn'].forEach(k => o[k] = $(k).value); o.commercial = $('aCommercial').checked; LS('zk-line-apply', o); };
+  (() => { const o = LS('zk-line-apply'); if (o) { [...AFIELDS, 'aName', 'aNameEn'].forEach(k => { if (o[k]) $(k).value = o[k]; }); $('aCommercial').checked = !!o.commercial; } })();
+  AFIELDS.forEach(id => { $(id).addEventListener('input', () => { countField(id); saveApply(); }); countField(id); });
+  ['aName', 'aNameEn'].forEach(id => $(id).addEventListener('input', saveApply));
+  function updateNote() {
+    const nm = $('aName').value.trim();
+    $('aNote').value = `${KIND === 'emoji' ? '絵文字' : 'スタンプ'}のキャラクター${nm ? `「${nm}」` : ''}は、画像生成AIを使って作成したオリジナルのキャラクターです。既存のキャラクターや他者の作品をもとにしたものではありません。セリフ・配置・仕上げは作者が行っています。` + ($('aCommercial').checked ? '使用した画像生成サービスは、生成物の商用利用が認められている規約・プランで利用しています。' : '');
+  }
+  $('aCommercial').addEventListener('change', () => { updateNote(); saveApply(); });
+  $('aName').addEventListener('input', updateNote); updateNote();
+  ACT.draftApply = () => {
+    const nm = $('aName').value.trim(), en = $('aNameEn').value.trim().replace(/[^\x20-\x7E]/g, '');
+    if (!nm) return toast('キャラ名（日本語）を入れてください');
+    const ls = curLines().filter(Boolean), what = KIND === 'emoji' ? '絵文字' : 'スタンプ';
+    const pick = ls.slice(0, 4).map(l => l.replace(/[！!？?。…〜]+$/, '')).join('・');
+    $('aTitleJa').value = `${nm}の毎日つかえる${what}`;
+    $('aDescJa').value = `${nm}の${what}。${pick ? `${pick}など、` : ''}毎日の会話で気軽に使える${N}種類です。`;
+    if (en) {
+      $('aTitleEn').value = `${en}: Everyday ${KIND === 'emoji' ? 'Emoji' : 'Stickers'}`.slice(0, 40);
+      $('aDescEn').value = `Cute ${en} ${KIND === 'emoji' ? 'emoji' : 'stickers'} for everyday chats. ${N} ${KIND === 'emoji' ? 'emoji' : 'stickers'} for thanks, OK, sorry, good night and more!`;
+      if (!$('aCopy').value) $('aCopy').value = `(C)${en.replace(/\s+/g, '')}`;
+    }
+    AFIELDS.forEach(countField); saveApply(); updateNote();
+    toast('下書きを作りました。言い回しは自由に直してください');
+  };
+  const CHECKS = [
+    '画像生成サービスの規約で、商用利用OKか確認した',
+    'LINE STOREで同じ名前のスタンプがないか検索した',
+    '詳細画面：タイトル・説明文（English＋日本語）を入れた',
+    'コピーライトを半角で入れた',
+    '「AIの使用」で「使用しています」を選んだ',
+    'テイスト・キャラクターカテゴリを選んだ',
+    '詳細画面を保存した',
+    '画像タブ：個数をセットと同じにした（審査リクエスト後は変更不可）',
+    'ZIPをアップロードして、並び・メイン・タブ画像を確認した',
+    'スタンプごとにタグを設定した',
+    '販売価格を決めた',
+    '審査をリクエストした'
+  ];
+  function renderChecks() {
+    const st = LS('zk-line-checks') || {};
+    $('checklist').innerHTML = CHECKS.map((c, i) => `<li><label><input type="checkbox" data-ck="${i}" ${st[i] ? 'checked' : ''}>${c}</label></li>`).join('');
+  }
+  $('checklist').addEventListener('change', e => { const i = e.target.dataset.ck; if (i === undefined) return; const st = LS('zk-line-checks') || {}; st[i] = e.target.checked; LS('zk-line-checks', st); });
+  renderChecks();
+
+  // ---------- 4. Promo image ----------
+  async function drawPromo() {
+    const [pw, ph] = $('prSize').value.split('x').map(Number);
+    const cv = $('promoCanvas'); cv.width = pw; cv.height = ph;
+    const c = cv.getContext('2d');
+    const bg = $('prBg').value;
+    const bgc = { line: '#8cabd9', white: '#ffffff', dark: '#1f2937', custom: $('prColor').value }[bg];
+    c.fillStyle = bgc; c.fillRect(0, 0, pw, ph);
+    if (bg === 'line') { c.fillStyle = 'rgba(255,255,255,.18)'; for (let y = 10; y < ph; y += 26) for (let x = 10; x < pw; x += 26) { c.beginPath(); c.arc(x, y, 2, 0, 7); c.fill(); } }
+    const dark = bg === 'dark';
+    const title = $('prTitle').value.trim(), sub = $('prSub').value.trim();
+    const pad = Math.round(Math.min(pw, ph) * 0.05);
+    let top = pad;
+    const font = (sz, f) => `${FONT_W[f] || 400} ${sz}px ${f}, "Hiragino Maru Gothic ProN", sans-serif`;
+    if (document.fonts) await document.fonts.load(font(40, FONTS[0].f), title + sub).catch(() => {});
+    const textLine = (txt, sz, col, stroke) => {
+      c.font = font(sz, FONTS[0].f);
+      while (c.measureText(txt).width > pw - pad * 2 && sz > 16) { sz -= 2; c.font = font(sz, FONTS[0].f); }
+      c.textAlign = 'center'; c.textBaseline = 'top'; c.lineJoin = 'round';
+      c.lineWidth = sz * .22; c.strokeStyle = stroke; c.strokeText(txt, pw / 2, top);
+      c.fillStyle = col; c.fillText(txt, pw / 2, top); top += sz * 1.25;
+    };
+    const base = Math.round(Math.min(pw, ph * 1.4) * 0.065);
+    if (title) textLine(title, base, dark ? '#ffffff' : '#064e3b', dark ? '#064e3b' : '#ffffff');
+    if (sub) textLine(sub, Math.round(base * .55), dark ? '#e2e8f0' : '#1e293b', dark ? '#1f2937' : '#ffffff');
+    const bottom = ph - pad - ($('prCredit').checked ? Math.round(base * .5) : 0);
+    const items = stamps.slice(0, N).map(s => (s.img || s.text.content.trim()) ? renderFull(s) : null).filter(Boolean);
+    if (!items.length) { c.fillStyle = dark ? '#fff' : '#334155'; c.font = font(Math.round(base * .5), FONTS[0].f); c.textAlign = 'center'; c.fillText('まだ絵が入っていません', pw / 2, ph / 2); return; }
+    const aw = pw - pad * 2, ah = Math.max(50, bottom - top - pad * .3);
+    let best = { cell: 0, cols: 1, rows: 1 };
+    for (let cols = 1; cols <= items.length; cols++) {
+      const rows = Math.ceil(items.length / cols);
+      const cell = Math.min(aw / cols / W, ah / rows / H);
+      if (cell > best.cell) best = { cell, cols, rows };
+    }
+    const cwid = W * best.cell, chei = H * best.cell;
+    const ox = pad + (aw - cwid * best.cols) / 2, oy = top + pad * .3 + (ah - chei * best.rows) / 2;
+    c.imageSmoothingQuality = 'high';
+    items.forEach((im, i) => {
+      const r = Math.floor(i / best.cols), col = i % best.cols;
+      const rowCount = r === best.rows - 1 ? items.length - r * best.cols : best.cols;
+      const rx = pad + (aw - cwid * rowCount) / 2;
+      c.drawImage(im, (r === best.rows - 1 ? rx : ox) + col * cwid, oy + r * chei, cwid, chei);
+    });
+    if ($('prCredit').checked) {
+      c.font = font(Math.round(base * .32), "'Zen Maru Gothic'"); c.textAlign = 'right'; c.textBaseline = 'bottom';
+      c.fillStyle = dark ? 'rgba(255,255,255,.7)' : 'rgba(15,23,42,.55)';
+      c.fillText('ちいさなツール工房「LINEスタンプ・絵文字メーカー」で作成', pw - pad * .6, ph - pad * .5);
+    }
+  }
+  ['prSize', 'prTitle', 'prSub', 'prBg', 'prColor', 'prCredit'].forEach(id => $(id).addEventListener('input', () => drawPromo()));
+  ACT.downloadPromo = async () => { await drawPromo(); $('promoCanvas').toBlob(b => dl(b, `line_${KIND}_promo_${$('prSize').value}.png`)); track('download_promo', { size: $('prSize').value }); };
 
   // ---------- Init ----------
   (async () => {
