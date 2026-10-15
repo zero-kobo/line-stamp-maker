@@ -790,6 +790,8 @@
           <label class="muted">メインのキャラ（メイン画像・プロフィール）<select id="thHero" class="thsel"></select></label>
           <div class="muted" style="font-weight:700">メニューボタンのキャラ（ホーム・トーク・VOOM・TODAY・ウォレット・通話・ニュース・ショッピング・アプリ）</div>
           <div class="throw" id="thMenus"></div>
+          <div class="muted" style="font-weight:700">選んだとき（ON）のキャラ：OFFと別のポーズにすると、公式の見本のように楽しくなります</div>
+          <div class="throw" id="thMenusOn"></div>
           <div class="muted" style="font-weight:700">パスコードのキャラ（4つ）</div>
           <div class="throw" id="thPass"></div>
           <label class="muted">グループ用プロフィールのもう1体<select id="thSub" class="thsel"></select></label>
@@ -798,11 +800,12 @@
           <details class="muted"><summary>ファイル名と申請のメモ</summary>
             <ul style="margin:6px 0 0;padding-left:18px;display:grid;gap:4px">
               <li>メイン画像：ios_thumbnail.png（200×284）／android_thumbnail.png（136×202）／store_thumbnail.png（198×278）</li>
-              <li>メニューボタン（128×150、OFF・ON）：ホーム i_29・30／トーク i_03・04／VOOM i_33・34／TODAY i_31・32／ウォレット i_27・28／通話 i_07・08／ニュース i_25・26／ショッピング i_35・36／アプリ i_37・38（Androidは a_ で同じ番号）</li>
+              <li>メニューボタン（128×150、OFF・ON）：ホーム i_29・30／トーク i_03・04／VOOM i_33・34／TODAY i_31・32／ウォレット i_27・28／通話 i_07・08／ニュース i_25・26／ショッピング i_35・36／アプリ i_37・38（Androidのメニューは iOS と同じ画像が使われるので a_ はありません）</li>
               <li>メニュー背景：i_11.png（1472×150）／パスコード：i_12〜i_19.png（120×120）・a_12〜a_19.png（116×116）</li>
               <li>プロフィール：i_20・i_21.png（240×240）／a_20・a_21.png（247×247）／トーク背景：i_22.png（1482×1334）・a_22.png（1300×1300）</li>
               <li>iOS 26以降用（80×56）：同じ番号の後ろに _g（例：i_29_g.png）</li>
-              <li>管理画面の「ZIPファイル アップロード」にそのまま入れられます。</li>
+              <li>合計62枚（iOS 26用を外すと44枚）。管理画面の「ZIPファイル アップロード」にそのまま入れられます。</li>
+              <li>メニューボタンの右上（上から49px・右から21px）に通知バッジが重なります。</li>
             </ul>
           </details>
         </div>
@@ -2497,7 +2500,7 @@
       const old = [...box.querySelectorAll('select')].map(e => e.value);
       box.innerHTML = Array.from({ length: n }, (_, k) => `<select class="${cls}" aria-label="${cls === 'thm' ? TH_MENUS[k] : 'パスコード' + (k + 1)}">${opt(old[k] !== undefined && ids.includes(Number(old[k])) ? Number(old[k]) : pick(start + k))}</select>`).join('');
     };
-    mk($('thMenus'), TH_MENUS.length, 0, 'thm'); mk($('thPass'), 4, 5, 'thp');
+    mk($('thMenus'), TH_MENUS.length, 0, 'thm'); mk($('thMenusOn'), TH_MENUS.length, 9, 'thm'); mk($('thPass'), 4, 5, 'thp');
     if (!ids.length) $('themeCanvas').getContext('2d').clearRect(0, 0, 720, 640);
   }
   const thCache = new Map();
@@ -2524,8 +2527,9 @@
   function thOpts() {
     const v = (id) => $(id).value;
     const menus = [...document.querySelectorAll('#thMenus select')].map(e => Number(e.value));
+    const menusOn = [...document.querySelectorAll('#thMenusOn select')].map(e => Number(e.value));
     const pass = [...document.querySelectorAll('#thPass select')].map(e => Number(e.value));
-    return { main: v('thMain'), bg: v('thBg'), acc: v('thAccent'), pat: v('thPattern'), hero: Number(v('thHero')), sub: Number(v('thSub')), menus, pass };
+    return { main: v('thMain'), bg: v('thBg'), acc: v('thAccent'), pat: v('thPattern'), hero: Number(v('thHero')), sub: Number(v('thSub')), menus, menusOn, pass };
   }
   function thPattern(x, w, h, o, scale = 1) {
     x.fillStyle = o.bg; x.fillRect(0, 0, w, h);
@@ -2559,7 +2563,7 @@
     const c = mk(w, h), x = c.getContext('2d');
     const m = small ? 4 : 10, iconH = small ? h - m * 2 : 100; // 128×150は下側にメニュー名が出るので上100px内に置く
     if (on) { x.fillStyle = o.acc + 'cc'; const r = Math.min(w - m * 2, iconH) / 2 + (small ? 0 : 2); x.beginPath(); x.arc(w / 2, m + iconH / 2, r, 0, Math.PI * 2); x.fill(); }
-    const im = img ? (on ? img : grayish(img, .9)) : null;
+    const im = img;
     fitDraw(x, im, m + (small ? 0 : 6), m + (small ? 0 : 6), w - m * 2 - (small ? 0 : 12), iconH - (small ? 0 : 12));
     return c;
   }
@@ -2601,13 +2605,13 @@
     const nn = n => String(n).padStart(2, '0');
     for (let k = 0; k < TH_MENU_DEF.length; k++) {
       const img = thChar(o.menus[k]), off = TH_MENU_DEF[k][1];
-      for (const pre of ['i', 'a']) {
-        await add(`${pre}_${nn(off)}.png`, thMenuBtn(128, 150, img, false, o));
-        await add(`${pre}_${nn(off + 1)}.png`, thMenuBtn(128, 150, img, true, o));
-      }
+      const imgOn = thChar(o.menusOn[k]) || img;
+      // メニューボタンは iOS（i_）だけ。Androidも同じ画像が使われる
+      await add(`i_${nn(off)}.png`, thMenuBtn(128, 150, img, false, o));
+      await add(`i_${nn(off + 1)}.png`, thMenuBtn(128, 150, imgOn, true, o));
       if ($('thIos26').checked) {
         await add(`i_${nn(off)}_g.png`, thMenuBtn(80, 56, img, false, o, true));
-        await add(`i_${nn(off + 1)}_g.png`, thMenuBtn(80, 56, img, true, o, true));
+        await add(`i_${nn(off + 1)}_g.png`, thMenuBtn(80, 56, imgOn, true, o, true));
       }
     }
     await add('i_11.png', thMenuBg(o));
@@ -2641,7 +2645,7 @@
     const mbY = py + ph - 74;
     x.drawImage(thMenuBg(o), 0, 0, 1472, 150, px, mbY, 1472 * 74 / 150, 74);
     for (let k = 0; k < 5; k++) {
-      const b = thMenuBtn(128, 150, thChar(o.menus[TH_PREVIEW[k]]), k === 1, o), bw = pw / 5;
+      const mi = TH_PREVIEW[k], b = thMenuBtn(128, 150, thChar(k === 1 ? (o.menusOn[mi] ?? o.menus[mi]) : o.menus[mi]), k === 1, o), bw = pw / 5;
       x.drawImage(b, px + bw * k + (bw - 54) / 2, mbY + 2, 54, 63);
       x.fillStyle = k === 1 ? o.main : '#64748b'; x.font = '700 9px sans-serif'; x.fillText(TH_MENUS[k], px + bw * k + bw / 2, mbY + 68);
     }
@@ -2656,11 +2660,11 @@
     x.fillText('パスコード（OFF／ON）', rx, 314);
     for (let k = 0; k < 4; k++) { const img = thChar(o.pass[k]); x.drawImage(thPass(120, img, false, o), rx + k * 88, 324, 80, 80); x.drawImage(thPass(120, img, true, o), rx + k * 88, 410, 80, 80); }
     x.fillText('メニューボタン（OFF／ON）', rx, 516);
-    for (let k = 0; k < TH_MENUS.length; k++) { const img = thChar(o.menus[k]), cx2 = rx + (k % 5) * 70, cy2 = 524 + Math.floor(k / 5) * 44; x.drawImage(thMenuBtn(128, 150, img, false, o), cx2, cy2, 30, 35); x.drawImage(thMenuBtn(128, 150, img, true, o), cx2 + 30, cy2, 30, 35); }
+    for (let k = 0; k < TH_MENUS.length; k++) { const img = thChar(o.menus[k]), cx2 = rx + (k % 5) * 70, cy2 = 524 + Math.floor(k / 5) * 44; x.drawImage(thMenuBtn(128, 150, img, false, o), cx2, cy2, 30, 35); x.drawImage(thMenuBtn(128, 150, thChar(o.menusOn[k]) || img, true, o), cx2 + 30, cy2, 30, 35); }
     x.fillStyle = '#64748b'; x.font = '12px sans-serif'; x.fillText('※ 実際の表示は機種で少し変わります', rx, 630);
   }
   ['thMain', 'thBg', 'thAccent', 'thPattern', 'thHero', 'thSub', 'thIos26'].forEach(id => $(id).addEventListener('input', drawThemePreview));
-  $('thMenus').addEventListener('change', drawThemePreview); $('thPass').addEventListener('change', drawThemePreview);
+  $('thMenus').addEventListener('change', drawThemePreview); $('thMenusOn').addEventListener('change', drawThemePreview); $('thPass').addEventListener('change', drawThemePreview);
   ACT.downloadTheme = async () => {
     if (!thChars().length) return toast('先にスタンプの画像を入れてください');
     toast('着せかえ一式を作っています…');
