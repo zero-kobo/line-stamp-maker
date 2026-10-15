@@ -2567,11 +2567,18 @@
     fitDraw(x, im, m + (small ? 0 : 6), m + (small ? 0 : 6), w - m * 2 - (small ? 0 : 12), iconH - (small ? 0 : 12));
     return c;
   }
+  // 公式見本どおり、OFFはキャラの形の濃い影にする
+  function silhouette(img, col) {
+    const c = mk(img.width, img.height), x = c.getContext('2d'); x.drawImage(img, 0, 0);
+    x.globalCompositeOperation = 'source-in'; x.fillStyle = col; x.fillRect(0, 0, c.width, c.height);
+    x.globalCompositeOperation = 'source-over'; x.globalAlpha = .55; x.fillStyle = '#0f172a';
+    x.globalCompositeOperation = 'source-atop'; x.fillRect(0, 0, c.width, c.height); return c;
+  }
   function thPass(sz, img, on, o) {
     const c = mk(sz, sz), x = c.getContext('2d'), m = Math.round(sz * .08);
     x.fillStyle = on ? o.main : '#ffffff'; x.strokeStyle = on ? o.main : o.main + '88'; x.lineWidth = Math.max(3, sz * .03);
     x.beginPath(); x.arc(sz / 2, sz / 2, sz / 2 - m, 0, Math.PI * 2); x.fill(); x.stroke();
-    fitDraw(x, img ? (on ? img : grayish(img, .55)) : null, sz * .2, sz * .2, sz * .6, sz * .6);
+    fitDraw(x, img ? (on ? img : silhouette(img, o.main)) : null, sz * .2, sz * .2, sz * .6, sz * .6);
     return c;
   }
   function thProfile(sz, imgs, o) {
