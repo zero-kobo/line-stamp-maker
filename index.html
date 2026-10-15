@@ -31,7 +31,7 @@
       "isAccessibleForFree": true,
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" },
       "description": "AIイラストやまとめ画像をLINEスタンプ・LINE絵文字の規格に整え、背景透過・白フチ・文字入れ・審査チェック・ZIP一括書き出しまで行える無料Webツール。",
-      "featureList": ["ChatGPT・Gemini用のスタンプ画像プロンプト作成", "セリフのテーマ別セットとバランスチェック", "申請タイトル・説明文の文字数チェックと申請チェックリスト", "告知用の一覧画像（X・Instagram）書き出し", "スタンプから絵文字を作成", "吹き出し・文字デザインの保存", "まとめ画像（シート）の自動分割", "背景の自動透過・スポイト・消しゴム", "イラストの白フチ", "文字の縦書き・斜め・グラデ・虹色・震え・波打ち", "余白10px・偶数サイズ・1MBの自動チェック", "01.png〜24.png・main.png・tab.pngのZIP一括書き出し", "LINE絵文字（180×180px・001.png〜）モード"],
+      "featureList": ["ChatGPT・Gemini用のスタンプ画像プロンプト作成", "セリフのテーマ別セットとバランスチェック", "申請タイトル・説明文の文字数チェックと申請チェックリスト", "告知用の一覧画像（X・Instagram）書き出し", "スタンプから絵文字を作成", "吹き出し・文字デザインの保存", "まとめ画像（シート）の自動分割", "背景の自動透過・スポイト・消しゴム", "イラストの白フチ", "背景エフェクト（オーラ・後光・黒いモヤ・炎・キラキラ）", "文字の縦書き・斜め・グラデ・虹色・震え・波打ち", "余白10px・偶数サイズ・1MBの自動チェック", "01.png〜24.png・main.png・tab.pngのZIP一括書き出し", "LINE絵文字（180×180px・001.png〜）モード"],
       "publisher": { "@type": "Organization", "name": "ちいさなツール工房", "url": "https://zero-kobo.github.io/" }
     },
     {
@@ -296,7 +296,7 @@
   <div class="hero">
     <h1>LINEスタンプ・絵文字メーカー<small>無料・登録不要</small></h1>
     <p>AIイラストやまとめ画像から、LINEスタンプ一式（01.png〜・main.png・tab.png）やLINE絵文字一式（001.png〜・tab.png）をZIPで書き出せるツール。背景透過・白フチ・文字入れ・審査チェックまでここで完結します。</p>
-    <div class="badges"><span>✂️ シート自動分割</span><span>🫥 背景を自動で透過</span><span>⚪ イラストに白フチ</span><span>🔤 縦書き・斜め・虹色文字</span><span>✅ 余白10px・偶数px・1MBを自動チェック</span><span>📦 ZIP一括書き出し</span><span>😀 LINE絵文字（180×180）にも対応</span><span>🤖 AI用プロンプト作成</span><span>📮 申請サポート</span><span>📣 告知画像</span></div>
+    <div class="badges"><span>✂️ シート自動分割</span><span>🫥 背景を自動で透過</span><span>⚪ イラストに白フチ</span><span>✨ オーラ・後光・黒いモヤ</span><span>🔤 縦書き・斜め・虹色文字</span><span>✅ 余白10px・偶数px・1MBを自動チェック</span><span>📦 ZIP一括書き出し</span><span>😀 LINE絵文字（180×180）にも対応</span><span>🤖 AI用プロンプト作成</span><span>📮 申請サポート</span><span>📣 告知画像</span></div>
   </div>
 
   <!-- ===== Strip ===== -->
@@ -406,6 +406,21 @@
           <label class="lb"><span>フチの太さ</span><span data-show="outlineW" data-suffix="px"></span></label>
           <input type="range" min="1" max="16" data-bind="outlineW">
           <div class="colorrow" style="margin-top:6px"><input type="color" data-bind="outlineColor">フチの色</div>
+        </div>
+        <div class="box g">
+          <div class="h3">✨ 背景エフェクト <button class="btn sm" data-act="auraAll">全スタンプに適用</button></div>
+          <div class="seg" data-bind="aura" style="grid-template-columns:repeat(3,1fr);grid-auto-flow:row">
+            <button data-val="none">なし</button>
+            <button data-val="glow">オーラ</button>
+            <button data-val="holy">後光</button>
+            <button data-val="dark">黒いモヤ</button>
+            <button data-val="fire">炎</button>
+            <button data-val="kira">キラキラ</button>
+          </div>
+          <label class="lb"><span>強さ・大きさ</span><span data-show="auraSize" data-suffix="%"></span></label>
+          <input type="range" min="0" max="100" data-bind="auraSize">
+          <div class="colorrow" style="margin-top:6px"><input type="color" data-bind="auraColor">エフェクトの色</div>
+          <p class="muted" style="margin:6px 0 0">キャラのうしろに付きます。余白10pxの内側に自動で収まります。</p>
         </div>
       </div>
 
@@ -892,7 +907,10 @@
     ['元気オレンジ', '#ffffff', '#fed7aa', '#ea580c', '#ffffff'],
     ['スカイブルー', '#ffffff', '#bae6fd', '#0284c7', '#ffffff'],
     ['ゆるブラウン', '#fff7ed', '#fde68a', '#78350f', '#ffffff'],
-    ['くっきり黒', '#facc15', '#f97316', '#111827', '#ffffff']
+    ['くっきり黒', '#facc15', '#f97316', '#111827', '#ffffff'],
+    ['ゴールド', '#fffbeb', '#facc15', '#92400e', '#ffffff'],
+    ['ロイヤル紫', '#ffffff', '#e9d5ff', '#6d28d9', '#ffffff'],
+    ['あおティラ青', '#ffffff', '#bfdbfe', '#1e3a8a', '#ffffff']
   ];
   const RAINBOW = ['#ef4444', '#f97316', '#eab308', '#22c55e', '#06b6d4', '#3b82f6', '#a855f7', '#ec4899'];
   const VROT = new Set(['ー', '〜', '～', '-', '―', '…', '‥', '（', '）', '(', ')', '「', '」', '→', '←', '=', '＝']);
@@ -901,7 +919,7 @@
   const defaultText = () => ({ content: '', font: FONTS[0].f, size: SPEC[KIND].textSize, x: 50, y: 82, dir: 'horizontal', fx: 'none', fxInt: 50,
     colorMode: 'solid', c1: '#ffffff', c2: '#fde047', stroke: '#059669', strokeW: 8, outer: true, outerColor: '#ffffff', shadow: true, bubble: 'none', bubbleColor: '#ffffff', bubbleLine: '#1e293b' });
   const newStamp = () => ({ raw: null, img: null, x: W / 2, y: H / 2 - 10, scale: 100, rot: 0, flip: false,
-    outline: true, outlineW: SPEC[KIND].outlineW, outlineColor: '#ffffff', text: defaultText(), hist: [], status: 'empty', issues: [], _tbox: null });
+    outline: true, outlineW: SPEC[KIND].outlineW, outlineColor: '#ffffff', aura: 'none', auraColor: '#38bdf8', auraSize: 50, text: defaultText(), hist: [], status: 'empty', issues: [], _tbox: null });
 
   let stamps = Array.from({ length: MAXN }, newStamp);
   let N = 8, cur = 0, mode = 'move', brush = 20;
@@ -1097,9 +1115,103 @@
     return { x0, y0, x1, y1 };
   }
 
+
+  // ---------- 背景エフェクト（オーラ・後光・黒いモヤ・キラキラ） ----------
+  // ctx.filter は古いSafariで効かないので、縮小→拡大でぼかす
+  const AURA_DEF = { glow: '#38bdf8', holy: '#fde047', dark: '#3b0764', kira: '#fde047', fire: '#ef4444' };
+  function softBlur(src, r) {
+    let cur = src, w = W, h = H;
+    const target = Math.max(1, r / 2);
+    while (W / w < target) { const nw = Math.max(2, Math.round(w / 2)), nh = Math.max(2, Math.round(h / 2)); const t = mk(nw, nh), x = t.getContext('2d'); x.imageSmoothingQuality = 'high'; x.drawImage(cur, 0, 0, nw, nh); cur = t; w = nw; h = nh; }
+    const o = mk(W, H), ox = o.getContext('2d'); ox.imageSmoothingEnabled = true; ox.imageSmoothingQuality = 'high'; ox.drawImage(cur, 0, 0, W, H); return o;
+  }
+  function tint(src, color) { const c = mk(W, H), x = c.getContext('2d'); x.drawImage(src, 0, 0); x.globalCompositeOperation = 'source-in'; x.fillStyle = color; x.fillRect(0, 0, W, H); return c; }
+  function dilate(src, r) {
+    const c = mk(W, H), x = c.getContext('2d'), steps = Math.max(12, Math.round(r * 1.5));
+    for (const rr of [r, r * .5]) for (let i = 0; i < steps; i++) { const t = i / steps * Math.PI * 2; x.drawImage(src, Math.cos(t) * rr, Math.sin(t) * rr); }
+    x.drawImage(src, 0, 0); return c;
+  }
+  let edgeFade = null;
+  function getEdgeFade() {
+    if (edgeFade && edgeFade.width === W && edgeFade.height === H) return edgeFade;
+    edgeFade = mk(W, H); const x = edgeFade.getContext('2d'), im = x.createImageData(W, H), f = KIND === 'emoji' ? 4 : 10;
+    for (let y = 0; y < H; y++) for (let xx = 0; xx < W; xx++) {
+      const d = Math.min(xx, y, W - 1 - xx, H - 1 - y) - M - 1;
+      im.data[(y * W + xx) * 4 + 3] = Math.max(0, Math.min(255, d / f * 255));
+    }
+    x.putImageData(im, 0, 0); return edgeFade;
+  }
+  function rng(seed) { let a = seed >>> 0; return () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ t >>> 15, t | 1); t ^= t + Math.imul(t ^ t >>> 7, t | 61); return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  function star(x, cx, cy, r) {
+    x.beginPath();
+    for (let i = 0; i < 8; i++) { const a = i / 8 * Math.PI * 2 - Math.PI / 2, rr = i % 2 ? r * .28 : r; x.lineTo(cx + Math.cos(a) * rr, cy + Math.sin(a) * rr); }
+    x.closePath(); x.fill();
+  }
+  function auraLayer(s, layer) {
+    const k = (s.auraSize ?? 50) / 100, sc = Math.min(W, H) / 320, col = s.auraColor || AURA_DEF[s.aura] || '#38bdf8';
+    const out = mk(W, H), o = out.getContext('2d');
+    const b = contentBox(layer, 20); if (!b) return out;
+    const cx = (b.x0 + b.x1) / 2, cy = b.y0 + (b.y1 - b.y0) * .42;
+    const rand = rng(1234 + cur * 0);
+    if (s.aura === 'glow' || s.aura === 'fire') {
+      const r = (6 + 18 * k) * sc;
+      const base = tint(dilate(layer, r * .6), col);
+      if (s.aura === 'fire') {
+        // 上に伸びる炎：少しずつ上へずらして重ねる
+        const f = mk(W, H), fx = f.getContext('2d');
+        for (let i = 0; i < 6; i++) { fx.globalAlpha = .55 - i * .07; fx.drawImage(base, (rand() - .5) * r * .5, -i * r * .35); }
+        const bl = softBlur(f, r);
+        o.drawImage(bl, 0, 0); o.drawImage(bl, 0, 0);
+        o.globalAlpha = .9; o.drawImage(softBlur(tint(dilate(layer, r * .3), '#fde047'), r * .5), 0, 0);
+      } else {
+        const bl = softBlur(base, r);
+        o.drawImage(bl, 0, 0); o.drawImage(bl, 0, 0); o.globalAlpha = .7; o.drawImage(softBlur(base, r * .4), 0, 0);
+      }
+    } else if (s.aura === 'holy') {
+      const R = Math.max(b.x1 - b.x0, b.y1 - b.y0) * (.55 + .45 * k);
+      o.save(); o.translate(cx, cy);
+      const g = o.createRadialGradient(0, 0, 0, 0, 0, R);
+      g.addColorStop(0, col); g.addColorStop(.55, col + 'aa'); g.addColorStop(1, col + '00');
+      o.fillStyle = g; const n = 18;
+      for (let i = 0; i < n; i++) { const a0 = i / n * Math.PI * 2, a1 = a0 + Math.PI / n * .9; o.beginPath(); o.moveTo(0, 0); o.arc(0, 0, R, a0, a1); o.closePath(); o.fill(); }
+      const g2 = o.createRadialGradient(0, 0, 0, 0, 0, R * .6);
+      g2.addColorStop(0, '#ffffffee'); g2.addColorStop(.5, col + '88'); g2.addColorStop(1, col + '00');
+      o.fillStyle = g2; o.beginPath(); o.arc(0, 0, R * .6, 0, Math.PI * 2); o.fill();
+      o.restore();
+      o.drawImage(softBlur(tint(dilate(layer, 8 * sc), '#ffffff'), 10 * sc), 0, 0);
+    } else if (s.aura === 'dark') {
+      // シルエットのまわりにだけ、もくもくした丸を置いて「黒いモヤ」にする
+      const r = (8 + 18 * k) * sc;
+      const zone = dilate(layer, r), zd = zone.getContext('2d').getImageData(0, 0, W, H).data;
+      const blobs = mk(W, H), bx = blobs.getContext('2d'); bx.fillStyle = col;
+      const n = Math.round(160 + 140 * k); let put = 0;
+      for (let t = 0; t < n * 6 && put < n; t++) {
+        const x = b.x0 - r + rand() * (b.x1 - b.x0 + r * 2), y = b.y0 - r * 1.2 + rand() * (b.y1 - b.y0 + r * 2);
+        const xi = x | 0, yi = y | 0; if (xi < 0 || yi < 0 || xi >= W || yi >= H || zd[(yi * W + xi) * 4 + 3] < 128) continue;
+        put++; bx.globalAlpha = .25 + rand() * .45; bx.beginPath(); bx.arc(x, y, (3 + rand() * 8) * sc * (.8 + k * .6), 0, Math.PI * 2); bx.fill();
+      }
+      // 頭の上に立ちのぼるモヤ
+      for (let i = 0; i < 4; i++) { const x = b.x0 + (b.x1 - b.x0) * (.2 + rand() * .6), y = b.y0 - r * (.1 + rand() * .5); bx.globalAlpha = .35; bx.beginPath(); bx.arc(x, y, (4 + rand() * 6) * sc, 0, Math.PI * 2); bx.fill(); }
+      const sm = softBlur(blobs, 6 * sc);
+      o.drawImage(sm, 0, 0); o.drawImage(sm, 0, 0); o.globalAlpha = .45; o.drawImage(blobs, 0, 0);
+    } else if (s.aura === 'kira') {
+      o.globalAlpha = .55; o.drawImage(softBlur(tint(dilate(layer, 6 * sc), col), 10 * sc), 0, 0); o.globalAlpha = 1;
+      const n = Math.round(5 + 7 * k), rx = (b.x1 - b.x0) / 2 + 14 * sc, ry = (b.y1 - b.y0) / 2 + 10 * sc, ccy = (b.y0 + b.y1) / 2;
+      for (let i = 0; i < n; i++) {
+        const a = -Math.PI * .95 + (i + rand() * .6) / n * Math.PI * 1.25 * (i % 2 ? 1 : 1);
+        const ang = i % 2 ? a : -Math.PI - a + Math.PI * .1;
+        const x = cx + Math.cos(ang) * rx * (.85 + rand() * .35), y = ccy + Math.sin(ang) * ry * (.85 + rand() * .3), r = (5 + rand() * 9) * sc * (.8 + k * .6);
+        o.fillStyle = '#ffffff'; star(o, x, y, r + 2.5 * sc); o.fillStyle = col; star(o, x, y, r);
+      }
+    }
+    o.globalAlpha = 1; o.globalCompositeOperation = 'destination-in'; o.drawImage(getEdgeFade(), 0, 0);
+    return out;
+  }
+
   function composeStamp(s, c, opt = {}) {
     c.clearRect(0, 0, W, H);
     const layer = imageLayer(s);
+    if (layer && s.aura && s.aura !== 'none') c.drawImage(auraLayer(s, layer), 0, 0);
     if (layer) c.drawImage(layer, 0, 0);
     if (!opt.noText) s._tbox = s.text.content.trim() ? drawText(c, s.text) : null;
   }
@@ -1225,12 +1337,19 @@
   function pushHist(s) { if (!s.img) return; s.hist.push(cloneCanvas(s.img)); if (s.hist.length > 15) s.hist.shift(); }
 
   // ---------- Auto fit ----------
+  function auraPad(s) {
+    if (!s.aura || s.aura === 'none') return 0;
+    const k = (s.auraSize ?? 50) / 100, sc = Math.min(W, H) / 320;
+    return Math.round((s.aura === 'holy' ? 16 + 18 * k : s.aura === 'kira' ? 12 + 10 * k : 8 + 16 * k) * sc);
+  }
   function autoFit(s) {
     if (!s.img) return;
     const b = contentBox(s.img, 20); if (!b) return;
     const pad = M + (s.outline ? s.outlineW : 0) + 3;
     const t = s.text, hasText = !!t.content.trim();
-    let ry0 = pad, ry1 = H - pad, rx0 = pad, rx1 = W - pad;
+    // 背景エフェクトがあるときは、その分だけ内側に寄せる（エフェクトが余白で切れないように）
+    const ap = auraPad(s);
+    let ry0 = pad + ap, ry1 = H - pad - ap, rx0 = pad + ap, rx1 = W - pad - ap;
     const nl = hasText ? t.content.trim().split('\n').length : 0, band = 0.28 + 0.2 * Math.max(0, nl - 1);
     if (hasText && t.dir !== 'vertical') { if (t.y >= 55) ry1 = H * (1 - band); else if (t.y <= 45) ry0 = H * band; }
     if (hasText && t.dir === 'vertical') { if (t.x >= 55) rx1 = W * 0.70; else if (t.x <= 45) rx0 = W * 0.30; }
@@ -1362,6 +1481,7 @@
           else if (prev === 'vertical') { s.text.x = 50; s.text.y = 82; }
           if (s.img) autoFit(s);
         }
+        if (el.dataset.bind === 'aura' && prev !== b.dataset.val) { if (AURA_DEF[b.dataset.val]) s.auraColor = AURA_DEF[b.dataset.val]; if (s.img) autoFit(s); }
         syncUI(); changed();
       });
     } else {
@@ -1535,6 +1655,7 @@
     removeWhite: () => { const s = S(); if (!s.img) return toast('画像がありません'); pushHist(s); removeGlobal(s, [255, 255, 255], Number($('tol').value)); changed(); },
     removeBlack: () => { const s = S(); if (!s.img) return toast('画像がありません'); pushHist(s); removeGlobal(s, [0, 0, 0], Number($('tol').value)); changed(); },
     resetImage: () => { const s = S(); if (!s.raw) return; pushHist(s); s.img = cloneCanvas(s.raw); imgEdited(s); changed(); },
+    auraAll: () => { const s = S(); stamps.forEach(x => { x.aura = s.aura; x.auraColor = s.auraColor; x.auraSize = s.auraSize; if (x.img) autoFit(x); }); checkAll(); scheduleSave(); toast('背景エフェクトを全スタンプに適用しました'); },
     outlineAll: () => { const s = S(); stamps.forEach(x => { x.outline = s.outline; x.outlineW = s.outlineW; x.outlineColor = s.outlineColor; }); checkAll(); scheduleSave(); toast('フチ設定を全スタンプに適用しました'); },
     clearText: () => { S().text.content = ''; syncUI(); changed(); },
     styleAll: () => {
@@ -1654,7 +1775,7 @@
         if (s.raw && !s._rawURL) s._rawURL = s.raw.toDataURL('image/png');
         if (s.img && !s._imgURL) s._imgURL = s.img.toDataURL('image/png');
         return { raw: s.raw ? s._rawURL : null, img: s.img ? s._imgURL : null, x: s.x, y: s.y, scale: s.scale, rot: s.rot, flip: s.flip,
-          outline: s.outline, outlineW: s.outlineW, outlineColor: s.outlineColor, text: Object.assign({}, s.text) };
+          outline: s.outline, outlineW: s.outlineW, outlineColor: s.outlineColor, aura: s.aura, auraColor: s.auraColor, auraSize: s.auraSize, text: Object.assign({}, s.text) };
       }).filter((d, i) => i < p.N || d.raw || d.text.content)
     };
   }
@@ -1672,7 +1793,7 @@
     KIND = keep;
     await Promise.all((o.stamps || []).slice(0, MAXN).map(async (d, i) => {
       const s = fresh[i];
-      ['x', 'y', 'scale', 'rot', 'flip', 'outline', 'outlineW', 'outlineColor'].forEach(k => { if (d[k] !== undefined) s[k] = d[k]; });
+      ['x', 'y', 'scale', 'rot', 'flip', 'outline', 'outlineW', 'outlineColor', 'aura', 'auraColor', 'auraSize'].forEach(k => { if (d[k] !== undefined) s[k] = d[k]; });
       s.text = Object.assign({}, fresh[i].text, d.text || {});
       if (d.raw) { s.raw = await urlToCanvas(d.raw); s._rawURL = d.raw; }
       if (d.img) { s.img = await urlToCanvas(d.img); s._imgURL = d.img; }
