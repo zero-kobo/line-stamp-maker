@@ -224,6 +224,7 @@
   .extras .tabs button{flex:1 1 auto;min-width:120px}
   .xpane{padding:16px;display:grid;gap:14px}
   .throw{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+  @media (max-width:600px){.throw{grid-template-columns:repeat(3,minmax(0,1fr))}}
   .throw select,.thsel{padding:5px 6px;font-size:13px}
   #thPass{grid-template-columns:repeat(4,minmax(0,1fr))}
   .xgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;align-items:start}
@@ -787,7 +788,7 @@
             </select></label>
           </div>
           <label class="muted">メインのキャラ（メイン画像・プロフィール）<select id="thHero" class="thsel"></select></label>
-          <div class="muted" style="font-weight:700">メニューボタンのキャラ（左から順に）</div>
+          <div class="muted" style="font-weight:700">メニューボタンのキャラ（ホーム・トーク・VOOM・TODAY・ウォレット・通話・ニュース・ショッピング・アプリ）</div>
           <div class="throw" id="thMenus"></div>
           <div class="muted" style="font-weight:700">パスコードのキャラ（4つ）</div>
           <div class="throw" id="thPass"></div>
@@ -797,15 +798,15 @@
           <details class="muted"><summary>ファイル名と申請のメモ</summary>
             <ul style="margin:6px 0 0;padding-left:18px;display:grid;gap:4px">
               <li>メイン画像：ios_thumbnail.png（200×284）／android_thumbnail.png（136×202）／store_thumbnail.png（198×278）</li>
-              <li>メニューボタン：i_01〜i_10.png・a_01〜a_10.png（128×150、ホーム→トーク→VOOM→TODAY→ウォレットの順に OFF・ON）</li>
+              <li>メニューボタン（128×150、OFF・ON）：ホーム i_29・30／トーク i_03・04／VOOM i_33・34／TODAY i_31・32／ウォレット i_27・28／通話 i_07・08／ニュース i_25・26／ショッピング i_35・36／アプリ i_37・38（Androidは a_ で同じ番号）</li>
               <li>メニュー背景：i_11.png（1472×150）／パスコード：i_12〜i_19.png（120×120）・a_12〜a_19.png（116×116）</li>
               <li>プロフィール：i_20・i_21.png（240×240）／a_20・a_21.png（247×247）／トーク背景：i_22.png（1482×1334）・a_22.png（1300×1300）</li>
-              <li>メニューボタンの番号は公式ガイドに明記がないため、管理画面の並び（1＝ホーム）に合わせています。申請画面の表示と違うときは、名前を付け直すか1枚ずつ入れてください。</li>
-              <li>iOS 26以降用（80×56）は ios26_ で始まる名前で入っています。管理画面の指定に合わせて入れてください。</li>
+              <li>iOS 26以降用（80×56）：同じ番号の後ろに _g（例：i_29_g.png）</li>
+              <li>管理画面の「ZIPファイル アップロード」にそのまま入れられます。</li>
             </ul>
           </details>
         </div>
-        <div><canvas id="themeCanvas" width="720" height="640" style="width:100%;height:auto;border-radius:12px;background:#f1f5f9"></canvas></div>
+        <div><canvas id="themeCanvas" width="720" height="660" style="width:100%;height:auto;border-radius:12px;background:#f1f5f9"></canvas></div>
       </div>
     </div>
   </section>
@@ -2480,8 +2481,10 @@
 
   // ===================== 着せかえ =====================
   // 仕様：LINE Creators Market 着せかえ制作ガイドライン（詳細）
-  const TH_MENUS = ['ホーム', 'トーク', 'VOOM', 'TODAY', 'ウォレット'];
-  const TH_MENU_KEYS = ['home', 'talk', 'voom', 'today', 'wallet'];
+  // 管理画面のファイル名（[名前, OFF番号]。ONは+1）。iOS 26以降は同じ番号に _g が付く（80×56）
+  const TH_MENU_DEF = [['ホーム', 29], ['トーク', 3], ['VOOM', 33], ['TODAY', 31], ['ウォレット', 27], ['通話', 7], ['ニュース', 25], ['ショッピング', 35], ['アプリ', 37]];
+  const TH_MENUS = TH_MENU_DEF.map(d => d[0]);
+  const TH_PREVIEW = [0, 1, 2, 3, 4];
   function thChars() { return stamps.slice(0, N).map((s, i) => s.img ? i : -1).filter(i => i >= 0); }
   function fillThemeSelects() {
     const ids = thChars();
@@ -2494,7 +2497,7 @@
       const old = [...box.querySelectorAll('select')].map(e => e.value);
       box.innerHTML = Array.from({ length: n }, (_, k) => `<select class="${cls}" aria-label="${cls === 'thm' ? TH_MENUS[k] : 'パスコード' + (k + 1)}">${opt(old[k] !== undefined && ids.includes(Number(old[k])) ? Number(old[k]) : pick(start + k))}</select>`).join('');
     };
-    mk($('thMenus'), 5, 0, 'thm'); mk($('thPass'), 4, 5, 'thp');
+    mk($('thMenus'), TH_MENUS.length, 0, 'thm'); mk($('thPass'), 4, 5, 'thp');
     if (!ids.length) $('themeCanvas').getContext('2d').clearRect(0, 0, 720, 640);
   }
   const thCache = new Map();
@@ -2595,15 +2598,16 @@
     await add('ios_thumbnail.png', thThumb(200, 284, o));
     await add('android_thumbnail.png', thThumb(136, 202, o));
     await add('store_thumbnail.png', thThumb(198, 278, o));
-    for (let k = 0; k < 5; k++) {
-      const img = thChar(o.menus[k]);
-      for (const [pre] of [['i'], ['a']]) {
-        await add(`${pre}_${String(k * 2 + 1).padStart(2, '0')}.png`, thMenuBtn(128, 150, img, false, o));
-        await add(`${pre}_${String(k * 2 + 2).padStart(2, '0')}.png`, thMenuBtn(128, 150, img, true, o));
+    const nn = n => String(n).padStart(2, '0');
+    for (let k = 0; k < TH_MENU_DEF.length; k++) {
+      const img = thChar(o.menus[k]), off = TH_MENU_DEF[k][1];
+      for (const pre of ['i', 'a']) {
+        await add(`${pre}_${nn(off)}.png`, thMenuBtn(128, 150, img, false, o));
+        await add(`${pre}_${nn(off + 1)}.png`, thMenuBtn(128, 150, img, true, o));
       }
       if ($('thIos26').checked) {
-        await add(`ios26_${TH_MENU_KEYS[k]}_off.png`, thMenuBtn(80, 56, img, false, o, true));
-        await add(`ios26_${TH_MENU_KEYS[k]}_on.png`, thMenuBtn(80, 56, img, true, o, true));
+        await add(`i_${nn(off)}_g.png`, thMenuBtn(80, 56, img, false, o, true));
+        await add(`i_${nn(off + 1)}_g.png`, thMenuBtn(80, 56, img, true, o, true));
       }
     }
     await add('i_11.png', thMenuBg(o));
@@ -2637,7 +2641,7 @@
     const mbY = py + ph - 74;
     x.drawImage(thMenuBg(o), 0, 0, 1472, 150, px, mbY, 1472 * 74 / 150, 74);
     for (let k = 0; k < 5; k++) {
-      const b = thMenuBtn(128, 150, thChar(o.menus[k]), k === 1, o), bw = pw / 5;
+      const b = thMenuBtn(128, 150, thChar(o.menus[TH_PREVIEW[k]]), k === 1, o), bw = pw / 5;
       x.drawImage(b, px + bw * k + (bw - 54) / 2, mbY + 2, 54, 63);
       x.fillStyle = k === 1 ? o.main : '#64748b'; x.font = '700 9px sans-serif'; x.fillText(TH_MENUS[k], px + bw * k + bw / 2, mbY + 68);
     }
@@ -2652,8 +2656,8 @@
     x.fillText('パスコード（OFF／ON）', rx, 314);
     for (let k = 0; k < 4; k++) { const img = thChar(o.pass[k]); x.drawImage(thPass(120, img, false, o), rx + k * 88, 324, 80, 80); x.drawImage(thPass(120, img, true, o), rx + k * 88, 410, 80, 80); }
     x.fillText('メニューボタン（OFF／ON）', rx, 516);
-    for (let k = 0; k < 5; k++) { const img = thChar(o.menus[k]); x.drawImage(thMenuBtn(128, 150, img, false, o), rx + k * 70, 524, 34, 40); x.drawImage(thMenuBtn(128, 150, img, true, o), rx + k * 70 + 34, 524, 34, 40); }
-    x.fillStyle = '#64748b'; x.font = '12px sans-serif'; x.fillText('※ 実際の表示は機種で少し変わります', rx, 600);
+    for (let k = 0; k < TH_MENUS.length; k++) { const img = thChar(o.menus[k]), cx2 = rx + (k % 5) * 70, cy2 = 524 + Math.floor(k / 5) * 44; x.drawImage(thMenuBtn(128, 150, img, false, o), cx2, cy2, 30, 35); x.drawImage(thMenuBtn(128, 150, img, true, o), cx2 + 30, cy2, 30, 35); }
+    x.fillStyle = '#64748b'; x.font = '12px sans-serif'; x.fillText('※ 実際の表示は機種で少し変わります', rx, 630);
   }
   ['thMain', 'thBg', 'thAccent', 'thPattern', 'thHero', 'thSub', 'thIos26'].forEach(id => $(id).addEventListener('input', drawThemePreview));
   $('thMenus').addEventListener('change', drawThemePreview); $('thPass').addEventListener('change', drawThemePreview);
