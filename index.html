@@ -31,7 +31,7 @@
       "isAccessibleForFree": true,
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" },
       "description": "AIイラストやまとめ画像をLINEスタンプ・LINE絵文字の規格に整え、背景透過・白フチ・文字入れ・審査チェック・ZIP一括書き出しまで行える無料Webツール。",
-      "featureList": ["ChatGPT・Gemini用のスタンプ画像プロンプト作成", "セリフのテーマ別セットとバランスチェック", "申請タイトル・説明文の文字数チェックと申請チェックリスト", "告知用の一覧画像（X・Instagram）書き出し", "スタンプから絵文字を作成", "吹き出し・文字デザインの保存", "まとめ画像（シート）の自動分割", "背景の自動透過・スポイト・消しゴム", "イラストの白フチ", "エフェクト20種（オーラ・後光・黒いモヤ・集中線・怒りマーク・汗・ハート・Zzzなど）とセリフからのおまかせ", "文字の縦書き・斜め・グラデ・虹色・震え・波打ち", "余白10px・偶数サイズ・1MBの自動チェック", "01.png〜24.png・main.png・tab.pngのZIP一括書き出し", "LINE絵文字（180×180px・001.png〜）モード"],
+      "featureList": ["ChatGPT・Gemini用のスタンプ画像プロンプト作成", "セリフのテーマ別セットとバランスチェック", "申請タイトル・説明文の文字数チェックと申請チェックリスト", "告知用の一覧画像（X・Instagram）書き出し", "スタンプから絵文字を作成", "吹き出し・文字デザインの保存", "まとめ画像（シート）の自動分割", "背景の自動透過・スポイト・消しゴム", "イラストの白フチ", "エフェクト20種（オーラ・後光・黒いモヤ・集中線・怒りマーク・汗・ハート・Zzzなど）とセリフからのおまかせ", "文字の縦書き・斜め・グラデ・虹色・震え・波打ち", "余白10px・偶数サイズ・1MBの自動チェック", "01.png〜24.png・main.png・tab.pngのZIP一括書き出し", "LINE絵文字（180×180px・001.png〜）モード", "スタンプの絵からLINE着せかえ画像一式（メイン画像・メニューボタン・パスコード・プロフィール・トーク背景）を作成"],
       "publisher": { "@type": "Organization", "name": "ちいさなツール工房", "url": "https://zero-kobo.github.io/" }
     },
     {
@@ -223,6 +223,9 @@
   .extras .tabs{border-radius:var(--r) var(--r) 0 0;flex-wrap:wrap}
   .extras .tabs button{flex:1 1 auto;min-width:120px}
   .xpane{padding:16px;display:grid;gap:14px}
+  .throw{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+  .throw select,.thsel{padding:5px 6px;font-size:13px}
+  #thPass{grid-template-columns:repeat(4,minmax(0,1fr))}
   .xgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;align-items:start}
   @media (max-width:860px){.xgrid{grid-template-columns:minmax(0,1fr)}}
   .out{position:relative}
@@ -300,7 +303,7 @@
   <div class="hero">
     <h1>LINEスタンプ・絵文字メーカー<small>無料・登録不要</small></h1>
     <p>AIイラストやまとめ画像から、LINEスタンプ一式（01.png〜・main.png・tab.png）やLINE絵文字一式（001.png〜・tab.png）をZIPで書き出せるツール。背景透過・白フチ・文字入れ・審査チェックまでここで完結します。</p>
-    <div class="badges"><span>✂️ シート自動分割</span><span>🫥 背景を自動で透過</span><span>⚪ イラストに白フチ</span><span>✨ エフェクト20種・マンガ記号</span><span>🔤 縦書き・斜め・虹色文字</span><span>✅ 余白10px・偶数px・1MBを自動チェック</span><span>📦 ZIP一括書き出し</span><span>😀 LINE絵文字（180×180）にも対応</span><span>🤖 AI用プロンプト作成</span><span>📮 申請サポート</span><span>📣 告知画像</span></div>
+    <div class="badges"><span>✂️ シート自動分割</span><span>🫥 背景を自動で透過</span><span>⚪ イラストに白フチ</span><span>✨ エフェクト20種・マンガ記号</span><span>🔤 縦書き・斜め・虹色文字</span><span>✅ 余白10px・偶数px・1MBを自動チェック</span><span>📦 ZIP一括書き出し</span><span>😀 LINE絵文字（180×180）にも対応</span><span>🎨 着せかえ一式も作成</span><span>🤖 AI用プロンプト作成</span><span>📮 申請サポート</span><span>📣 告知画像</span></div>
   </div>
 
   <!-- ===== Strip ===== -->
@@ -310,6 +313,7 @@
         <div class="seg kind" id="kindSeg" role="tablist" aria-label="作るものの種類">
           <button data-kind="stamp" class="on">スタンプ</button>
           <button data-kind="emoji">絵文字</button>
+          <button data-gotheme="1" title="作ったスタンプから着せかえ一式を作る">着せかえ</button>
         </div>
         <select id="setCount" style="width:auto;padding:5px 8px;font-size:13px" aria-label="個数"></select>
         <span class="muted" id="setSummaryShort"></span>
@@ -655,6 +659,7 @@
       <button data-x="lines">📝 セリフセット</button>
       <button data-x="apply">📮 申請サポート</button>
       <button data-x="promo">📣 告知画像</button>
+      <button data-x="theme">🎨 着せかえ</button>
     </div>
 
     <!-- Prompt -->
@@ -761,6 +766,46 @@
           <button class="btn pri" data-act="downloadPromo">🖼️ 告知画像をPNGで保存</button>
         </div>
         <div><canvas id="promoCanvas" width="1200" height="675"></canvas></div>
+      </div>
+    </div>
+    <!-- Theme -->
+    <div class="xpane hidden" id="x-theme">
+      <p class="muted" style="margin:0">作ったスタンプの絵から、LINE着せかえの画像一式（メイン画像・メニューボタン・パスコード・プロフィール・トーク背景など）をまとめて作ります。スタンプの文字とエフェクトは外して使います。</p>
+      <div class="xgrid">
+        <div style="display:grid;gap:10px">
+          <div class="grid2">
+            <div class="colorrow"><input type="color" id="thMain" value="#2563eb">メインの色</div>
+            <div class="colorrow"><input type="color" id="thBg" value="#dbeafe">背景の色</div>
+          </div>
+          <div class="grid2">
+            <div class="colorrow"><input type="color" id="thAccent" value="#fde047">アクセントの色</div>
+            <label class="muted">背景の柄<select id="thPattern">
+              <option value="dots">水玉</option>
+              <option value="stripe">ななめストライプ</option>
+              <option value="chara">キャラを散らす</option>
+              <option value="plain">無地</option>
+            </select></label>
+          </div>
+          <label class="muted">メインのキャラ（メイン画像・プロフィール）<select id="thHero" class="thsel"></select></label>
+          <div class="muted" style="font-weight:700">メニューボタンのキャラ（左から順に）</div>
+          <div class="throw" id="thMenus"></div>
+          <div class="muted" style="font-weight:700">パスコードのキャラ（4つ）</div>
+          <div class="throw" id="thPass"></div>
+          <label class="muted">グループ用プロフィールのもう1体<select id="thSub" class="thsel"></select></label>
+          <label class="chk"><input type="checkbox" id="thIos26" checked>iOS 26以降用の小さいメニューボタン（80×56px）も作る</label>
+          <button class="btn pri" data-act="downloadTheme">📦 着せかえ一式をZIPで書き出し</button>
+          <details class="muted"><summary>ファイル名と申請のメモ</summary>
+            <ul style="margin:6px 0 0;padding-left:18px;display:grid;gap:4px">
+              <li>メイン画像：ios_thumbnail.png（200×284）／android_thumbnail.png（136×202）／store_thumbnail.png（198×278）</li>
+              <li>メニューボタン：i_01〜i_10.png・a_01〜a_10.png（128×150、ホーム→トーク→VOOM→TODAY→ウォレットの順に OFF・ON）</li>
+              <li>メニュー背景：i_11.png（1472×150）／パスコード：i_12〜i_19.png（120×120）・a_12〜a_19.png（116×116）</li>
+              <li>プロフィール：i_20・i_21.png（240×240）／a_20・a_21.png（247×247）／トーク背景：i_22.png（1482×1334）・a_22.png（1300×1300）</li>
+              <li>メニューボタンの番号は公式ガイドに明記がないため、管理画面の並び（1＝ホーム）に合わせています。申請画面の表示と違うときは、名前を付け直すか1枚ずつ入れてください。</li>
+              <li>iOS 26以降用（80×56）は ios26_ で始まる名前で入っています。管理画面の指定に合わせて入れてください。</li>
+            </ul>
+          </details>
+        </div>
+        <div><canvas id="themeCanvas" width="720" height="640" style="width:100%;height:auto;border-radius:12px;background:#f1f5f9"></canvas></div>
       </div>
     </div>
   </section>
@@ -2199,7 +2244,8 @@
   $('xtabs').addEventListener('click', e => {
     const b = e.target.closest('button[data-x]'); if (!b) return;
     $('xtabs').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
-    ['prompt', 'lines', 'apply', 'promo'].forEach(n => $('x-' + n).classList.toggle('hidden', n !== b.dataset.x));
+    ['prompt', 'lines', 'apply', 'promo', 'theme'].forEach(n => $('x-' + n).classList.toggle('hidden', n !== b.dataset.x));
+    if (b.dataset.x === 'theme') { fillThemeSelects(); drawThemePreview(); }
     if (b.dataset.x === 'lines') updateBalance();
     if (b.dataset.x === 'promo') drawPromo();
     track('extras_tab', { tab: b.dataset.x });
@@ -2431,6 +2477,201 @@
     }
   }
   ['prSize', 'prTitle', 'prSub', 'prBg', 'prColor', 'prCredit'].forEach(id => $(id).addEventListener('input', () => drawPromo()));
+
+  // ===================== 着せかえ =====================
+  // 仕様：LINE Creators Market 着せかえ制作ガイドライン（詳細）
+  const TH_MENUS = ['ホーム', 'トーク', 'VOOM', 'TODAY', 'ウォレット'];
+  const TH_MENU_KEYS = ['home', 'talk', 'voom', 'today', 'wallet'];
+  function thChars() { return stamps.slice(0, N).map((s, i) => s.img ? i : -1).filter(i => i >= 0); }
+  function fillThemeSelects() {
+    const ids = thChars();
+    const opt = (sel) => ids.map(i => `<option value="${i}"${i === sel ? ' selected' : ''}>${fileNo(i + 1)}${stamps[i].text.content.trim() ? '：' + stamps[i].text.content.replace(/\n/g, '').slice(0, 8) : ''}</option>`).join('');
+    const pick = (k) => ids.length ? ids[k % ids.length] : 0;
+    const keep = (el, d) => el && el.value !== '' && ids.includes(Number(el.value)) ? Number(el.value) : d;
+    $('thHero').innerHTML = opt(keep($('thHero'), ids.includes(mainIdx) ? mainIdx : pick(0)));
+    $('thSub').innerHTML = opt(keep($('thSub'), pick(1)));
+    const mk = (box, n, start, cls) => {
+      const old = [...box.querySelectorAll('select')].map(e => e.value);
+      box.innerHTML = Array.from({ length: n }, (_, k) => `<select class="${cls}" aria-label="${cls === 'thm' ? TH_MENUS[k] : 'パスコード' + (k + 1)}">${opt(old[k] !== undefined && ids.includes(Number(old[k])) ? Number(old[k]) : pick(start + k))}</select>`).join('');
+    };
+    mk($('thMenus'), 5, 0, 'thm'); mk($('thPass'), 4, 5, 'thp');
+    if (!ids.length) $('themeCanvas').getContext('2d').clearRect(0, 0, 720, 640);
+  }
+  const thCache = new Map();
+  function thChar(i) {
+    const s = stamps[i]; if (!s || !s.img) return null;
+    const key = i + ':' + (s._imgURL || '') + s.x + ':' + s.y + ':' + s.scale + ':' + s.rot + s.flip + s.outline + s.outlineW;
+    if (thCache.has(key)) return thCache.get(key);
+    const full = renderFull(Object.assign({}, s, { aura: 'none', mark: 'none' }), { noText: true });
+    const b = contentBox(full, 10); if (!b) return null;
+    const c = mk(b.x1 - b.x0, b.y1 - b.y0); c.getContext('2d').drawImage(full, -b.x0, -b.y0);
+    thCache.set(key, c); return c;
+  }
+  function fitDraw(x, img, X, Y, w, h, alignBottom) {
+    if (!img) return;
+    const k = Math.min(w / img.width, h / img.height), dw = img.width * k, dh = img.height * k;
+    x.drawImage(img, X + (w - dw) / 2, alignBottom ? Y + h - dh : Y + (h - dh) / 2, dw, dh);
+  }
+  function grayish(img, alpha) {
+    const c = mk(img.width, img.height), x = c.getContext('2d'); x.drawImage(img, 0, 0);
+    const d = x.getImageData(0, 0, c.width, c.height), p = d.data;
+    for (let i = 0; i < p.length; i += 4) { const l = p[i] * .3 + p[i + 1] * .59 + p[i + 2] * .11, v = 120 + l * .45; p[i] = p[i + 1] = p[i + 2] = v; p[i + 3] *= alpha; }
+    x.putImageData(d, 0, 0); return c;
+  }
+  function thOpts() {
+    const v = (id) => $(id).value;
+    const menus = [...document.querySelectorAll('#thMenus select')].map(e => Number(e.value));
+    const pass = [...document.querySelectorAll('#thPass select')].map(e => Number(e.value));
+    return { main: v('thMain'), bg: v('thBg'), acc: v('thAccent'), pat: v('thPattern'), hero: Number(v('thHero')), sub: Number(v('thSub')), menus, pass };
+  }
+  function thPattern(x, w, h, o, scale = 1) {
+    x.fillStyle = o.bg; x.fillRect(0, 0, w, h);
+    if (o.pat === 'dots') {
+      x.fillStyle = o.main + '26'; const g = 36 * scale, r = 6 * scale;
+      for (let yy = 0, row = 0; yy < h + g; yy += g, row++) for (let xx = (row % 2) * g / 2; xx < w + g; xx += g) { x.beginPath(); x.arc(xx, yy, r, 0, Math.PI * 2); x.fill(); }
+    } else if (o.pat === 'stripe') {
+      x.save(); x.strokeStyle = o.main + '1f'; x.lineWidth = 14 * scale;
+      for (let k = -h; k < w + h; k += 44 * scale) { x.beginPath(); x.moveTo(k, 0); x.lineTo(k + h, h); x.stroke(); }
+      x.restore();
+    } else if (o.pat === 'chara') {
+      const imgs = [o.hero, ...o.menus].map(thChar).filter(Boolean); if (!imgs.length) return;
+      const g = 120 * scale; x.save(); x.globalAlpha = .16;
+      let n = 0;
+      for (let yy = 0, row = 0; yy < h + g; yy += g, row++) for (let xx = (row % 2) * g / 2; xx < w + g; xx += g) {
+        const im = imgs[n++ % imgs.length]; x.save(); x.translate(xx, yy); x.rotate(((n * 37) % 30 - 15) * Math.PI / 180); fitDraw(x, im, -g * .32, -g * .32, g * .64, g * .64); x.restore();
+      }
+      x.restore();
+    }
+  }
+  function thThumb(w, h, o) {
+    const c = mk(w, h), x = c.getContext('2d'); const sc = w / 200;
+    thPattern(x, w, h, o, sc * .8);
+    // 下に色の帯、上にキャラ
+    x.fillStyle = o.main; x.fillRect(0, h * .78, w, h * .22);
+    x.fillStyle = o.acc; x.fillRect(0, h * .78, w, 4 * sc);
+    fitDraw(x, thChar(o.hero), w * .1, h * .12, w * .8, h * .7, true);
+    return c;
+  }
+  function thMenuBtn(w, h, img, on, o, small) {
+    const c = mk(w, h), x = c.getContext('2d');
+    const m = small ? 4 : 10, iconH = small ? h - m * 2 : 100; // 128×150は下側にメニュー名が出るので上100px内に置く
+    if (on) { x.fillStyle = o.acc + 'cc'; const r = Math.min(w - m * 2, iconH) / 2 + (small ? 0 : 2); x.beginPath(); x.arc(w / 2, m + iconH / 2, r, 0, Math.PI * 2); x.fill(); }
+    const im = img ? (on ? img : grayish(img, .9)) : null;
+    fitDraw(x, im, m + (small ? 0 : 6), m + (small ? 0 : 6), w - m * 2 - (small ? 0 : 12), iconH - (small ? 0 : 12));
+    return c;
+  }
+  function thPass(sz, img, on, o) {
+    const c = mk(sz, sz), x = c.getContext('2d'), m = Math.round(sz * .08);
+    x.fillStyle = on ? o.main : '#ffffff'; x.strokeStyle = on ? o.main : o.main + '88'; x.lineWidth = Math.max(3, sz * .03);
+    x.beginPath(); x.arc(sz / 2, sz / 2, sz / 2 - m, 0, Math.PI * 2); x.fill(); x.stroke();
+    fitDraw(x, img ? (on ? img : grayish(img, .55)) : null, sz * .2, sz * .2, sz * .6, sz * .6);
+    return c;
+  }
+  function thProfile(sz, imgs, o) {
+    const c = mk(sz, sz), x = c.getContext('2d');
+    thPattern(x, sz, sz, o, sz / 240);
+    x.fillStyle = o.main + '33'; x.beginPath(); x.arc(sz / 2, sz / 2, sz * .42, 0, Math.PI * 2); x.fill();
+    if (imgs.length === 1) fitDraw(x, imgs[0], sz * .17, sz * .14, sz * .66, sz * .72);
+    else { fitDraw(x, imgs[0], sz * .08, sz * .2, sz * .46, sz * .6); fitDraw(x, imgs[1], sz * .46, sz * .2, sz * .46, sz * .6); }
+    return c;
+  }
+  function thMenuBg(o) {
+    const w = 1472, h = 150, c = mk(w, h), x = c.getContext('2d');
+    x.fillStyle = '#ffffff'; x.fillRect(0, 0, w, h);
+    x.fillStyle = o.bg; x.fillRect(0, 0, w, h);
+    // 両端がつながるよう、周期を幅の約数にする
+    x.fillStyle = o.main + '22'; for (let xx = 0; xx < w; xx += 46) { x.beginPath(); x.arc(xx + 23, 75, 6, 0, Math.PI * 2); x.fill(); }
+    x.fillStyle = o.main; x.fillRect(0, 0, w, 5);
+    return c;
+  }
+  function thTalkBg(w, h, o) {
+    const c = mk(w, h), x = c.getContext('2d');
+    thPattern(x, w, h, o, w / 750);
+    return c;
+  }
+  async function buildThemeFiles() {
+    const o = thOpts(), files = [];
+    const add = async (name, cv) => files.push({ name, blob: await toBlob(cv) });
+    await add('ios_thumbnail.png', thThumb(200, 284, o));
+    await add('android_thumbnail.png', thThumb(136, 202, o));
+    await add('store_thumbnail.png', thThumb(198, 278, o));
+    for (let k = 0; k < 5; k++) {
+      const img = thChar(o.menus[k]);
+      for (const [pre] of [['i'], ['a']]) {
+        await add(`${pre}_${String(k * 2 + 1).padStart(2, '0')}.png`, thMenuBtn(128, 150, img, false, o));
+        await add(`${pre}_${String(k * 2 + 2).padStart(2, '0')}.png`, thMenuBtn(128, 150, img, true, o));
+      }
+      if ($('thIos26').checked) {
+        await add(`ios26_${TH_MENU_KEYS[k]}_off.png`, thMenuBtn(80, 56, img, false, o, true));
+        await add(`ios26_${TH_MENU_KEYS[k]}_on.png`, thMenuBtn(80, 56, img, true, o, true));
+      }
+    }
+    await add('i_11.png', thMenuBg(o));
+    for (let k = 0; k < 4; k++) {
+      const img = thChar(o.pass[k]), n = 12 + k * 2;
+      await add(`i_${n}.png`, thPass(120, img, false, o)); await add(`i_${n + 1}.png`, thPass(120, img, true, o));
+      await add(`a_${n}.png`, thPass(116, img, false, o)); await add(`a_${n + 1}.png`, thPass(116, img, true, o));
+    }
+    const hero = thChar(o.hero), sub = thChar(o.sub);
+    await add('i_20.png', thProfile(240, [hero], o)); await add('i_21.png', thProfile(240, [hero, sub].filter(Boolean), o));
+    await add('a_20.png', thProfile(247, [hero], o)); await add('a_21.png', thProfile(247, [hero, sub].filter(Boolean), o));
+    await add('i_22.png', thTalkBg(1482, 1334, o)); await add('a_22.png', thTalkBg(1300, 1300, o));
+    return files;
+  }
+  function drawThemePreview() {
+    const cv = $('themeCanvas'), x = cv.getContext('2d'), W2 = cv.width, H2 = cv.height;
+    x.clearRect(0, 0, W2, H2); x.fillStyle = '#f1f5f9'; x.fillRect(0, 0, W2, H2);
+    if (!thChars().length) { x.fillStyle = '#64748b'; x.font = '700 20px sans-serif'; x.textAlign = 'center'; x.fillText('先にスタンプの画像を入れてください', W2 / 2, H2 / 2); return; }
+    const o = thOpts();
+    // スマホ（トーク画面）
+    const px = 24, py = 20, pw = 300, ph = 600;
+    x.save(); x.beginPath(); x.roundRect(px, py, pw, ph, 28); x.clip();
+    x.drawImage(thTalkBg(1300, 1300, o), 0, 0, 1300, 1300, px - 150, py, 600, 600);
+    x.fillStyle = 'rgba(255,255,255,.92)'; x.fillRect(px, py, pw, 46);
+    x.fillStyle = '#111827'; x.font = '700 15px sans-serif'; x.textAlign = 'center'; x.fillText('トーク', px + pw / 2, py + 29);
+    const bub = (bx, by, bw, mine) => { x.fillStyle = mine ? '#86efac' : '#ffffff'; x.beginPath(); x.roundRect(bx, by, bw, 34, 17); x.fill(); };
+    bub(px + 16, py + 70, 150, false); bub(px + pw - 166, py + 120, 150, true);
+    const st = thChar(o.hero); if (st) fitDraw(x, st, px + 16, py + 170, 110, 96);
+    bub(px + pw - 136, py + 290, 120, true);
+    // メニュー
+    const mbY = py + ph - 74;
+    x.drawImage(thMenuBg(o), 0, 0, 1472, 150, px, mbY, 1472 * 74 / 150, 74);
+    for (let k = 0; k < 5; k++) {
+      const b = thMenuBtn(128, 150, thChar(o.menus[k]), k === 1, o), bw = pw / 5;
+      x.drawImage(b, px + bw * k + (bw - 54) / 2, mbY + 2, 54, 63);
+      x.fillStyle = k === 1 ? o.main : '#64748b'; x.font = '700 9px sans-serif'; x.fillText(TH_MENUS[k], px + bw * k + bw / 2, mbY + 68);
+    }
+    x.restore();
+    x.strokeStyle = '#0f172a'; x.lineWidth = 6; x.beginPath(); x.roundRect(px, py, pw, ph, 28); x.stroke();
+    // 右側：メイン画像・パスコード・プロフィール
+    const rx = 350; x.textAlign = 'left'; x.fillStyle = '#334155'; x.font = '700 13px sans-serif';
+    x.fillText('メイン画像', rx, 34); x.drawImage(thThumb(200, 284, o), rx, 42, 120, 170);
+    x.fillText('プロフィール', rx + 140, 34);
+    const pr = thProfile(240, [thChar(o.hero)], o); x.save(); x.beginPath(); x.arc(rx + 140 + 60, 102, 60, 0, Math.PI * 2); x.clip(); x.drawImage(pr, rx + 140, 42, 120, 120); x.restore();
+    const gr = thProfile(240, [thChar(o.hero), thChar(o.sub)].filter(Boolean), o); x.save(); x.beginPath(); x.arc(rx + 140 + 60, 232, 50, 0, Math.PI * 2); x.clip(); x.drawImage(gr, rx + 150, 182, 100, 100); x.restore();
+    x.fillText('パスコード（OFF／ON）', rx, 314);
+    for (let k = 0; k < 4; k++) { const img = thChar(o.pass[k]); x.drawImage(thPass(120, img, false, o), rx + k * 88, 324, 80, 80); x.drawImage(thPass(120, img, true, o), rx + k * 88, 410, 80, 80); }
+    x.fillText('メニューボタン（OFF／ON）', rx, 516);
+    for (let k = 0; k < 5; k++) { const img = thChar(o.menus[k]); x.drawImage(thMenuBtn(128, 150, img, false, o), rx + k * 70, 524, 34, 40); x.drawImage(thMenuBtn(128, 150, img, true, o), rx + k * 70 + 34, 524, 34, 40); }
+    x.fillStyle = '#64748b'; x.font = '12px sans-serif'; x.fillText('※ 実際の表示は機種で少し変わります', rx, 600);
+  }
+  ['thMain', 'thBg', 'thAccent', 'thPattern', 'thHero', 'thSub', 'thIos26'].forEach(id => $(id).addEventListener('input', drawThemePreview));
+  $('thMenus').addEventListener('change', drawThemePreview); $('thPass').addEventListener('change', drawThemePreview);
+  ACT.downloadTheme = async () => {
+    if (!thChars().length) return toast('先にスタンプの画像を入れてください');
+    toast('着せかえ一式を作っています…');
+    const files = await buildThemeFiles();
+    const big = [];
+    for (const f of files) if (f.blob.size > 1024 * 1024) big.push(f.name);
+    dl(await makeZip(files), 'line_theme_set.zip');
+    toast(big.length ? `書き出しました。${big.join('・')} が1MBを超えています。柄を「無地」にすると軽くなります` : `着せかえ一式（${files.length}枚）を書き出しました`);
+    track('download_theme', { n: files.length });
+  };
+  document.querySelector('[data-gotheme]').addEventListener('click', () => {
+    document.querySelector('#xtabs [data-x=theme]').click();
+    $('extras').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
   ACT.downloadPromo = async () => { await drawPromo(); $('promoCanvas').toBlob(b => dl(b, `line_${KIND}_promo_${$('prSize').value}.png`)); track('download_promo', { size: $('prSize').value }); };
 
   // ---------- Init ----------
