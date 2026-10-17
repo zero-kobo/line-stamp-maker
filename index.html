@@ -353,6 +353,12 @@
         <button class="btn sm" data-act="undo">↩️ 画像を1つ戻す</button>
         <button class="btn sm danger" data-act="clearStamp">🗑️ このスタンプを空にする</button>
       </div>
+      <div class="row" style="margin-top:6px;justify-content:center;align-items:center;gap:8px;flex-wrap:wrap">
+        <label class="muted" for="overlapRange" style="font-size:13px">🔠 キャラを文字に重ねて大きく</label>
+        <input type="range" id="overlapRange" data-bind="overlap" min="0" max="100" step="10" style="width:140px">
+        <span class="muted" id="overlapVal" style="font-size:13px;min-width:3em">0%</span>
+        <button class="btn sm" data-act="overlapAll">全スタンプに</button>
+      </div>
     </section>
 
     <!-- ===== Controls ===== -->
@@ -997,7 +1003,7 @@
   const defaultText = () => ({ content: '', font: FONTS[0].f, size: SPEC[KIND].textSize, x: 50, y: 82, dir: 'horizontal', fx: 'none', fxInt: 50,
     colorMode: 'solid', c1: '#ffffff', c2: '#fde047', stroke: '#059669', strokeW: 8, outer: true, outerColor: '#ffffff', shadow: true, bubble: 'none', bubbleColor: '#ffffff', bubbleLine: '#1e293b' });
   const newStamp = () => ({ raw: null, img: null, x: W / 2, y: H / 2 - 10, scale: 100, rot: 0, flip: false,
-    outline: true, outlineW: SPEC[KIND].outlineW, outlineColor: '#ffffff', aura: 'none', auraColor: '#38bdf8', auraSize: 50, mark: 'none', markColor: '#ef4444', markSize: 50, markFlip: false, text: defaultText(), hist: [], status: 'empty', issues: [], _tbox: null });
+    outline: true, outlineW: SPEC[KIND].outlineW, outlineColor: '#ffffff', aura: 'none', auraColor: '#38bdf8', auraSize: 50, mark: 'none', markColor: '#ef4444', markSize: 50, markFlip: false, overlap: 0, text: defaultText(), hist: [], status: 'empty', issues: [], _tbox: null });
 
   let stamps = Array.from({ length: MAXN }, newStamp);
   let N = 8, cur = 0, mode = 'move', brush = 20;
@@ -1681,7 +1687,9 @@
     const UP = { ame: 2.4, guru: 1.3, pika: 1.9 }, um = UP[s.mark] || 0;
     const up = um ? Math.round((16 + 18 * ((s.markSize ?? 50) / 100)) * Math.min(W, H) / 320 * um) : 0;
     let ry0 = pad + Math.max(ap, up), ry1 = H - pad - ap, rx0 = pad + ap, rx1 = W - pad - ap;
-    const nl = hasText ? t.content.trim().split('\n').length : 0, band = 0.28 + 0.2 * Math.max(0, nl - 1);
+    // overlap: キャラの体の一部を文字のうしろに重ねて、そのぶん絵を大きくする（0〜100%）
+    const ov = Math.min(100, Math.max(0, s.overlap || 0)) / 100;
+    const nl = hasText ? t.content.trim().split('\n').length : 0, band = (0.28 + 0.2 * Math.max(0, nl - 1)) * (1 - 0.65 * ov);
     if (hasText && t.dir !== 'vertical') { if (t.y >= 55) ry1 = H * (1 - band); else if (t.y <= 45) ry0 = H * band; }
     if (hasText && t.dir === 'vertical') { if (t.x >= 55) rx1 = W * 0.70; else if (t.x <= 45) rx0 = W * 0.30; }
     const aw = rx1 - rx0, ah = ry1 - ry0;
@@ -1799,6 +1807,7 @@
     $('c1Label').textContent = s.text.colorMode === 'grad' ? '上側の色' : s.text.colorMode === 'rainbow' ? '（虹色が優先）' : '文字の色';
     if (typeof markFxOn === 'function') { markFxOn(); schedulePreviews(); }
     $('stampTitle').textContent = `${SPEC[KIND].label} ${fileNo(cur + 1)} / ${N}`;
+    $('overlapVal').textContent = (s.overlap || 0) + '%';
     syncShows();
   }
   document.querySelectorAll('[data-bind]').forEach(el => {
@@ -1819,7 +1828,9 @@
     } else {
       el.addEventListener('input', () => {
         const v = el.type === 'checkbox' ? el.checked : (el.type === 'range' || el.type === 'number') ? Number(el.value) : el.value;
-        setP(S(), el.dataset.bind, v); syncShows(); changed();
+        setP(S(), el.dataset.bind, v);
+        if (el.dataset.bind === 'overlap') { const s = S(); if (s.img) autoFit(s); $('overlapVal').textContent = v + '%'; }
+        syncShows(); changed();
       });
     }
   });
@@ -1991,6 +2002,7 @@
     markAll: () => { const s = S(); stamps.forEach(x => { x.mark = s.mark; x.markColor = s.markColor; x.markSize = s.markSize; x.markFlip = s.markFlip; if (x.img) autoFit(x); }); checkAll(); scheduleSave(); requestRender(); toast('マンガ記号を全スタンプに適用しました'); },
     fxAutoOne: () => { const f = suggestFx(S().text.content); if (!f) return toast('先にセリフを入れてください'); applyFx(S(), f); syncUI(); changed(); toast(f.aura === 'none' && f.mark === 'none' ? 'このセリフに合うエフェクトは見つかりませんでした' : 'セリフに合うエフェクトを付けました'); },
     fxAutoAll: () => { let n = 0; stamps.slice(0, N).forEach(x => { const f = suggestFx(x.text.content); if (f && (f.aura !== 'none' || f.mark !== 'none')) { applyFx(x, f); n++; } }); syncUI(); checkAll(); scheduleSave(); requestRender(); toast(n ? `${n}個のスタンプにエフェクトを付けました（合わないものは1個ずつ変えられます）` : 'セリフに合うエフェクトが見つかりませんでした'); },
+    overlapAll: () => { const v = S().overlap || 0; stamps.forEach(x => { x.overlap = v; if (x.img) autoFit(x); }); syncUI(); checkAll(); scheduleSave(); requestRender(); toast(`全スタンプを「重ねて大きく ${v}%」にしました`); },
     fxClearAll: () => { stamps.forEach(x => { x.aura = 'none'; x.mark = 'none'; if (x.img) autoFit(x); }); syncUI(); checkAll(); scheduleSave(); requestRender(); toast('エフェクトを全部はずしました'); },
     outlineAll: () => { const s = S(); stamps.forEach(x => { x.outline = s.outline; x.outlineW = s.outlineW; x.outlineColor = s.outlineColor; }); checkAll(); scheduleSave(); toast('フチ設定を全スタンプに適用しました'); },
     clearText: () => { S().text.content = ''; syncUI(); changed(); },
@@ -2113,7 +2125,7 @@
         if (s.raw && !s._rawURL) s._rawURL = s.raw.toDataURL('image/png');
         if (s.img && !s._imgURL) s._imgURL = s.img.toDataURL('image/png');
         return { raw: s.raw ? s._rawURL : null, img: s.img ? s._imgURL : null, x: s.x, y: s.y, scale: s.scale, rot: s.rot, flip: s.flip,
-          outline: s.outline, outlineW: s.outlineW, outlineColor: s.outlineColor, aura: s.aura, auraColor: s.auraColor, auraSize: s.auraSize, mark: s.mark, markColor: s.markColor, markSize: s.markSize, markFlip: s.markFlip, text: Object.assign({}, s.text) };
+          outline: s.outline, outlineW: s.outlineW, outlineColor: s.outlineColor, aura: s.aura, auraColor: s.auraColor, auraSize: s.auraSize, mark: s.mark, markColor: s.markColor, markSize: s.markSize, markFlip: s.markFlip, overlap: s.overlap, text: Object.assign({}, s.text) };
       }).filter((d, i) => i < p.N || d.raw || d.text.content)
     };
   }
@@ -2131,7 +2143,7 @@
     KIND = keep;
     await Promise.all((o.stamps || []).slice(0, MAXN).map(async (d, i) => {
       const s = fresh[i];
-      ['x', 'y', 'scale', 'rot', 'flip', 'outline', 'outlineW', 'outlineColor', 'aura', 'auraColor', 'auraSize', 'mark', 'markColor', 'markSize', 'markFlip'].forEach(k => { if (d[k] !== undefined) s[k] = d[k]; });
+      ['x', 'y', 'scale', 'rot', 'flip', 'outline', 'outlineW', 'outlineColor', 'aura', 'auraColor', 'auraSize', 'mark', 'markColor', 'markSize', 'markFlip', 'overlap'].forEach(k => { if (d[k] !== undefined) s[k] = d[k]; });
       s.text = Object.assign({}, fresh[i].text, d.text || {});
       if (d.raw) { s.raw = await urlToCanvas(d.raw); s._rawURL = d.raw; }
       if (d.img) { s.img = await urlToCanvas(d.img); s._imgURL = d.img; }
