@@ -994,7 +994,9 @@
     ['くっきり黒', '#facc15', '#f97316', '#111827', '#ffffff'],
     ['ゴールド', '#fffbeb', '#facc15', '#92400e', '#ffffff'],
     ['ロイヤル紫', '#ffffff', '#e9d5ff', '#6d28d9', '#ffffff'],
-    ['あおティラ青', '#ffffff', '#bfdbfe', '#1e3a8a', '#ffffff']
+    ['あおティラ青', '#ffffff', '#bfdbfe', '#1e3a8a', '#ffffff'],
+    ['クリスマス赤', '#ffffff', '#bbf7d0', '#dc2626', '#ffffff'],
+    ['ツリー緑', '#ffffff', '#fecaca', '#15803d', '#ffffff']
   ];
   const RAINBOW = ['#ef4444', '#f97316', '#eab308', '#22c55e', '#06b6d4', '#3b82f6', '#a855f7', '#ec4899'];
   const VROT = new Set(['ー', '〜', '～', '-', '―', '…', '‥', '（', '）', '(', ')', '「', '」', '→', '←', '=', '＝']);
@@ -1203,9 +1205,9 @@
   // ---------- 背景エフェクト（オーラ・後光・黒いモヤ・キラキラ） ----------
   // ctx.filter は古いSafariで効かないので、縮小→拡大でぼかす
   const AURA_LIST = [['none', 'なし'], ['glow', 'オーラ'], ['rainbow', '虹オーラ'], ['holy', '後光'], ['kira', 'キラキラ'], ['fire', '炎'], ['dark', '黒いモヤ'], ['gaan', 'ガーン'], ['shuchu', '集中線'], ['circle', '丸い背景'], ['burst', 'ドカン背景'], ['speed', 'スピード線']];
-  const MARK_LIST = [['none', 'なし'], ['anger', '怒りマーク'], ['ase', '汗'], ['heart', 'ハート'], ['onpu', '音符'], ['zzz', 'Zzz'], ['guru', 'ぐるぐる'], ['exq', '！？'], ['ame', '雨雲'], ['pika', 'ひらめき']];
+  const MARK_LIST = [['none', 'なし'], ['anger', '怒りマーク'], ['ase', '汗'], ['heart', 'ハート'], ['onpu', '音符'], ['zzz', 'Zzz'], ['guru', 'ぐるぐる'], ['exq', '！？'], ['ame', '雨雲'], ['pika', 'ひらめき'], ['yuki', '雪']];
   const AURA_DEF = { glow: '#38bdf8', rainbow: '#ffffff', holy: '#fde047', dark: '#3b0764', kira: '#fde047', fire: '#ef4444', gaan: '#4c1d95', shuchu: '#1f2937', circle: '#fbcfe8', burst: '#fde047', speed: '#94a3b8' };
-  const MARK_DEF = { anger: '#ef4444', ase: '#7dd3fc', heart: '#f472b6', onpu: '#2563eb', zzz: '#3b82f6', guru: '#334155', exq: '#ef4444', ame: '#94a3b8', pika: '#facc15' };
+  const MARK_DEF = { anger: '#ef4444', ase: '#7dd3fc', heart: '#f472b6', onpu: '#2563eb', zzz: '#3b82f6', guru: '#334155', exq: '#ef4444', ame: '#94a3b8', pika: '#facc15', yuki: '#7dd3fc' };
   function softBlur(src, r) {
     let cur = src, w = W, h = H;
     const target = Math.max(1, r / 2);
@@ -1433,6 +1435,22 @@
       o.restore();
       outlined(o, lw, () => { o.beginPath(); o.arc(p.x, p.y, r * .7, 0, Math.PI * 2); }, col, '#a16207');
       o.fillStyle = '#ffffffdd'; o.beginPath(); o.arc(p.x - r * .22, p.y - r * .22, r * .18, 0, Math.PI * 2); o.fill();
+    } else if (s.mark === 'yuki') {
+      // 雪：キャラのまわりにふわふわの雪と結晶を散らす（キャラの上には重ねない）
+      const pts = [[.08,.1,1],[.25,.05,.6],[.45,.08,.8],[.7,.04,.6],[.9,.12,1],[.05,.38,.7],[.95,.4,.8],[.15,.62,.55],[.88,.66,.6],[.33,.22,.5],[.62,.18,.55],[.8,.28,.5],[.2,.3,.45],[.06,.82,.5],[.94,.85,.5]];
+      const sk = Math.max(.8, k * 1.8), inside = (x, y, m) => x > b.x0 + m && x < b.x1 - m && y > b.y0 + m && y < b.y1 - m;
+      pts.forEach(([u, v, m], i) => {
+        const x = M + 6 + u * (W - 2 * M - 12), y = M + 6 + v * (H - 2 * M - 12), rr = r * .45 * m * sk;
+        if (inside(x, y, -rr)) return;
+        if (i % 3 === 0) { // 結晶
+          o.save(); o.lineCap = 'round';
+          for (const [lw2, c] of [[rr * .55, '#ffffff'], [rr * .22, col]]) { o.strokeStyle = c; o.lineWidth = lw2; o.beginPath();
+            for (let a = 0; a < 6; a++) { const t = a * Math.PI / 3, ex = x + Math.cos(t) * rr * 1.6, ey = y + Math.sin(t) * rr * 1.6; o.moveTo(x, y); o.lineTo(ex, ey);
+              const bx = x + Math.cos(t) * rr * 1.0, by = y + Math.sin(t) * rr * 1.0; o.moveTo(bx, by); o.lineTo(bx + Math.cos(t + .7) * rr * .5, by + Math.sin(t + .7) * rr * .5); o.moveTo(bx, by); o.lineTo(bx + Math.cos(t - .7) * rr * .5, by + Math.sin(t - .7) * rr * .5); }
+            o.stroke(); }
+          o.restore();
+        } else outlined(o, Math.max(1.5, rr * .3), () => { o.beginPath(); o.arc(x, y, rr, 0, Math.PI * 2); }, '#ffffff', col);
+      });
     }
     o.globalCompositeOperation = 'destination-in'; o.drawImage(getEdgeFade(), 0, 0);
     return out;
@@ -1449,6 +1467,8 @@
     [/ひらめ|なるほど|わかった|それだ|天才|閃/, 'none', 'pika'],
     [/迷|わから|混乱|目が回|はて/, 'none', 'guru'],
     [/雨|どんより|憂鬱|ゆううつ|しょんぼり|行けない|残念|さみし|寂し/, 'none', 'ame'],
+    [/雪|ゆき|寒|さむ|冬|ふゆ|凍/, 'none', 'yuki'],
+    [/メリ|クリスマス|サンタ|プレゼント/, 'kira', 'none'],
     [/歌|カラオケ|♪|ノリノリ|るんるん|ルンルン|楽し|たのし/, 'kira', 'onpu'],
     [/爆走|向かって|飛んで|ぶっとば/, 'speed', 'none'],
     [/急|ダッシュ|走|遅れ|ギリギリ|いそ/, 'speed', 'ase'],
