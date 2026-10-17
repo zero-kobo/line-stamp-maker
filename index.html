@@ -1204,9 +1204,9 @@
 
   // ---------- 背景エフェクト（オーラ・後光・黒いモヤ・キラキラ） ----------
   // ctx.filter は古いSafariで効かないので、縮小→拡大でぼかす
-  const AURA_LIST = [['none', 'なし'], ['glow', 'オーラ'], ['rainbow', '虹オーラ'], ['holy', '後光'], ['kira', 'キラキラ'], ['fire', '炎'], ['dark', '黒いモヤ'], ['gaan', 'ガーン'], ['shuchu', '集中線'], ['circle', '丸い背景'], ['burst', 'ドカン背景'], ['speed', 'スピード線']];
+  const AURA_LIST = [['none', 'なし'], ['glow', 'オーラ'], ['rainbow', '虹オーラ'], ['holy', '後光'], ['kira', 'キラキラ'], ['fire', '炎'], ['dark', '黒いモヤ'], ['gaan', 'ガーン'], ['shuchu', '集中線'], ['circle', '丸い背景'], ['burst', 'ドカン背景'], ['speed', 'スピード線'], ['bunshin', '影分身'], ['kemuri', 'ドロン煙']];
   const MARK_LIST = [['none', 'なし'], ['anger', '怒りマーク'], ['ase', '汗'], ['heart', 'ハート'], ['onpu', '音符'], ['zzz', 'Zzz'], ['guru', 'ぐるぐる'], ['exq', '！？'], ['ame', '雨雲'], ['pika', 'ひらめき'], ['yuki', '雪']];
-  const AURA_DEF = { glow: '#38bdf8', rainbow: '#ffffff', holy: '#fde047', dark: '#3b0764', kira: '#fde047', fire: '#ef4444', gaan: '#4c1d95', shuchu: '#1f2937', circle: '#fbcfe8', burst: '#fde047', speed: '#94a3b8' };
+  const AURA_DEF = { glow: '#38bdf8', rainbow: '#ffffff', holy: '#fde047', dark: '#3b0764', kira: '#fde047', fire: '#ef4444', gaan: '#4c1d95', shuchu: '#1f2937', circle: '#fbcfe8', burst: '#fde047', speed: '#94a3b8', bunshin: '#a855f7', kemuri: '#e2e8f0' };
   const MARK_DEF = { anger: '#ef4444', ase: '#7dd3fc', heart: '#f472b6', onpu: '#2563eb', zzz: '#3b82f6', guru: '#334155', exq: '#ef4444', ame: '#94a3b8', pika: '#facc15', yuki: '#7dd3fc' };
   function softBlur(src, r) {
     let cur = src, w = W, h = H;
@@ -1331,6 +1331,23 @@
       if (s.aura === 'circle') o.arc(ccx, ccy, R, 0, Math.PI * 2);
       else { const n = 14; for (let i = 0; i < n * 2; i++) { const a = i / (n * 2) * Math.PI * 2 - Math.PI / 2, rr = i % 2 ? R * .72 : R * (1 + (rand() - .5) * .12); o.lineTo(ccx + Math.cos(a) * rr, ccy + Math.sin(a) * rr); } o.closePath(); }
       o.fillStyle = col; o.fill(); o.lineJoin = 'round'; o.lineWidth = 5 * sc; o.strokeStyle = '#ffffff'; o.stroke();
+    } else if (s.aura === 'bunshin') {
+      // 影分身：同じ絵を少し小さく半透明にして左右に並べる（大きさで3体→5体）
+      const bw = b.x1 - b.x0, bx = (b.x0 + b.x1) / 2, fy = b.y1, n = k > .66 ? 2 : 1;
+      for (let j = n; j >= 1; j--) for (const d of [-1, 1]) {
+        const m = 1 - .12 * j, dx = d * bw * (.42 + .3 * (j - 1)) * (n === 2 ? .85 : 1);
+        o.save(); o.globalAlpha = j === 1 ? .75 : .45;
+        o.translate(bx + dx, fy); o.scale(m, m); o.translate(-bx, -fy);
+        o.drawImage(layer, 0, 0); o.globalAlpha *= .45; o.drawImage(tint(layer, col), 0, 0); o.restore();
+      }
+    } else if (s.aura === 'kemuri') {
+      // ドロン煙：足もとと左右にもくもくの白い煙（つながった雲の形）
+      const bw = b.x1 - b.x0, bh = b.y1 - b.y0, R = Math.max(bw, bh) * (.17 + .07 * k), puffs = [];
+      for (let i = 0; i < 9; i++) { const t = Math.PI * (i / 8); puffs.push([cx - Math.cos(t) * bw * .58, b.y1 - bh * .12 - Math.sin(t) * bh * .1, R * (.75 + rand() * .35)]); }
+      puffs.push([cx - bw * .62, b.y0 + bh * .55, R * .75], [cx + bw * .64, b.y0 + bh * .5, R * .7], [cx - bw * .5, b.y0 + bh * .25, R * .5], [cx + bw * .55, b.y0 + bh * .2, R * .45]);
+      const path = () => { o.beginPath(); puffs.forEach(([x, y, r]) => { o.moveTo(x + r, y); o.arc(x, y, r, 0, Math.PI * 2); }); };
+      o.lineJoin = 'round'; path(); o.lineWidth = 7 * sc; o.strokeStyle = '#64748b'; o.stroke(); o.fillStyle = '#ffffff'; o.fill();
+      o.fillStyle = col; puffs.forEach(([x, y, r]) => { o.beginPath(); o.arc(x + r * .3, y + r * .35, r * .5, 0, Math.PI * 2); o.fill(); });
     } else if (s.aura === 'kira') {
       o.globalAlpha = .55; o.drawImage(softBlur(tint(dilate(layer, 6 * sc), col), 10 * sc), 0, 0); o.globalAlpha = 1;
       const n = Math.round(5 + 7 * k), rx = (b.x1 - b.x0) / 2 + 14 * sc, ry = (b.y1 - b.y0) / 2 + 10 * sc, ccy = (b.y0 + b.y1) / 2;
@@ -1470,6 +1487,8 @@
     [/雪|ゆき|寒|さむ|冬|ふゆ|凍/, 'none', 'yuki'],
     [/メリ|クリスマス|サンタ|プレゼント/, 'kira', 'none'],
     [/歌|カラオケ|♪|ノリノリ|るんるん|ルンルン|楽し|たのし/, 'kira', 'onpu'],
+    [/分身|手が足りぬ|全員で/, 'bunshin', 'none'],
+    [/ドロン|忍法|消えます|逃げ/, 'kemuri', 'none'],
     [/爆走|向かって|飛んで|ぶっとば/, 'speed', 'none'],
     [/急|ダッシュ|走|遅れ|ギリギリ|いそ/, 'speed', 'ase'],
     [/おめでと|祝|合格|優勝|最高|やった|すごい|間に合|勝/, 'burst', 'none'],
@@ -1664,7 +1683,7 @@
   // ---------- Auto fit ----------
   function auraPad(s) {
     const k = (s.auraSize ?? 50) / 100, sc = Math.min(W, H) / 320, a = s.aura || 'none';
-    const back = a === 'none' || a === 'gaan' || a === 'shuchu' ? 0 : a === 'holy' ? 16 + 18 * k : a === 'kira' ? 12 + 10 * k : a === 'circle' || a === 'burst' ? 10 + 8 * k : a === 'speed' ? 6 : 8 + 16 * k;
+    const back = a === 'none' || a === 'gaan' || a === 'shuchu' ? 0 : a === 'holy' ? 16 + 18 * k : a === 'kira' ? 12 + 10 * k : a === 'circle' || a === 'burst' ? 10 + 8 * k : a === 'speed' ? 6 : a === 'bunshin' ? 4 : a === 'kemuri' ? 14 + 10 * k : 8 + 16 * k;
     const front = s.mark && s.mark !== 'none' ? 8 + 6 * ((s.markSize ?? 50) / 100) : 0;
     return Math.round(Math.max(back, front) * sc);
   }
@@ -1712,6 +1731,7 @@
     const nl = hasText ? t.content.trim().split('\n').length : 0, band = (0.28 + 0.2 * Math.max(0, nl - 1)) * (1 - 0.65 * ov);
     if (hasText && t.dir !== 'vertical') { if (t.y >= 55) ry1 = H * (1 - band); else if (t.y <= 45) ry0 = H * band; }
     if (hasText && t.dir === 'vertical') { if (t.x >= 55) rx1 = W * 0.70; else if (t.x <= 45) rx0 = W * 0.30; }
+    if (s.aura === 'bunshin') { const q = W * ((s.auraSize ?? 50) > 66 ? .25 : .18); rx0 += q; rx1 -= q; }
     const aw = rx1 - rx0, ah = ry1 - ry0;
     const bw = b.x1 - b.x0, bh = b.y1 - b.y0;
     const sc = Math.min(aw / bw, ah / bh);
