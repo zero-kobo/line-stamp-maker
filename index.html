@@ -591,6 +591,17 @@
           </div>
         </div>
 
+        <div class="box g">
+          <div class="h3">🔠 デカ文字レイアウト</div>
+          <p class="muted" style="margin:0 0 6px">セリフをコマいっぱいに大きく入れて、キャラを右下に小さく添えます。「り」「おけ」「草」など短い返事のスタンプ向け。</p>
+          <label class="lb"><span>キャラの大きさ</span><span id="dekaCharShow">42%</span></label>
+          <input type="range" min="25" max="60" value="42" id="dekaChar">
+          <div class="row" style="margin-top:6px">
+            <button class="btn sm" data-act="dekaOne">このスタンプだけ</button>
+            <button class="btn sm pri" data-act="dekaAll">全スタンプに適用</button>
+          </div>
+        </div>
+
         <div class="box">
           <div class="h3" id="mainTabTitle">🏷️ メイン画像・タブ画像</div>
           <div class="grid2">
@@ -1631,6 +1642,35 @@
     const front = s.mark && s.mark !== 'none' ? 8 + 6 * ((s.markSize ?? 50) / 100) : 0;
     return Math.round(Math.max(back, front) * sc);
   }
+
+  // ---------- デカ文字レイアウト ----------
+  function dekaLayout(s) {
+    const t = s.text, txt = t.content.trim();
+    const kc = Number($('dekaChar').value) / 100;
+    if (s.img) {
+      const b = contentBox(s.img, 20);
+      if (b) {
+        const pad = M + (s.outline ? s.outlineW : 0) + 3;
+        const bw = b.x1 - b.x0, bh = b.y1 - b.y0;
+        const sc = Math.min((H * kc) / bh, (W * kc) / bw);
+        s.scale = Math.round(sc * 1000) / 10; s.rot = 0;
+        const iw = s.img.width, ih = s.img.height;
+        s.x = s.flip ? (W - pad + (b.x0 - iw / 2) * sc) : (W - pad - (b.x1 - iw / 2) * sc);
+        s.y = H - pad - (b.y1 - ih / 2) * sc;
+      }
+    }
+    if (!txt) return;
+    const lines = txt.split('\n'), len = Math.max(...lines.map(l => Array.from(l).length));
+    t.dir = 'horizontal'; t.fx = t.fx === 'grow' ? 'none' : t.fx; t.outer = true;
+    t.strokeW = Math.max(t.strokeW, KIND === 'emoji' ? 6 : 10);
+    const edge = t.strokeW + 5 + M + 4;
+    const byW = (W - edge * 2) / (len * 1.02), byH = (H * (lines.length > 1 ? 0.78 : 0.62)) / (lines.length * 1.12);
+    t.size = Math.max(24, Math.min(Math.round(Math.min(byW, byH)), KIND === 'emoji' ? 120 : 210));
+    t.x = len <= 2 && lines.length === 1 ? 42 : 50;
+    t.y = lines.length > 1 ? 40 : 38;
+  }
+  $('dekaChar').addEventListener('input', () => { $('dekaCharShow').textContent = $('dekaChar').value + '%'; });
+
   function autoFit(s) {
     if (!s.img) return;
     const b = contentBox(s.img, 20); if (!b) return;
@@ -1960,6 +2000,8 @@
       checkAll(); scheduleSave(); toast('文字デザインを全スタンプにコピーしました');
     },
     fillLineup: () => { $('bulkText').value = LINEUP.slice(0, N).join('\n'); },
+    dekaOne: () => { dekaLayout(S()); syncUI(); changed(); toast('デカ文字レイアウトにしました'); },
+    dekaAll: () => { stamps.slice(0, N).forEach(dekaLayout); syncUI(); checkAll(); scheduleSave(); requestRender(); toast('全スタンプをデカ文字レイアウトにしました'); },
     applyBulk: () => {
       const lines = $('bulkText').value.replace(/\r/g, '').split('\n');
       lines.slice(0, N).forEach((l, i) => { stamps[i].text.content = l.trim().replace(/\s*[／]\s*/g, '\n'); });
