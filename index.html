@@ -1204,9 +1204,9 @@
 
   // ---------- 背景エフェクト（オーラ・後光・黒いモヤ・キラキラ） ----------
   // ctx.filter は古いSafariで効かないので、縮小→拡大でぼかす
-  const AURA_LIST = [['none', 'なし'], ['glow', 'オーラ'], ['rainbow', '虹オーラ'], ['holy', '後光'], ['kira', 'キラキラ'], ['fire', '炎'], ['dark', '黒いモヤ'], ['gaan', 'ガーン'], ['shuchu', '集中線'], ['circle', '丸い背景'], ['burst', 'ドカン背景'], ['speed', 'スピード線'], ['bunshin', '影分身'], ['kemuri', 'ドロン煙']];
+  const AURA_LIST = [['none', 'なし'], ['glow', 'オーラ'], ['rainbow', '虹オーラ'], ['holy', '後光'], ['kira', 'キラキラ'], ['fire', '炎'], ['dark', '黒いモヤ'], ['gaan', 'ガーン'], ['shuchu', '集中線'], ['circle', '丸い背景'], ['burst', 'ドカン背景'], ['speed', 'スピード線'], ['bunshin', '影分身'], ['kemuri', 'ドロン煙'], ['kumo', '空と雲']];
   const MARK_LIST = [['none', 'なし'], ['anger', '怒りマーク'], ['ase', '汗'], ['heart', 'ハート'], ['onpu', '音符'], ['zzz', 'Zzz'], ['guru', 'ぐるぐる'], ['exq', '！？'], ['ame', '雨雲'], ['pika', 'ひらめき'], ['yuki', '雪']];
-  const AURA_DEF = { glow: '#38bdf8', rainbow: '#ffffff', holy: '#fde047', dark: '#3b0764', kira: '#fde047', fire: '#ef4444', gaan: '#4c1d95', shuchu: '#1f2937', circle: '#fbcfe8', burst: '#fde047', speed: '#94a3b8', bunshin: '#a855f7', kemuri: '#e2e8f0' };
+  const AURA_DEF = { glow: '#38bdf8', rainbow: '#ffffff', holy: '#fde047', dark: '#3b0764', kira: '#fde047', fire: '#ef4444', gaan: '#4c1d95', shuchu: '#1f2937', circle: '#fbcfe8', burst: '#fde047', speed: '#94a3b8', bunshin: '#a855f7', kemuri: '#e2e8f0', kumo: '#7dd3fc' };
   const MARK_DEF = { anger: '#ef4444', ase: '#7dd3fc', heart: '#f472b6', onpu: '#2563eb', zzz: '#3b82f6', guru: '#334155', exq: '#ef4444', ame: '#94a3b8', pika: '#facc15', yuki: '#7dd3fc' };
   function softBlur(src, r) {
     let cur = src, w = W, h = H;
@@ -1348,6 +1348,17 @@
       const path = () => { o.beginPath(); puffs.forEach(([x, y, r]) => { o.moveTo(x + r, y); o.arc(x, y, r, 0, Math.PI * 2); }); };
       o.lineJoin = 'round'; path(); o.lineWidth = 7 * sc; o.strokeStyle = '#64748b'; o.stroke(); o.fillStyle = '#ffffff'; o.fill();
       o.fillStyle = col; puffs.forEach(([x, y, r]) => { o.beginPath(); o.arc(x + r * .3, y + r * .35, r * .5, 0, Math.PI * 2); o.fill(); });
+    } else if (s.aura === 'kumo') {
+      // 空と雲：うしろに水色の丸い空、足もとに大きな雲、左右に小さな雲
+      const bw = b.x1 - b.x0, bh = b.y1 - b.y0, ccx = (b.x0 + b.x1) / 2, ccy = (b.y0 + b.y1) / 2;
+      const R = Math.min(Math.max(bw, bh) * (.5 + .1 * k), Math.min(ccx - M, W - M - ccx, ccy - M, H - M - ccy) + 30 * sc);
+      o.beginPath(); o.arc(ccx, ccy, R, 0, Math.PI * 2); o.fillStyle = col + '88'; o.fill();
+      const cloud = (x, y, w) => { const ps = [[-.42, .1, .3], [-.18, -.12, .38], [.15, -.08, .34], [.4, .1, .28], [0, .14, .32]];
+        o.beginPath(); ps.forEach(([u, v, r]) => { o.moveTo(x + u * w + r * w, y + v * w); o.arc(x + u * w, y + v * w, r * w, 0, Math.PI * 2); });
+        o.lineWidth = 5 * sc; o.strokeStyle = '#38bdf8'; o.stroke(); o.fillStyle = '#ffffff'; o.fill(); };
+      cloud(ccx, b.y1 - bh * .04, bw * (1.05 + .25 * k));
+      cloud(Math.max(M + 30 * sc, b.x0 - bw * .12), b.y0 + bh * .28, bw * .38);
+      cloud(Math.min(W - M - 30 * sc, b.x1 + bw * .1), b.y0 + bh * .12, bw * .3);
     } else if (s.aura === 'kira') {
       o.globalAlpha = .55; o.drawImage(softBlur(tint(dilate(layer, 6 * sc), col), 10 * sc), 0, 0); o.globalAlpha = 1;
       const n = Math.round(5 + 7 * k), rx = (b.x1 - b.x0) / 2 + 14 * sc, ry = (b.y1 - b.y0) / 2 + 10 * sc, ccy = (b.y0 + b.y1) / 2;
@@ -1489,6 +1500,7 @@
     [/歌|カラオケ|♪|ノリノリ|るんるん|ルンルン|楽し|たのし/, 'kira', 'onpu'],
     [/分身|手が足りぬ|全員で/, 'bunshin', 'none'],
     [/ドロン|忍法|消えます|逃げ/, 'kemuri', 'none'],
+    [/飛ん|飛ぶ|飛べ|空|ひとっ飛び|浮いて|風に乗/, 'kumo', 'none'],
     [/爆走|向かって|飛んで|ぶっとば/, 'speed', 'none'],
     [/急|ダッシュ|走|遅れ|ギリギリ|いそ/, 'speed', 'ase'],
     [/おめでと|祝|合格|優勝|最高|やった|すごい|間に合|勝/, 'burst', 'none'],
@@ -1683,7 +1695,7 @@
   // ---------- Auto fit ----------
   function auraPad(s) {
     const k = (s.auraSize ?? 50) / 100, sc = Math.min(W, H) / 320, a = s.aura || 'none';
-    const back = a === 'none' || a === 'gaan' || a === 'shuchu' ? 0 : a === 'holy' ? 16 + 18 * k : a === 'kira' ? 12 + 10 * k : a === 'circle' || a === 'burst' ? 10 + 8 * k : a === 'speed' ? 6 : a === 'bunshin' ? 4 : a === 'kemuri' ? 14 + 10 * k : 8 + 16 * k;
+    const back = a === 'none' || a === 'gaan' || a === 'shuchu' ? 0 : a === 'holy' ? 16 + 18 * k : a === 'kira' ? 12 + 10 * k : a === 'circle' || a === 'burst' ? 10 + 8 * k : a === 'speed' ? 6 : a === 'bunshin' ? 4 : a === 'kemuri' ? 14 + 10 * k : a === 'kumo' ? 14 + 8 * k : 8 + 16 * k;
     const front = s.mark && s.mark !== 'none' ? 8 + 6 * ((s.markSize ?? 50) / 100) : 0;
     return Math.round(Math.max(back, front) * sc);
   }
