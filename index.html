@@ -615,6 +615,11 @@
             <label class="muted">タブ（96×74）<select id="tabSel"></select></label>
           </div>
           <label class="chk" style="margin-top:6px"><input type="checkbox" id="mainNoText" checked>メイン・タブは文字なし（キャラだけ）にする</label>
+          <div class="row" style="margin-top:6px;gap:6px;align-items:center;flex-wrap:wrap" id="mainFrameRow">
+            <label class="btn sm" style="cursor:pointer">🖼️ キャンペーン用フレームを重ねる<input type="file" id="mainFrameFile" accept="image/png" hidden></label>
+            <button class="btn sm" data-act="mainFrameClear" id="mainFrameClear" hidden>フレームを外す</button>
+            <span class="muted" style="font-size:12px">LINEの特集で配布される240×240の透過PNG。キャラはフレームの内側に収めます</span>
+          </div>
           <div class="mt">
             <div style="text-align:center" id="mainPrevWrap"><canvas id="mainPrev" width="240" height="240" style="width:120px;height:120px"></canvas><div class="muted">main.png</div></div>
             <div style="text-align:center"><canvas id="tabPrev" width="96" height="74" style="width:96px;height:74px"></canvas><div class="muted">tab.png</div></div>
@@ -1618,7 +1623,25 @@
     if (!contentBox(src, 0)) src = renderFull(s);
     return src;
   }
-  const makeMain = () => fitInto(sourceFor(mainIdx), 240, 240, 8);
+  // キャンペーン用フレーム（メイン画像の上に重ねる）
+  let mainFrame = null, mainFrameURL = null, mainFramePad = 8;
+  function setMainFrame(cv, url) {
+    mainFrame = cv; mainFrameURL = cv ? url : null;
+    if (cv) {
+      // 真ん中の行・列で、外側から透明になるところまでをフレームの太さとみなす
+      const f = mk(240, 240), x = f.getContext('2d'); x.drawImage(cv, 0, 0, 240, 240);
+      const d = x.getImageData(0, 0, 240, 240).data, A = (i, j) => d[(j * 240 + i) * 4 + 3];
+      const edge = (get) => { let k = 0; while (k < 110 && get(k) < 40) k++; while (k < 110 && get(k) >= 40) k++; return k; };
+      const t = Math.max(edge(k => A(k, 120)), edge(k => A(239 - k, 120)), edge(k => A(120, k)), edge(k => A(120, 239 - k)));
+      mainFramePad = Math.min(60, t + 8);
+    } else mainFramePad = 8;
+    const c = $('mainFrameClear'); if (c) c.hidden = !cv;
+  }
+  const makeMain = () => {
+    const o = fitInto(sourceFor(mainIdx), 240, 240, mainFrame ? mainFramePad : 8);
+    if (mainFrame) o.getContext('2d').drawImage(mainFrame, 0, 0, 240, 240);
+    return o;
+  };
   const makeTab = () => fitInto(sourceFor(tabIdx), 96, 74, 2);
 
   // ---------- Background removal ----------
@@ -2043,6 +2066,7 @@
   const ACT = {
     prev: () => select(cur - 1),
     next: () => select(cur + 1),
+    mainFrameClear: () => { setMainFrame(null); updateMainTab(); scheduleSave(); toast('フレームを外しました'); },
     autoFit: () => { const s = S(); if (!s.img) return toast('画像がありません'); autoFit(s); syncUI(); changed(); toast('余白に収まるように配置しました'); },
     undo: () => { const s = S(); if (!s.hist.length) return toast('戻せる操作がありません'); s.img = s.hist.pop(); imgEdited(s); changed(); },
     clearStamp: () => { if (!confirm(`${fileNo(cur + 1)}番を空にしますか？`)) return; stamps[cur] = newStamp(); syncUI(); changed(); },
@@ -2184,7 +2208,7 @@
   const liveProj = () => ({ stamps, N, mainIdx, tabIdx, cur });
   function serialize() {
     const all = Object.assign({}, projects, { [KIND]: liveProj() });
-    const out = { v: 2, kind: KIND, mainNoText, trimExport, projects: {} };
+    const out = { v: 2, kind: KIND, mainNoText, trimExport, mainFrame: mainFrameURL, projects: {} };
     for (const k of ['stamp', 'emoji']) if (all[k]) out.projects[k] = serProj(all[k]);
     return out;
   }
@@ -2205,6 +2229,7 @@
   }
   async function deserialize(o) {
     mainNoText = o.mainNoText !== false; trimExport = o.trimExport !== false;
+    setMainFrame(o.mainFrame ? await urlToCanvas(o.mainFrame) : null, o.mainFrame || null);
     $('mainNoText').checked = mainNoText; $('trimExport').checked = trimExport;
     projects.stamp = projects.emoji = null;
     if (o.v === 2 && o.projects) {
@@ -2317,6 +2342,11 @@
   $('mainSel').addEventListener('change', e => { mainIdx = Number(e.target.value); updateMainTab(); scheduleSave(); });
   $('tabSel').addEventListener('change', e => { tabIdx = Number(e.target.value); updateMainTab(); scheduleSave(); });
   $('mainNoText').addEventListener('change', e => { mainNoText = e.target.checked; updateMainTab(); scheduleSave(); });
+  $('mainFrameFile').addEventListener('change', e => {
+    const f = e.target.files[0]; if (!f) return;
+    const r = new FileReader(); r.onload = async () => { setMainFrame(await urlToCanvas(r.result), r.result); updateMainTab(); scheduleSave(); toast('メイン画像にフレームを重ねました'); };
+    r.readAsDataURL(f); e.target.value = '';
+  });
   $('trimExport').addEventListener('change', e => { trimExport = e.target.checked; checkAll(); scheduleSave(); });
   $('tabs').addEventListener('click', e => {
     const b = e.target.closest('button[data-tab]'); if (!b) return;
