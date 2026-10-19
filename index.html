@@ -851,7 +851,7 @@
               <div><label class="lb muted" style="display:flex;justify-content:space-between">消灯の暗さ<span id="thcDimV">55</span></label><input type="range" id="thcDim" min="10" max="90" value="55"></div>
               <div><label class="lb muted" style="display:flex;justify-content:space-between">点灯の光<span id="thcGlowAmtV">35</span></label><input type="range" id="thcGlowAmt" min="0" max="100" value="35"></div>
             </div>
-            <p class="muted" style="margin:4px 0 0">※ 自分のON画像が入っている所は、自動で作らずにその画像を使います（「OFF・ONとも自分の画像」以外でも同じ）。</p>
+            <p class="muted" style="margin:4px 0 0">※ 自分のON画像が入っている所は、自動で作らずにその画像を使います。OFFとONを両方入れた所は、OFFも暗くせずそのまま使います（例：パスコードの「枠だけ → 紋章」）。</p>
           </div>
           <div id="thcSlots" style="display:grid;gap:10px"></div>
           <div class="box">
@@ -2992,7 +2992,8 @@
     const off0 = thcPrep(offE, o), on0 = thcPrep(onE, o), base = off0 || on0;
     if (!base) return { off: null, on: null };
     let off = off0 || on0, on = on0;
-    if (o.auto === 'auto') off = off0 ? thcDim(off0, o.dim) : thcDim(on0, o.dim);
+    // OFFとONを両方自分で入れた所は、作者が描き分けたものなので暗くしない
+    if (o.auto === 'auto' && !(off0 && on0)) off = off0 ? thcDim(off0, o.dim) : thcDim(on0, o.dim);
     if (!on) on = o.auto === 'none' ? base : thcGlowImg(base, o.glow, o.glowAmt);
     // 光の分だけONが小さくならないよう、OFFにも同じ余白をつけてそろえる
     if (on.width > off.width || on.height > off.height) {
