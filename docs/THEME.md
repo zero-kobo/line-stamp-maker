@@ -22,7 +22,21 @@
   buildThemeFiles, drawThemePreview, ACT.downloadTheme
 - TH_MENU_DEF = [['ホーム',29],['トーク',3],['VOOM',33],['TODAY',31],['ウォレット',27],['通話',7],['ニュース',25],['ショッピング',35],['アプリ',37]]
 - 入力：#thMain/#thBg/#thAccent（色）, #thPattern, #thHero, #thSub, #thMenus, #thMenusOn, #thPass, #thIos26
-- 今は「スタンプの絵（キャラ）」から一式を作る作り。キャラのいないデザイン（ネオン・カーボン等）は未対応
+- モード切替 #thModeSeg（thMode = 'chara' / 'custom'）。chara＝スタンプの絵から、custom＝自分の画像から
+
+## 自分の画像で作る（custom、2026-10追加）
+- 入れる所 thc：main / prof / prof2 / menuBg / talk（各1枚）、mOff・mOn（9）、pOff・pOn（4）。保存はIndexedDBのキー 'theme'
+- まとめ画像の分割：ACT.thcSplit（横×縦、ふちを削る%、入れる先を選ぶ。左上から TH_MENUS の順）
+- 背景の抜き方 thcCut：black＝黒を透明（光る絵向け、明るさ→透明度）／corner＝四すみの色を外側から消す／none
+- OFF・ON thcAuto：auto＝OFF1枚から消灯(thcDim)と点灯(thcGlowImg)／onlyOn＝ONだけ自動／none。自分のON画像があればそれを優先
+- パスコードは1つ目だけ入れれば4つ全部に使う
+- メイン・プロフィール・メニュー背景・トーク背景は「すき間を埋める色」の上に中央で切り抜き（不透明になる）
+
+## 書き出し前チェック（両モード共通 ACT.checkTheme → thCheck）
+- 62枚（iOS26なしは44枚）、ファイル名、サイズ、空っぽの画像
+- 不透明：メイン画像（透過不可）、メニュー背景の上0〜100px（透過不可）＝NG。プロフィール・トーク背景の透けは注意
+- 容量：トーク背景1MB以下。超えたら pngIndexed で 256→128→64色のPNGにして軽くする（thLighten）
+- 色：文字・吹き出しの色は自由に選べない。画像登録後に管理画面の「カラースキン」から選ぶ（黒系は白黒系スキン）。トーク背景色も指定できる
 
 ## 出したもの
 - Aotira Theme（あおティラの着せかえ、申請済み）

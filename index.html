@@ -31,7 +31,7 @@
       "isAccessibleForFree": true,
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" },
       "description": "AIイラストやまとめ画像をLINEスタンプ・LINE絵文字の規格に整え、背景透過・白フチ・文字入れ・審査チェック・ZIP一括書き出しまで行える無料Webツール。",
-      "featureList": ["ChatGPT・Gemini用のスタンプ画像プロンプト作成", "セリフのテーマ別セットとバランスチェック", "申請タイトル・説明文の文字数チェックと申請チェックリスト", "告知用の一覧画像（X・Instagram）書き出し", "スタンプから絵文字を作成", "吹き出し・文字デザインの保存", "まとめ画像（シート）の自動分割", "背景の自動透過・スポイト・消しゴム", "イラストの白フチ", "エフェクト20種（オーラ・後光・黒いモヤ・集中線・怒りマーク・汗・ハート・Zzzなど）とセリフからのおまかせ", "文字の縦書き・斜め・グラデ・虹色・震え・波打ち", "余白10px・偶数サイズ・1MBの自動チェック", "01.png〜24.png・main.png・tab.pngのZIP一括書き出し", "LINE絵文字（180×180px・001.png〜）モード", "スタンプの絵からLINE着せかえ画像一式（メイン画像・メニューボタン・パスコード・プロフィール・トーク背景）を作成"],
+      "featureList": ["ChatGPT・Gemini用のスタンプ画像プロンプト作成", "セリフのテーマ別セットとバランスチェック", "申請タイトル・説明文の文字数チェックと申請チェックリスト", "告知用の一覧画像（X・Instagram）書き出し", "スタンプから絵文字を作成", "吹き出し・文字デザインの保存", "まとめ画像（シート）の自動分割", "背景の自動透過・スポイト・消しゴム", "イラストの白フチ", "エフェクト20種（オーラ・後光・黒いモヤ・集中線・怒りマーク・汗・ハート・Zzzなど）とセリフからのおまかせ", "文字の縦書き・斜め・グラデ・虹色・震え・波打ち", "余白10px・偶数サイズ・1MBの自動チェック", "01.png〜24.png・main.png・tab.pngのZIP一括書き出し", "LINE絵文字（180×180px・001.png〜）モード", "スタンプの絵からLINE着せかえ画像一式（メイン画像・メニューボタン・パスコード・プロフィール・トーク背景）を作成", "自分の画像からデザイン系の着せかえを作成（まとめ画像の分割、消灯・点灯の自動作成、62枚・サイズ・1MB・不透明の書き出し前チェック）"],
       "publisher": { "@type": "Organization", "name": "ちいさなツール工房", "url": "https://zero-kobo.github.io/" }
     },
     {
@@ -227,6 +227,11 @@
   @media (max-width:600px){.throw{grid-template-columns:repeat(3,minmax(0,1fr))}}
   .throw select,.thsel{padding:5px 6px;font-size:13px}
   #thPass{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .thcrow{display:grid;grid-template-columns:repeat(auto-fill,minmax(66px,1fr));gap:6px}
+  .thctile{position:relative;border:1px dashed #94a3b8;background:#fbfcfd;border-radius:10px;padding:4px;font-size:10px;font-weight:700;color:var(--sub);display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;line-height:1.3}
+  .thctile canvas{width:100%;height:auto;aspect-ratio:1;border-radius:6px;background:repeating-conic-gradient(#1f2937 0 25%,#111827 0 50%) 0 0/10px 10px}
+  .thctile.has{border-style:solid;border-color:var(--ac)}
+  .thctile .x{position:absolute;right:-6px;top:-6px;width:20px;height:20px;border-radius:50%;background:var(--ng);color:#fff;font-style:normal;font-size:12px;line-height:20px;text-align:center}
   .xgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;align-items:start}
   @media (max-width:860px){.xgrid{grid-template-columns:minmax(0,1fr)}}
   .out{position:relative}
@@ -793,9 +798,72 @@
     </div>
     <!-- Theme -->
     <div class="xpane hidden" id="x-theme">
-      <p class="muted" style="margin:0">作ったスタンプの絵から、LINE着せかえの画像一式（メイン画像・メニューボタン・パスコード・プロフィール・トーク背景など）をまとめて作ります。スタンプの文字とエフェクトは外して使います。</p>
+      <div class="seg" id="thModeSeg">
+        <button data-thmode="chara" class="on">🐾 スタンプのキャラから作る</button>
+        <button data-thmode="custom">🖼️ 自分の画像で作る（デザイン系）</button>
+      </div>
+      <p class="muted" style="margin:0" id="thLead">作ったスタンプの絵から、LINE着せかえの画像一式（メイン画像・メニューボタン・パスコード・プロフィール・トーク背景など）をまとめて作ります。スタンプの文字とエフェクトは外して使います。</p>
       <div class="xgrid">
-        <div style="display:grid;gap:10px">
+        <div style="display:grid;gap:10px" id="thCustom" class="hidden">
+          <div class="grid2">
+            <div class="colorrow"><input type="color" id="thcBg" value="#0b0f14">すき間を埋める色</div>
+            <div class="colorrow"><input type="color" id="thcGlow" value="#22d3ee">光らせる色（点灯）</div>
+          </div>
+          <div class="box">
+            <div style="font-weight:700;font-size:13px">✂️ まとめ画像を分割して入れる</div>
+            <p class="muted" style="margin:2px 0 8px">アイコンが並んだ1枚の画像を、左上から順に切り分けます。順番：<span id="thcOrder"></span></p>
+            <div class="grid2">
+              <label class="muted">入れる先<select id="thcSheetTo">
+                <option value="mOff">メニューボタン（OFF）</option>
+                <option value="mOn">メニューボタン（ON）</option>
+                <option value="pOff">パスコード（OFF）</option>
+                <option value="pOn">パスコード（ON）</option>
+              </select></label>
+              <div class="grid2">
+                <label class="muted">横の数<input type="number" id="thcCols" value="3" min="1" max="10" style="width:100%"></label>
+                <label class="muted">縦の数<input type="number" id="thcRows" value="3" min="1" max="10" style="width:100%"></label>
+              </div>
+            </div>
+            <label class="lb muted" style="display:flex;justify-content:space-between;margin-top:6px">ふちを少し削る（線やすき間を消す）<span id="thcInsetV">4%</span></label>
+            <input type="range" id="thcInset" min="0" max="15" value="4">
+            <canvas id="thcSheetCv" width="360" height="0" style="width:100%;height:auto;border-radius:8px;margin-top:6px"></canvas>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">
+              <button class="btn sm" data-act="thcPickSheet">🖼️ まとめ画像を選ぶ</button>
+              <button class="btn sm pri" data-act="thcSplit">✂️ 分割して入れる</button>
+            </div>
+            <input type="file" id="thcSheetFile" accept="image/*" hidden>
+          </div>
+          <div class="box">
+            <div style="font-weight:700;font-size:13px">💡 メニュー・パスコードの仕上げ</div>
+            <label class="muted" style="margin-top:6px;display:block">背景の抜き方<select id="thcCut">
+              <option value="none">抜かない（画像のまま使う）</option>
+              <option value="black" selected>黒を透明にする（ネオン・光る絵に向く）</option>
+              <option value="corner">四すみの色を消す（無地の背景に向く）</option>
+            </select></label>
+            <label class="lb muted" style="display:flex;justify-content:space-between;margin-top:6px">抜く強さ<span id="thcTolV">40</span></label>
+            <input type="range" id="thcTol" min="5" max="120" value="40">
+            <label class="muted" style="margin-top:6px;display:block">OFF・ONの作り方<select id="thcAuto">
+              <option value="auto" selected>OFFの画像1枚から、消灯（OFF）と点灯（ON）を自動で作る</option>
+              <option value="onlyOn">OFFはそのまま。ONだけ光らせて自動で作る</option>
+              <option value="none">OFF・ONとも自分の画像を使う</option>
+            </select></label>
+            <div class="grid2" style="margin-top:6px">
+              <div><label class="lb muted" style="display:flex;justify-content:space-between">消灯の暗さ<span id="thcDimV">55</span></label><input type="range" id="thcDim" min="10" max="90" value="55"></div>
+              <div><label class="lb muted" style="display:flex;justify-content:space-between">点灯の光<span id="thcGlowAmtV">60</span></label><input type="range" id="thcGlowAmt" min="0" max="100" value="60"></div>
+            </div>
+            <p class="muted" style="margin:4px 0 0">※ 自分のON画像が入っている所は、自動で作らずにその画像を使います（「OFF・ONとも自分の画像」以外でも同じ）。</p>
+          </div>
+          <div id="thcSlots" style="display:grid;gap:10px"></div>
+          <input type="file" id="thcSlotFile" accept="image/*" hidden>
+          <label class="chk"><input type="checkbox" id="thcIos26" checked>iOS 26以降用の小さいメニューボタン（80×56px）も作る</label>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <button class="btn" data-act="checkTheme">🔍 書き出し前のチェック</button>
+            <button class="btn pri" data-act="downloadTheme">📦 着せかえ一式をZIPで書き出し</button>
+            <button class="btn sm ghost danger" data-act="thcClear">全部消す</button>
+          </div>
+          <ul class="issues" id="thcCheck"></ul>
+        </div>
+        <div style="display:grid;gap:10px" id="thChara">
           <div class="grid2">
             <div class="colorrow"><input type="color" id="thMain" value="#2563eb">メインの色</div>
             <div class="colorrow"><input type="color" id="thBg" value="#dbeafe">背景の色</div>
@@ -818,7 +886,14 @@
           <div class="throw" id="thPass"></div>
           <label class="muted">グループ用プロフィールのもう1体<select id="thSub" class="thsel"></select></label>
           <label class="chk"><input type="checkbox" id="thIos26" checked>iOS 26以降用の小さいメニューボタン（80×56px）も作る</label>
-          <button class="btn pri" data-act="downloadTheme">📦 着せかえ一式をZIPで書き出し</button>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <button class="btn" data-act="checkTheme">🔍 書き出し前のチェック</button>
+            <button class="btn pri" data-act="downloadTheme">📦 着せかえ一式をZIPで書き出し</button>
+          </div>
+          <ul class="issues" id="thChkChara"></ul>
+        </div>
+        <div style="display:grid;gap:10px;align-content:start">
+          <canvas id="themeCanvas" width="720" height="660" style="width:100%;height:auto;border-radius:12px;background:#f1f5f9"></canvas>
           <details class="muted"><summary>ファイル名と申請のメモ</summary>
             <ul style="margin:6px 0 0;padding-left:18px;display:grid;gap:4px">
               <li>メイン画像：ios_thumbnail.png（200×284）／android_thumbnail.png（136×202）／store_thumbnail.png（198×278）</li>
@@ -828,10 +903,11 @@
               <li>iOS 26以降用（80×56）：同じ番号の後ろに _g（例：i_29_g.png）</li>
               <li>合計62枚（iOS 26用を外すと44枚）。管理画面の「ZIPファイル アップロード」にそのまま入れられます。</li>
               <li>メニューボタンの右上（上から49px・右から21px）に通知バッジが重なります。</li>
+              <li>不透明にする所：メイン画像（透過不可）、メニュー背景の上0〜100px（透過不可）。プロフィールは四すみまで表示されるので不透明がおすすめ。トーク背景は1MB以下。</li>
+              <li>文字や吹き出しの色は、画像を登録したあとに管理画面の「カラースキン」から選びます（自由な色指定ではなく、用意された中から選ぶ方式）。黒系の着せかえは、白黒系のスキンを選び、トーク背景の色も合わせます。</li>
             </ul>
           </details>
         </div>
-        <div><canvas id="themeCanvas" width="720" height="660" style="width:100%;height:auto;border-radius:12px;background:#f1f5f9"></canvas></div>
       </div>
     </div>
   </section>
@@ -2627,6 +2703,7 @@
   const TH_MENU_DEF = [['ホーム', 29], ['トーク', 3], ['VOOM', 33], ['TODAY', 31], ['ウォレット', 27], ['通話', 7], ['ニュース', 25], ['ショッピング', 35], ['アプリ', 37]];
   const TH_MENUS = TH_MENU_DEF.map(d => d[0]);
   const TH_PREVIEW = [0, 1, 2, 3, 4];
+  let thMode = 'chara'; // 'chara'＝スタンプのキャラから / 'custom'＝自分の画像から
   function thChars() { return stamps.slice(0, N).map((s, i) => s.img ? i : -1).filter(i => i >= 0); }
   function fillThemeSelects() {
     const ids = thChars();
@@ -2773,6 +2850,7 @@
     return files;
   }
   function drawThemePreview() {
+    if (thMode === 'custom') return thcPreviewSoon();
     const cv = $('themeCanvas'), x = cv.getContext('2d'), W2 = cv.width, H2 = cv.height;
     x.clearRect(0, 0, W2, H2); x.fillStyle = '#f1f5f9'; x.fillRect(0, 0, W2, H2);
     if (!thChars().length) { x.fillStyle = '#64748b'; x.font = '700 20px sans-serif'; x.textAlign = 'center'; x.fillText('先にスタンプの画像を入れてください', W2 / 2, H2 / 2); return; }
@@ -2811,16 +2889,460 @@
   }
   ['thMain', 'thBg', 'thAccent', 'thPattern', 'thHero', 'thSub', 'thIos26'].forEach(id => $(id).addEventListener('input', drawThemePreview));
   $('thMenus').addEventListener('change', drawThemePreview); $('thMenusOn').addEventListener('change', drawThemePreview); $('thPass').addEventListener('change', drawThemePreview);
-  ACT.downloadTheme = async () => {
-    if (!thChars().length) return toast('先にスタンプの画像を入れてください');
-    toast('着せかえ一式を作っています…');
-    const files = await buildThemeFiles();
-    const big = [];
-    for (const f of files) if (f.blob.size > 1024 * 1024) big.push(f.name);
-    dl(await makeZip(files), 'line_theme_set.zip');
-    toast(big.length ? `書き出しました。${big.join('・')} が1MBを超えています。柄を「無地」にすると軽くなります` : `着せかえ一式（${files.length}枚）を書き出しました`);
-    track('download_theme', { n: files.length });
+  // ---------- 着せかえ：自分の画像で作る（デザイン系） ----------
+  const THC_ARR = { mOff: 9, mOn: 9, pOff: 4, pOn: 4 };
+  const THC_SINGLE = { main: 'メイン画像', prof: 'プロフィール', prof2: 'グループ用（空なら同じ）', menuBg: 'メニュー背景（横長）', talk: 'トーク背景' };
+  const THC_MAX = { main: 1400, prof: 1000, prof2: 1000, menuBg: 3000, talk: 2400, mOff: 520, mOn: 520, pOff: 520, pOn: 520 };
+  const thc = { main: null, prof: null, prof2: null, menuBg: null, talk: null, mOff: Array(9).fill(null), mOn: Array(9).fill(null), pOff: Array(4).fill(null), pOn: Array(4).fill(null) };
+  let thcSheet = null, thcPendingSlot = null;
+  const thcGet = (slot) => { const [k, i] = slot.split(':'); return i === undefined ? thc[k] : thc[k][Number(i)]; };
+  const thcSet = (slot, v) => { const [k, i] = slot.split(':'); if (i === undefined) thc[k] = v; else thc[k][Number(i)] = v; };
+  async function thcLoad(blob, max) {
+    const bm = await createImageBitmap(blob);
+    const k = Math.min(1, max / Math.max(bm.width, bm.height));
+    const c = mk(Math.max(1, Math.round(bm.width * k)), Math.max(1, Math.round(bm.height * k)));
+    const x = c.getContext('2d'); x.imageSmoothingQuality = 'high'; x.drawImage(bm, 0, 0, c.width, c.height);
+    bm.close && bm.close(); return c;
+  }
+  const thcCv = (e) => e ? e.cv : null;
+  // --- 画像の加工 ---
+  function thcCutBlack(src, tol) {
+    const c = mk(src.width, src.height), x = c.getContext('2d'); x.drawImage(src, 0, 0);
+    const d = x.getImageData(0, 0, c.width, c.height), p = d.data, t = tol * .6;
+    for (let i = 0; i < p.length; i += 4) {
+      const m = Math.max(p[i], p[i + 1], p[i + 2]);
+      const a = m <= t ? 0 : (m - t) / (255 - t);
+      if (a <= 0) { p[i + 3] = 0; continue; }
+      // 黒の上の光 ＝ 色×透明度 なので、透明度で割って元の色に戻す
+      p[i] = Math.min(255, p[i] / a); p[i + 1] = Math.min(255, p[i + 1] / a); p[i + 2] = Math.min(255, p[i + 2] / a);
+      p[i + 3] = Math.round(p[i + 3] * a);
+    }
+    x.putImageData(d, 0, 0); return c;
+  }
+  function thcCutCorner(src, tol) {
+    const w = src.width, h = src.height, c = mk(w, h), x = c.getContext('2d'); x.drawImage(src, 0, 0);
+    const d = x.getImageData(0, 0, w, h), p = d.data;
+    const s = Math.max(1, Math.round(Math.min(w, h) * .02));
+    const corner = (cx, cy) => { let r = 0, g = 0, b = 0, n = 0; for (let yy = cy; yy < cy + s; yy++) for (let xx = cx; xx < cx + s; xx++) { const i = (yy * w + xx) * 4; r += p[i]; g += p[i + 1]; b += p[i + 2]; n++; } return [r / n, g / n, b / n]; };
+    const cs = [corner(0, 0), corner(w - s, 0), corner(0, h - s), corner(w - s, h - s)];
+    const dist = (i) => { let m = 1e9; for (const k of cs) { const dr = p[i] - k[0], dg = p[i + 1] - k[1], db = p[i + 2] - k[2]; m = Math.min(m, Math.sqrt(dr * dr + dg * dg + db * db)); } return m; };
+    const mark = new Uint8Array(w * h), q = new Int32Array(w * h); let qh = 0, qt = 0;
+    const push = (k) => { if (!mark[k] && dist(k * 4) < tol) { mark[k] = 1; q[qt++] = k; } };
+    for (let xx = 0; xx < w; xx++) { push(xx); push((h - 1) * w + xx); }
+    for (let yy = 0; yy < h; yy++) { push(yy * w); push(yy * w + w - 1); }
+    while (qh < qt) { const k = q[qh++], xx = k % w, yy = (k - xx) / w; if (xx > 0) push(k - 1); if (xx < w - 1) push(k + 1); if (yy > 0) push(k - w); if (yy < h - 1) push(k + w); }
+    for (let k = 0; k < w * h; k++) {
+      if (mark[k]) { p[k * 4 + 3] = 0; continue; }
+      const xx = k % w, yy = (k - xx) / w;
+      const near = (xx > 0 && mark[k - 1]) || (xx < w - 1 && mark[k + 1]) || (yy > 0 && mark[k - w]) || (yy < h - 1 && mark[k + w]);
+      if (near) { const dd = dist(k * 4); if (dd < tol * 1.8) p[k * 4 + 3] = Math.round(p[k * 4 + 3] * Math.min(1, (dd - tol) / (tol * .8) + .25)); }
+    }
+    x.putImageData(d, 0, 0); return c;
+  }
+  function thcTrim(src) {
+    const w = src.width, h = src.height, p = src.getContext('2d').getImageData(0, 0, w, h).data;
+    let x0 = w, y0 = h, x1 = -1, y1 = -1;
+    for (let yy = 0; yy < h; yy++) for (let xx = 0; xx < w; xx++) if (p[(yy * w + xx) * 4 + 3] > 16) { if (xx < x0) x0 = xx; if (xx > x1) x1 = xx; if (yy < y0) y0 = yy; if (yy > y1) y1 = yy; }
+    if (x1 < 0) return src;
+    const pad = 2; x0 = Math.max(0, x0 - pad); y0 = Math.max(0, y0 - pad); x1 = Math.min(w - 1, x1 + pad); y1 = Math.min(h - 1, y1 + pad);
+    const c = mk(x1 - x0 + 1, y1 - y0 + 1); c.getContext('2d').drawImage(src, -x0, -y0); return c;
+  }
+  // 消灯：色を抜いて暗くする
+  function thcDim(src, amt) {
+    const c = mk(src.width, src.height), x = c.getContext('2d'); x.drawImage(src, 0, 0);
+    const d = x.getImageData(0, 0, c.width, c.height), p = d.data, k = 1 - amt / 100, s = .65;
+    for (let i = 0; i < p.length; i += 4) { const l = p[i] * .3 + p[i + 1] * .59 + p[i + 2] * .11; p[i] = (p[i] * (1 - s) + l * s) * k; p[i + 1] = (p[i + 1] * (1 - s) + l * s) * k; p[i + 2] = (p[i + 2] * (1 - s) + l * s) * k; }
+    x.putImageData(d, 0, 0); return c;
+  }
+  // 点灯：明るくして、外側に光をつける
+  function thcGlowImg(src, col, amt) {
+    const b = mk(src.width, src.height), bx = b.getContext('2d'); bx.drawImage(src, 0, 0);
+    const d = bx.getImageData(0, 0, b.width, b.height), p = d.data, up = 1 + amt / 400;
+    for (let i = 0; i < p.length; i += 4) { p[i] = Math.min(255, p[i] * up + 10); p[i + 1] = Math.min(255, p[i + 1] * up + 10); p[i + 2] = Math.min(255, p[i + 2] * up + 10); }
+    bx.putImageData(d, 0, 0);
+    if (amt <= 0) return b;
+    const pad = Math.round(Math.max(src.width, src.height) * .14 * amt / 100) + 2;
+    const c = mk(src.width + pad * 2, src.height + pad * 2), x = c.getContext('2d');
+    x.shadowColor = col; x.shadowBlur = pad * .9; x.drawImage(b, pad, pad);
+    x.shadowBlur = pad * .35; x.drawImage(b, pad, pad);
+    x.shadowBlur = 0; x.shadowColor = 'transparent'; x.drawImage(b, pad, pad);
+    return c;
+  }
+  function thcOpts() {
+    const v = id => $(id).value;
+    return { bg: v('thcBg'), glow: v('thcGlow'), cut: v('thcCut'), tol: Number(v('thcTol')), auto: v('thcAuto'), dim: Number(v('thcDim')), glowAmt: Number(v('thcGlowAmt')), ios26: $('thcIos26').checked };
+  }
+  const thcProcCache = new Map();
+  function thcPrep(e, o) {
+    if (!e) return null;
+    const key = e.id + '|' + o.cut + o.tol;
+    if (thcProcCache.has(key)) return thcProcCache.get(key);
+    let c = e.cv;
+    if (o.cut === 'black') c = thcTrim(thcCutBlack(c, o.tol)); else if (o.cut === 'corner') c = thcTrim(thcCutCorner(c, o.tol));
+    if (thcProcCache.size > 120) thcProcCache.clear();
+    thcProcCache.set(key, c); return c;
+  }
+  // メニュー・パスコードのOFF/ON（加工済みの絵）
+  function thcPair(offE, onE, o) {
+    const off0 = thcPrep(offE, o), on0 = thcPrep(onE, o), base = off0 || on0;
+    if (!base) return { off: null, on: null };
+    let off = off0 || on0, on = on0;
+    if (o.auto === 'auto') off = off0 ? thcDim(off0, o.dim) : thcDim(on0, o.dim);
+    if (!on) on = o.auto === 'none' ? base : thcGlowImg(base, o.glow, o.glowAmt);
+    return { off, on };
+  }
+  function thcIcons(o) {
+    const menu = [], pass = [];
+    for (let k = 0; k < 9; k++) menu.push(thcPair(thc.mOff[k], thc.mOn[k], o));
+    for (let k = 0; k < 4; k++) { const offE = thc.pOff[k] || thc.pOff[0], onE = thc.pOn[k] || (thc.pOff[k] ? null : thc.pOn[0]); pass.push(thcPair(offE, onE, o)); }
+    return { menu, pass };
+  }
+  function coverDraw(x, img, X, Y, w, h) {
+    if (!img) return;
+    const k = Math.max(w / img.width, h / img.height), sw = w / k, sh = h / k;
+    x.drawImage(img, (img.width - sw) / 2, (img.height - sh) / 2, sw, sh, X, Y, w, h);
+  }
+  function isOpaque(cv) { const p = cv.getContext('2d').getImageData(0, 0, cv.width, cv.height).data; for (let i = 3; i < p.length; i += 16) if (p[i] < 250) return false; return true; }
+  function thcFull(w, h, e, o) { const c = mk(w, h), x = c.getContext('2d'); x.fillStyle = o.bg; x.fillRect(0, 0, w, h); x.imageSmoothingQuality = 'high'; coverDraw(x, thcCv(e), 0, 0, w, h); return c; }
+  function thcMenuBtn(w, h, img, small) {
+    const c = mk(w, h), x = c.getContext('2d'); x.imageSmoothingQuality = 'high';
+    if (small) fitDraw(x, img, 4, 4, w - 8, h - 8); else fitDraw(x, img, 14, 12, w - 28, 92);
+    return c;
+  }
+  function thcPass(sz, img) {
+    const c = mk(sz, sz), x = c.getContext('2d'); x.imageSmoothingQuality = 'high';
+    if (!img) return c;
+    if (isOpaque(img)) coverDraw(x, img, 0, 0, sz, sz); else { const m = Math.round(sz * .05); fitDraw(x, img, m, m, sz - m * 2, sz - m * 2); }
+    return c;
+  }
+  async function buildCustomThemeFiles() {
+    const o = thcOpts(), files = [], ic = thcIcons(o);
+    const add = async (name, cv) => files.push({ name, blob: await toBlob(cv) });
+    await add('ios_thumbnail.png', thcFull(200, 284, thc.main, o));
+    await add('android_thumbnail.png', thcFull(136, 202, thc.main, o));
+    await add('store_thumbnail.png', thcFull(198, 278, thc.main, o));
+    const nn = n => String(n).padStart(2, '0');
+    for (let k = 0; k < TH_MENU_DEF.length; k++) {
+      const off = TH_MENU_DEF[k][1], pr = ic.menu[k];
+      await add(`i_${nn(off)}.png`, thcMenuBtn(128, 150, pr.off)); await add(`i_${nn(off + 1)}.png`, thcMenuBtn(128, 150, pr.on));
+      if (o.ios26) { await add(`i_${nn(off)}_g.png`, thcMenuBtn(80, 56, pr.off, true)); await add(`i_${nn(off + 1)}_g.png`, thcMenuBtn(80, 56, pr.on, true)); }
+    }
+    await add('i_11.png', thcFull(1472, 150, thc.menuBg, o));
+    for (let k = 0; k < 4; k++) {
+      const pr = ic.pass[k], n = 12 + k * 2;
+      await add(`i_${n}.png`, thcPass(120, pr.off)); await add(`i_${n + 1}.png`, thcPass(120, pr.on));
+      await add(`a_${n}.png`, thcPass(116, pr.off)); await add(`a_${n + 1}.png`, thcPass(116, pr.on));
+    }
+    const p2 = thc.prof2 || thc.prof;
+    await add('i_20.png', thcFull(240, 240, thc.prof, o)); await add('i_21.png', thcFull(240, 240, p2, o));
+    await add('a_20.png', thcFull(247, 247, thc.prof, o)); await add('a_21.png', thcFull(247, 247, p2, o));
+    await add('i_22.png', thcFull(1482, 1334, thc.talk, o)); await add('a_22.png', thcFull(1300, 1300, thc.talk, o));
+    return files;
+  }
+  // --- 1MBを超えたPNGを256色にして軽くする（見た目はほぼ同じ） ---
+  async function pngIndexed(cv, colors = 256) {
+    if (typeof CompressionStream === 'undefined') return null;
+    const w = cv.width, h = cv.height, d = cv.getContext('2d').getImageData(0, 0, w, h).data;
+    for (let i = 3; i < d.length; i += 4) if (d[i] < 255) return null;
+    const step = Math.max(1, Math.floor(w * h / 90000)), sm = [];
+    for (let i = 0; i < w * h; i += step) sm.push(i * 4);
+    let boxes = [Int32Array.from(sm)];
+    const range = (b) => { let mn = [255, 255, 255], mx = [0, 0, 0]; for (const i of b) for (let ch = 0; ch < 3; ch++) { const v = d[i + ch]; if (v < mn[ch]) mn[ch] = v; if (v > mx[ch]) mx[ch] = v; } const r = mx.map((v, ch) => v - mn[ch]); const ch = r.indexOf(Math.max(...r)); return { ch, r: r[ch] }; };
+    while (boxes.length < colors) {
+      let bi = -1, best = 0, bch = 0;
+      boxes.forEach((b, k) => { if (b.length < 2) return; const { ch, r } = range(b); const sc = r * Math.sqrt(b.length); if (sc > best) { best = sc; bi = k; bch = ch; } });
+      if (bi < 0) break;
+      const b = boxes[bi], keys = new Float64Array(b.length);
+      for (let j = 0; j < b.length; j++) keys[j] = d[b[j] + bch] * 1e7 + b[j];
+      keys.sort(); const half = b.length >> 1;
+      const A = new Int32Array(half), B = new Int32Array(b.length - half);
+      for (let j = 0; j < b.length; j++) { const v = keys[j] % 1e7; if (j < half) A[j] = v; else B[j - half] = v; }
+      boxes.splice(bi, 1, A, B);
+    }
+    const pal = boxes.map(b => { let r = 0, g = 0, bl = 0; for (const i of b) { r += d[i]; g += d[i + 1]; bl += d[i + 2]; } const n = b.length || 1; return [Math.round(r / n), Math.round(g / n), Math.round(bl / n)]; });
+    const lut = new Int16Array(1 << 18).fill(-1);
+    const near = (r, g, b) => { let bi = 0, bd = 1e9; for (let k = 0; k < pal.length; k++) { const dr = r - pal[k][0], dg = g - pal[k][1], db = b - pal[k][2], dd = dr * dr + dg * dg + db * db; if (dd < bd) { bd = dd; bi = k; } } return bi; };
+    const bayer = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5];
+    const raw = new Uint8Array(h * (w + 1));
+    for (let yy = 0; yy < h; yy++) {
+      raw[yy * (w + 1)] = 0;
+      for (let xx = 0; xx < w; xx++) {
+        const i = (yy * w + xx) * 4, o = (bayer[(yy & 3) * 4 + (xx & 3)] / 16 - .47) * 6;
+        const r = Math.max(0, Math.min(255, d[i] + o)), g = Math.max(0, Math.min(255, d[i + 1] + o)), b = Math.max(0, Math.min(255, d[i + 2] + o));
+        const key = (r >> 2) << 12 | (g >> 2) << 6 | (b >> 2);
+        let v = lut[key]; if (v < 0) v = lut[key] = near(r, g, b);
+        raw[yy * (w + 1) + 1 + xx] = v;
+      }
+    }
+    const z = new Uint8Array(await new Response(new Blob([raw]).stream().pipeThrough(new CompressionStream('deflate'))).arrayBuffer());
+    const chunk = (type, data) => {
+      const t = new TextEncoder().encode(type), all = new Uint8Array(8 + data.length + 4), dv = new DataView(all.buffer);
+      dv.setUint32(0, data.length); all.set(t, 4); all.set(data, 8);
+      const cr = new Uint8Array(4 + data.length); cr.set(t); cr.set(data, 4); dv.setUint32(8 + data.length, crc32(cr)); return all;
+    };
+    const ihdr = new Uint8Array(13), hv = new DataView(ihdr.buffer); hv.setUint32(0, w); hv.setUint32(4, h); ihdr[8] = 8; ihdr[9] = 3;
+    const plte = new Uint8Array(pal.length * 3); pal.forEach((c, k) => plte.set(c, k * 3));
+    return new Blob([new Uint8Array([137, 80, 78, 71, 13, 10, 26, 10]), chunk('IHDR', ihdr), chunk('PLTE', plte), chunk('IDAT', z), chunk('IEND', new Uint8Array(0))], { type: 'image/png' });
+  }
+  async function thLighten(files) {
+    const done = [];
+    for (const f of files) {
+      if (f.blob.size <= 1024 * 1024) continue;
+      const bm = await createImageBitmap(f.blob), c = mk(bm.width, bm.height); c.getContext('2d').drawImage(bm, 0, 0);
+      for (const n of [256, 128, 64]) {
+        const nb = await pngIndexed(c, n);
+        if (nb && nb.size < f.blob.size) f.blob = nb;
+        if (f.blob.size <= 1024 * 1024) break;
+      }
+      done.push(f.name);
+    }
+    return done;
+  }
+  // --- 書き出し前のチェック ---
+  function thExpected(ios26) {
+    const e = {}, nn = n => String(n).padStart(2, '0');
+    e['ios_thumbnail.png'] = [200, 284]; e['android_thumbnail.png'] = [136, 202]; e['store_thumbnail.png'] = [198, 278];
+    for (const [, off] of TH_MENU_DEF) for (const n of [off, off + 1]) { e[`i_${nn(n)}.png`] = [128, 150]; if (ios26) e[`i_${nn(n)}_g.png`] = [80, 56]; }
+    e['i_11.png'] = [1472, 150];
+    for (let n = 12; n <= 19; n++) { e[`i_${n}.png`] = [120, 120]; e[`a_${n}.png`] = [116, 116]; }
+    e['i_20.png'] = e['i_21.png'] = [240, 240]; e['a_20.png'] = e['a_21.png'] = [247, 247];
+    e['i_22.png'] = [1482, 1334]; e['a_22.png'] = [1300, 1300];
+    return e;
+  }
+  async function thCheck(files, ios26, extra = []) {
+    const exp = thExpected(ios26), names = files.map(f => f.name), iss = [];
+    const need = Object.keys(exp).length;
+    const miss = Object.keys(exp).filter(n => !names.includes(n)), over = names.filter(n => !exp[n]);
+    if (!miss.length && !over.length) iss.push({ lv: 'ok', m: `枚数：${files.length}枚そろっています（ファイル名もOK）` });
+    if (miss.length) iss.push({ lv: 'ng', m: `足りないファイル：${miss.join('・')}` });
+    if (over.length) iss.push({ lv: 'ng', m: `余計なファイル（「画像の数が一致しません」の原因）：${over.join('・')}` });
+    const bad = { size: [], big: [], bigW: [], opq: [], opqW: [], blank: [] };
+    for (const f of files) {
+      const bm = await createImageBitmap(f.blob), c = mk(bm.width, bm.height), x = c.getContext('2d'); x.drawImage(bm, 0, 0);
+      const e = exp[f.name]; if (e && (bm.width !== e[0] || bm.height !== e[1])) bad.size.push(`${f.name}（${bm.width}×${bm.height}）`);
+      if (f.blob.size > 1024 * 1024) (/_22\.png$/.test(f.name) ? bad.big : bad.bigW).push(`${f.name}（${(f.blob.size / 1048576).toFixed(2)}MB）`);
+      const p = x.getImageData(0, 0, c.width, c.height).data;
+      const rows = f.name === 'i_11.png' ? 101 : c.height;
+      let clear = false, any = false;
+      for (let i = 3; i < p.length; i += 4) { if (p[i] > 8) any = true; if (!clear && (i >> 2) < rows * c.width && p[i] < 255) clear = true; }
+      if (/thumbnail/.test(f.name) || f.name === 'i_11.png') { if (clear) bad.opq.push(f.name); }
+      else if (/_2[012]\.png$/.test(f.name) && clear) bad.opqW.push(f.name);
+      if (!any) bad.blank.push(f.name);
+    }
+    iss.push(bad.size.length ? { lv: 'ng', m: `サイズ違い：${bad.size.join('・')}` } : { lv: 'ok', m: 'サイズ：全部ちょうどです' });
+    iss.push(bad.big.length ? { lv: 'ng', m: `トーク背景が1MBを超えています：${bad.big.join('・')}。細かい模様やノイズを減らしてください` } : { lv: 'ok', m: '容量：トーク背景は1MB以下です' });
+    if (bad.bigW.length) iss.push({ lv: 'warn', m: `1MBを超える画像：${bad.bigW.join('・')}（念のため軽くするのがおすすめ）` });
+    iss.push(bad.opq.length ? { lv: 'ng', m: `透けている所があります（不透明が必要）：${bad.opq.join('・')}` } : { lv: 'ok', m: '不透明：メイン画像とメニュー背景（上0〜100px）はOK' });
+    if (bad.opqW.length) iss.push({ lv: 'warn', m: `透けている所があります：${bad.opqW.join('・')}（プロフィールは四すみまで表示、トーク背景はカラースキンと重なります）` });
+    const short = (a) => a.length > 6 ? a.slice(0, 6).join('・') + ` ほか${a.length - 6}枚` : a.join('・');
+    if (bad.blank.length) iss.push({ lv: 'ng', m: `中身が空っぽの画像：${short(bad.blank)}` });
+    return [...iss, ...extra];
+  }
+  function thcSourceIssues() {
+    const o = thcOpts(), iss = [];
+    const emp = Object.keys(THC_SINGLE).filter(k => k !== 'prof2' && !thc[k]).map(k => THC_SINGLE[k]);
+    if (emp.length) iss.push({ lv: 'warn', m: `まだ画像がない所：${emp.join('・')}（今は「すき間を埋める色」の無地になります）` });
+    const mEmp = TH_MENUS.filter((_, k) => !thc.mOff[k] && !thc.mOn[k]);
+    if (mEmp.length) iss.push({ lv: 'ng', m: `メニューボタンの画像がありません：${mEmp.join('・')}` });
+    if (o.auto === 'none') { const nOn = TH_MENUS.filter((_, k) => thc.mOff[k] && !thc.mOn[k]); if (nOn.length) iss.push({ lv: 'warn', m: `ONの画像がないのでOFFと同じ絵になります：${nOn.join('・')}` }); }
+    if (!thc.pOff[0] && !thc.pOn[0]) iss.push({ lv: 'ng', m: 'パスコードの画像がありません（1つ目に入れると4つ全部に使います）' });
+    return iss;
+  }
+  function thShowCheck(iss) {
+    const ul = $(thMode === 'custom' ? 'thcCheck' : 'thChkChara');
+    ul.innerHTML = iss.map(i => `<li class="${i.lv}">${{ ok: '✅', warn: '⚠️', ng: '⛔', info: '・' }[i.lv]} ${i.m}</li>`).join('');
+  }
+  async function thBuildChecked() {
+    const custom = thMode === 'custom';
+    if (!custom && !thChars().length) { toast('先にスタンプの画像を入れてください'); return null; }
+    const files = custom ? await buildCustomThemeFiles() : await buildThemeFiles();
+    const light = await thLighten(files);
+    const extra = custom ? thcSourceIssues() : [];
+    if (light.length) extra.push({ lv: 'info', m: `${light.join('・')} は1MBを超えたので、色数をへらして軽くしました（見た目はほぼ同じです）` });
+    const iss = await thCheck(files, custom ? $('thcIos26').checked : $('thIos26').checked, extra);
+    thShowCheck(iss);
+    return { files, iss };
+  }
+  ACT.checkTheme = async () => {
+    toast('チェックしています…');
+    const r = await thBuildChecked(); if (!r) return;
+    const ng = r.iss.filter(i => i.lv === 'ng').length;
+    toast(ng ? `直した方がいい所が${ng}件あります` : 'チェックOK。このまま書き出せます');
+    track('check_theme', { mode: thMode, ng });
   };
+  ACT.downloadTheme = async () => {
+    toast('着せかえ一式を作っています…');
+    const r = await thBuildChecked(); if (!r) return;
+    const ng = r.iss.filter(i => i.lv === 'ng');
+    if (ng.length && !confirm(`まだ直した方がいい所があります。このまま書き出しますか？\n\n${ng.map(i => '・' + i.m).join('\n')}`)) return;
+    dl(await makeZip(r.files), 'line_theme_set.zip');
+    toast(`着せかえ一式（${r.files.length}枚）を書き出しました`);
+    track('download_theme', { n: r.files.length, mode: thMode });
+  };
+  // --- 画面（入れる所の一覧） ---
+  function thcSlotLabel(k, i) {
+    if (k === 'mOff' || k === 'mOn') return TH_MENUS[i] + (k === 'mOn' ? ' ON' : '');
+    if (k === 'pOff' || k === 'pOn') return `パス${i + 1}` + (k === 'pOn' ? ' ON' : '');
+    return THC_SINGLE[k];
+  }
+  function thcTile(slot) {
+    const [k, i] = slot.split(':'), e = thcGet(slot);
+    return `<button class="thctile${e ? ' has' : ''}" data-slot="${slot}" title="クリックで画像を選ぶ／ドロップでも入ります"><canvas width="72" height="72"></canvas><span>${thcSlotLabel(k, Number(i))}</span>${e ? '<i class="x" data-clr="1" title="消す">×</i>' : ''}</button>`;
+  }
+  function thcRenderSlots() {
+    const auto = $('thcAuto').value;
+    const grp = (title, note, slots) => `<div class="box"><div style="font-weight:700;font-size:13px">${title}</div>${note ? `<p class="muted" style="margin:2px 0 6px">${note}</p>` : ''}<div class="thcrow">${slots.map(thcTile).join('')}</div></div>`;
+    const arr = (k) => Array.from({ length: THC_ARR[k] }, (_, i) => `${k}:${i}`);
+    $('thcSlots').innerHTML =
+      grp('🖼️ メイン・プロフィール・背景', 'メイン画像はストア用（3サイズ）にも使います。はみ出す所は真ん中に合わせて切ります。', ['main', 'prof', 'prof2', 'menuBg', 'talk']) +
+      grp('🔘 メニューボタン（OFF）', 'アイコンの右上（上から49px・右から21px）に通知バッジが重なります。', arr('mOff')) +
+      grp('🔆 メニューボタン（ON）', auto === 'none' ? '選んだときの絵です。' : '空なら、OFFの絵を光らせて自動で作ります。', arr('mOn')) +
+      grp('🔒 パスコード（OFF）', '1つ目だけ入れると、4つ全部に同じ絵を使います（4種類にもできます）。', arr('pOff')) +
+      grp('🔓 パスコード（ON）', auto === 'none' ? '' : '空なら、OFFの絵を光らせて自動で作ります。', arr('pOn'));
+    $('thcSlots').querySelectorAll('.thctile').forEach(b => {
+      const e = thcGet(b.dataset.slot), cv = b.querySelector('canvas'), x = cv.getContext('2d');
+      if (e) fitDraw(x, e.cv, 0, 0, 72, 72); else { x.fillStyle = 'rgba(255,255,255,.35)'; x.font = '700 26px sans-serif'; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText('＋', 36, 38); }
+    });
+    $('thcOrder').textContent = ($('thcSheetTo').value[0] === 'm' ? TH_MENUS : ['パス1', 'パス2', 'パス3', 'パス4']).join('→');
+  }
+  let thcSeq = 0;
+  async function thcPut(slot, blob) {
+    const k = slot.split(':')[0];
+    try { const cv = await thcLoad(blob, THC_MAX[k]); thcSet(slot, { cv, blob, id: ++thcSeq }); }
+    catch (err) { toast('この画像は開けませんでした'); return; }
+  }
+  $('thcSlots').addEventListener('click', e => {
+    const b = e.target.closest('.thctile'); if (!b) return;
+    if (e.target.closest('[data-clr]')) { thcSet(b.dataset.slot, null); thcAfter(); return; }
+    thcPendingSlot = b.dataset.slot; $('thcSlotFile').click();
+  });
+  $('thcSlots').addEventListener('dragover', e => { if (e.target.closest('.thctile')) e.preventDefault(); });
+  $('thcSlots').addEventListener('drop', async e => {
+    const b = e.target.closest('.thctile'), f = e.dataTransfer.files[0]; if (!b || !f) return;
+    e.preventDefault(); e.stopPropagation(); await thcPut(b.dataset.slot, f); thcAfter();
+  });
+  $('thcSlotFile').addEventListener('change', async e => {
+    const f = e.target.files[0]; e.target.value = ''; if (!f || !thcPendingSlot) return;
+    await thcPut(thcPendingSlot, f); thcAfter();
+  });
+  // --- まとめ画像の分割 ---
+  function thcDrawSheet() {
+    const cv = $('thcSheetCv'), x = cv.getContext('2d');
+    if (!thcSheet) { cv.height = 0; return; }
+    const W = 360, H = Math.round(W * thcSheet.height / thcSheet.width); cv.width = W; cv.height = H;
+    x.drawImage(thcSheet, 0, 0, W, H);
+    const cols = Math.max(1, Number($('thcCols').value) || 1), rows = Math.max(1, Number($('thcRows').value) || 1), ins = Number($('thcInset').value) / 100;
+    const names = $('thcSheetTo').value[0] === 'm' ? TH_MENUS : ['パス1', 'パス2', 'パス3', 'パス4'];
+    const cw = W / cols, ch = H / rows;
+    x.lineWidth = 2; x.font = '700 11px sans-serif'; x.textBaseline = 'top';
+    for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
+      const n = r * cols + c, used = n < names.length;
+      x.strokeStyle = used ? '#22d3ee' : 'rgba(148,163,184,.6)'; x.setLineDash(used ? [] : [4, 4]);
+      x.strokeRect(c * cw + cw * ins, r * ch + ch * ins, cw * (1 - ins * 2), ch * (1 - ins * 2));
+      if (used) { const t = names[n], tw = x.measureText(t).width + 8; x.fillStyle = 'rgba(15,23,42,.8)'; x.fillRect(c * cw + 3, r * ch + 3, tw, 16); x.fillStyle = '#fff'; x.fillText(t, c * cw + 7, r * ch + 5); }
+    }
+    x.setLineDash([]);
+  }
+  ACT.thcPickSheet = () => $('thcSheetFile').click();
+  $('thcSheetFile').addEventListener('change', async e => {
+    const f = e.target.files[0]; e.target.value = ''; if (!f) return;
+    try { thcSheet = await thcLoad(f, 2400); } catch (err) { return toast('この画像は開けませんでした'); }
+    thcDrawSheet(); toast('分ける数を合わせて「分割して入れる」を押してください');
+  });
+  ACT.thcSplit = async () => {
+    if (!thcSheet) return toast('先に「まとめ画像を選ぶ」から画像を入れてください');
+    const to = $('thcSheetTo').value, cols = Math.max(1, Number($('thcCols').value) || 1), rows = Math.max(1, Number($('thcRows').value) || 1), ins = Number($('thcInset').value) / 100;
+    const need = THC_ARR[to], cw = thcSheet.width / cols, ch = thcSheet.height / rows; let n = 0;
+    for (let r = 0; r < rows && n < need; r++) for (let c = 0; c < cols && n < need; c++, n++) {
+      const sx = c * cw + cw * ins, sy = r * ch + ch * ins, sw = cw * (1 - ins * 2), sh = ch * (1 - ins * 2);
+      const cell = mk(Math.max(2, Math.round(sw)), Math.max(2, Math.round(sh)));
+      cell.getContext('2d').drawImage(thcSheet, sx, sy, sw, sh, 0, 0, cell.width, cell.height);
+      thcSet(`${to}:${n}`, { cv: cell, blob: await toBlob(cell), id: ++thcSeq });
+    }
+    thcAfter(); toast(`${n}個に分けて入れました`); track('theme_split', { to, n });
+  };
+  // --- プレビュー ---
+  let thcPrevT;
+  function thcPreviewSoon() { clearTimeout(thcPrevT); thcPrevT = setTimeout(thcPreview, 120); }
+  function thcPreview() {
+    if (thMode !== 'custom') return;
+    const cv = $('themeCanvas'), x = cv.getContext('2d'), W2 = cv.width, H2 = cv.height, o = thcOpts(), ic = thcIcons(o);
+    x.clearRect(0, 0, W2, H2); x.fillStyle = '#1e293b'; x.fillRect(0, 0, W2, H2);
+    const px = 24, py = 20, pw = 300, ph = 600;
+    x.save(); x.beginPath(); x.roundRect(px, py, pw, ph, 28); x.clip();
+    x.drawImage(thcFull(1300, 1300, thc.talk, o), 0, 0, 1300, 1300, px - 150, py, 600, 600);
+    x.fillStyle = 'rgba(10,12,16,.88)'; x.fillRect(px, py, pw, 46);
+    x.fillStyle = '#ffffff'; x.font = '700 15px sans-serif'; x.textAlign = 'center'; x.fillText('トーク', px + pw / 2, py + 29);
+    const bub = (bx, by, bw, mine) => { x.fillStyle = mine ? '#86efac' : '#ffffff'; x.beginPath(); x.roundRect(bx, by, bw, 34, 17); x.fill(); };
+    bub(px + 16, py + 70, 150, false); bub(px + pw - 166, py + 120, 150, true); bub(px + 16, py + 170, 120, false);
+    const mbY = py + ph - 74;
+    x.drawImage(thcFull(1472, 150, thc.menuBg, o), 0, 0, 1472, 150, px, mbY, 1472 * 74 / 150, 74);
+    for (let k = 0; k < 5; k++) {
+      const pr = ic.menu[k], bw = pw / 5, b = thcMenuBtn(128, 150, k === 1 ? pr.on : pr.off);
+      x.drawImage(b, px + bw * k + (bw - 54) / 2, mbY + 2, 54, 63);
+      x.fillStyle = k === 1 ? '#ffffff' : '#94a3b8'; x.font = '700 9px sans-serif'; x.fillText(TH_MENUS[k], px + bw * k + bw / 2, mbY + 68);
+    }
+    x.restore();
+    x.strokeStyle = '#0f172a'; x.lineWidth = 6; x.beginPath(); x.roundRect(px, py, pw, ph, 28); x.stroke();
+    const rx = 350; x.textAlign = 'left'; x.fillStyle = '#e2e8f0'; x.font = '700 13px sans-serif';
+    x.fillText('メイン画像', rx, 34); x.drawImage(thcFull(200, 284, thc.main, o), rx, 42, 120, 170);
+    x.fillText('プロフィール', rx + 140, 34);
+    x.save(); x.beginPath(); x.arc(rx + 200, 102, 60, 0, Math.PI * 2); x.clip(); x.drawImage(thcFull(240, 240, thc.prof, o), rx + 140, 42, 120, 120); x.restore();
+    x.save(); x.beginPath(); x.arc(rx + 200, 232, 50, 0, Math.PI * 2); x.clip(); x.drawImage(thcFull(240, 240, thc.prof2 || thc.prof, o), rx + 150, 182, 100, 100); x.restore();
+    x.fillText('パスコード（OFF／ON）', rx, 314);
+    x.fillStyle = '#0b0f14'; x.fillRect(rx - 6, 320, 360, 176);
+    for (let k = 0; k < 4; k++) { const pr = ic.pass[k]; x.drawImage(thcPass(120, pr.off), rx + k * 88, 324, 80, 80); x.drawImage(thcPass(120, pr.on), rx + k * 88, 410, 80, 80); }
+    x.fillStyle = '#e2e8f0'; x.fillText('メニューボタン（OFF／ON）', rx, 516);
+    x.fillStyle = '#0b0f14'; x.fillRect(rx - 6, 522, 360, 92);
+    for (let k = 0; k < 9; k++) { const pr = ic.menu[k], cx2 = rx + (k % 5) * 70, cy2 = 524 + Math.floor(k / 5) * 44; x.drawImage(thcMenuBtn(128, 150, pr.off), cx2, cy2, 30, 35); x.drawImage(thcMenuBtn(128, 150, pr.on), cx2 + 30, cy2, 30, 35); }
+    x.fillStyle = '#94a3b8'; x.font = '12px sans-serif'; x.fillText('※ 文字や吹き出しの色は、管理画面のカラースキンで決まります', rx - 6, 636);
+  }
+  // --- 保存（このブラウザ内） ---
+  let thcSaveT;
+  function thcSave() {
+    clearTimeout(thcSaveT);
+    thcSaveT = setTimeout(async () => {
+      const slots = {};
+      for (const k of Object.keys(thc)) slots[k] = Array.isArray(thc[k]) ? thc[k].map(e => e ? e.blob : null) : (thc[k] ? thc[k].blob : null);
+      const set = {}; ['thcBg', 'thcGlow', 'thcCut', 'thcTol', 'thcAuto', 'thcDim', 'thcGlowAmt', 'thcCols', 'thcRows', 'thcInset', 'thcSheetTo'].forEach(id => set[id] = $(id).value);
+      set.thcIos26 = $('thcIos26').checked;
+      try { const db = await idb(); await new Promise((res, rej) => { const tx = db.transaction(STORE, 'readwrite'); tx.objectStore(STORE).put({ mode: thMode, slots, set }, 'theme'); tx.oncomplete = res; tx.onerror = () => rej(tx.error); }); } catch (e) { /* 保存できない環境 */ }
+    }, 800);
+  }
+  async function thcRestore() {
+    let v = null;
+    try { const db = await idb(); v = await new Promise((res, rej) => { const tx = db.transaction(STORE, 'readonly'); const r = tx.objectStore(STORE).get('theme'); r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); }); } catch (e) { return; }
+    if (!v) return;
+    if (v.set) for (const [id, val] of Object.entries(v.set)) { const el = $(id); if (!el) continue; if (id === 'thcIos26') el.checked = val; else el.value = val; }
+    for (const [k, val] of Object.entries(v.slots || {})) {
+      if (!(k in thc)) continue;
+      if (Array.isArray(val)) { for (let i = 0; i < val.length && i < thc[k].length; i++) if (val[i]) await thcPut(`${k}:${i}`, val[i]); }
+      else if (val) await thcPut(k, val);
+    }
+    thcSyncLabels();
+    if (v.mode === 'custom') thSetMode('custom', true); else thcRenderSlots();
+  }
+  function thcAfter() { thcRenderSlots(); thcPreviewSoon(); thcSave(); $('thcCheck').innerHTML = ''; }
+  function thcSyncLabels() { $('thcInsetV').textContent = $('thcInset').value + '%'; $('thcTolV').textContent = $('thcTol').value; $('thcDimV').textContent = $('thcDim').value; $('thcGlowAmtV').textContent = $('thcGlowAmt').value; }
+  ['thcBg', 'thcGlow', 'thcCut', 'thcTol', 'thcAuto', 'thcDim', 'thcGlowAmt', 'thcIos26'].forEach(id => $(id).addEventListener('input', () => { thcSyncLabels(); if (id === 'thcAuto') thcRenderSlots(); thcPreviewSoon(); thcSave(); }));
+  ['thcCols', 'thcRows', 'thcInset', 'thcSheetTo'].forEach(id => $(id).addEventListener('input', () => { thcSyncLabels(); thcDrawSheet(); thcRenderSlots(); thcSave(); }));
+  ACT.thcClear = () => {
+    if (!confirm('入れた画像を全部消しますか？')) return;
+    for (const k of Object.keys(thc)) thc[k] = Array.isArray(thc[k]) ? thc[k].map(() => null) : null;
+    thcSheet = null; thcDrawSheet(); thcAfter();
+  };
+  function thSetMode(m, quiet) {
+    thMode = m;
+    $('thModeSeg').querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.thmode === m));
+    $('thCustom').classList.toggle('hidden', m !== 'custom'); $('thChara').classList.toggle('hidden', m === 'custom');
+    $('thLead').textContent = m === 'custom'
+      ? 'キャラのいないデザイン系（ネオン・カーボン・紋章など）の着せかえを、自分の画像から作ります。各パーツに画像を入れるか、まとめ画像を分割して入れてください。'
+      : '作ったスタンプの絵から、LINE着せかえの画像一式（メイン画像・メニューボタン・パスコード・プロフィール・トーク背景など）をまとめて作ります。スタンプの文字とエフェクトは外して使います。';
+    if (m === 'custom') { thcRenderSlots(); thcPreview(); } else { fillThemeSelects(); drawThemePreview(); }
+    if (!quiet) thcSave();
+  }
+  $('thModeSeg').addEventListener('click', e => { const b = e.target.closest('button[data-thmode]'); if (b) { thSetMode(b.dataset.thmode); track('theme_mode', { mode: b.dataset.thmode }); } });
+  thcSyncLabels(); thcRenderSlots(); thcRestore();
   document.querySelector('[data-gotheme]').addEventListener('click', () => {
     document.querySelector('#xtabs [data-x=theme]').click();
     $('extras').scrollIntoView({ behavior: 'smooth', block: 'start' });
