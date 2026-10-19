@@ -849,11 +849,16 @@
             </select></label>
             <div class="grid2" style="margin-top:6px">
               <div><label class="lb muted" style="display:flex;justify-content:space-between">消灯の暗さ<span id="thcDimV">55</span></label><input type="range" id="thcDim" min="10" max="90" value="55"></div>
-              <div><label class="lb muted" style="display:flex;justify-content:space-between">点灯の光<span id="thcGlowAmtV">60</span></label><input type="range" id="thcGlowAmt" min="0" max="100" value="60"></div>
+              <div><label class="lb muted" style="display:flex;justify-content:space-between">点灯の光<span id="thcGlowAmtV">35</span></label><input type="range" id="thcGlowAmt" min="0" max="100" value="35"></div>
             </div>
             <p class="muted" style="margin:4px 0 0">※ 自分のON画像が入っている所は、自動で作らずにその画像を使います（「OFF・ONとも自分の画像」以外でも同じ）。</p>
           </div>
           <div id="thcSlots" style="display:grid;gap:10px"></div>
+          <div class="box">
+            <label class="lb muted" style="display:flex;justify-content:space-between">メニュー背景を切り抜く高さ（横長の帯をどこから取るか）<span id="thcMbPosV">真ん中</span></label>
+            <input type="range" id="thcMbPos" min="0" max="100" value="50">
+            <p class="muted" style="margin:2px 0 0">0＝いちばん上、100＝いちばん下。光る線が上の方にある画像は、小さくすると線が入ります。</p>
+          </div>
           <input type="file" id="thcSlotFile" accept="image/*" hidden>
           <label class="chk"><input type="checkbox" id="thcIos26" checked>iOS 26以降用の小さいメニューボタン（80×56px）も作る</label>
           <div style="display:flex;gap:6px;flex-wrap:wrap">
@@ -2970,7 +2975,7 @@
   }
   function thcOpts() {
     const v = id => $(id).value;
-    return { bg: v('thcBg'), glow: v('thcGlow'), cut: v('thcCut'), tol: Number(v('thcTol')), auto: v('thcAuto'), dim: Number(v('thcDim')), glowAmt: Number(v('thcGlowAmt')), ios26: $('thcIos26').checked };
+    return { bg: v('thcBg'), glow: v('thcGlow'), cut: v('thcCut'), tol: Number(v('thcTol')), auto: v('thcAuto'), dim: Number(v('thcDim')), glowAmt: Number(v('thcGlowAmt')), mbPos: Number(v('thcMbPos')) / 100, ios26: $('thcIos26').checked };
   }
   const thcProcCache = new Map();
   function thcPrep(e, o) {
@@ -2989,6 +2994,11 @@
     let off = off0 || on0, on = on0;
     if (o.auto === 'auto') off = off0 ? thcDim(off0, o.dim) : thcDim(on0, o.dim);
     if (!on) on = o.auto === 'none' ? base : thcGlowImg(base, o.glow, o.glowAmt);
+    // 光の分だけONが小さくならないよう、OFFにも同じ余白をつけてそろえる
+    if (on.width > off.width || on.height > off.height) {
+      const c = mk(Math.max(on.width, off.width), Math.max(on.height, off.height));
+      c.getContext('2d').drawImage(off, (c.width - off.width) / 2, (c.height - off.height) / 2); off = c;
+    }
     return { off, on };
   }
   function thcIcons(o) {
@@ -2997,13 +3007,13 @@
     for (let k = 0; k < 4; k++) { const offE = thc.pOff[k] || thc.pOff[0], onE = thc.pOn[k] || (thc.pOff[k] ? null : thc.pOn[0]); pass.push(thcPair(offE, onE, o)); }
     return { menu, pass };
   }
-  function coverDraw(x, img, X, Y, w, h) {
+  function coverDraw(x, img, X, Y, w, h, ay = .5) {
     if (!img) return;
     const k = Math.max(w / img.width, h / img.height), sw = w / k, sh = h / k;
-    x.drawImage(img, (img.width - sw) / 2, (img.height - sh) / 2, sw, sh, X, Y, w, h);
+    x.drawImage(img, (img.width - sw) / 2, (img.height - sh) * ay, sw, sh, X, Y, w, h);
   }
   function isOpaque(cv) { const p = cv.getContext('2d').getImageData(0, 0, cv.width, cv.height).data; for (let i = 3; i < p.length; i += 16) if (p[i] < 250) return false; return true; }
-  function thcFull(w, h, e, o) { const c = mk(w, h), x = c.getContext('2d'); x.fillStyle = o.bg; x.fillRect(0, 0, w, h); x.imageSmoothingQuality = 'high'; coverDraw(x, thcCv(e), 0, 0, w, h); return c; }
+  function thcFull(w, h, e, o, ay = .5) { const c = mk(w, h), x = c.getContext('2d'); x.fillStyle = o.bg; x.fillRect(0, 0, w, h); x.imageSmoothingQuality = 'high'; coverDraw(x, thcCv(e), 0, 0, w, h, ay); return c; }
   function thcMenuBtn(w, h, img, small) {
     const c = mk(w, h), x = c.getContext('2d'); x.imageSmoothingQuality = 'high';
     if (small) fitDraw(x, img, 4, 4, w - 8, h - 8); else fitDraw(x, img, 14, 12, w - 28, 92);
@@ -3027,7 +3037,7 @@
       await add(`i_${nn(off)}.png`, thcMenuBtn(128, 150, pr.off)); await add(`i_${nn(off + 1)}.png`, thcMenuBtn(128, 150, pr.on));
       if (o.ios26) { await add(`i_${nn(off)}_g.png`, thcMenuBtn(80, 56, pr.off, true)); await add(`i_${nn(off + 1)}_g.png`, thcMenuBtn(80, 56, pr.on, true)); }
     }
-    await add('i_11.png', thcFull(1472, 150, thc.menuBg, o));
+    await add('i_11.png', thcFull(1472, 150, thc.menuBg, o, o.mbPos));
     for (let k = 0; k < 4; k++) {
       const pr = ic.pass[k], n = 12 + k * 2;
       await add(`i_${n}.png`, thcPass(120, pr.off)); await add(`i_${n + 1}.png`, thcPass(120, pr.on));
@@ -3276,7 +3286,7 @@
     const bub = (bx, by, bw, mine) => { x.fillStyle = mine ? '#86efac' : '#ffffff'; x.beginPath(); x.roundRect(bx, by, bw, 34, 17); x.fill(); };
     bub(px + 16, py + 70, 150, false); bub(px + pw - 166, py + 120, 150, true); bub(px + 16, py + 170, 120, false);
     const mbY = py + ph - 74;
-    x.drawImage(thcFull(1472, 150, thc.menuBg, o), 0, 0, 1472, 150, px, mbY, 1472 * 74 / 150, 74);
+    x.drawImage(thcFull(1472, 150, thc.menuBg, o, o.mbPos), 0, 0, 1472, 150, px, mbY, 1472 * 74 / 150, 74);
     for (let k = 0; k < 5; k++) {
       const pr = ic.menu[k], bw = pw / 5, b = thcMenuBtn(128, 150, k === 1 ? pr.on : pr.off);
       x.drawImage(b, px + bw * k + (bw - 54) / 2, mbY + 2, 54, 63);
@@ -3304,7 +3314,7 @@
     thcSaveT = setTimeout(async () => {
       const slots = {};
       for (const k of Object.keys(thc)) slots[k] = Array.isArray(thc[k]) ? thc[k].map(e => e ? e.blob : null) : (thc[k] ? thc[k].blob : null);
-      const set = {}; ['thcBg', 'thcGlow', 'thcCut', 'thcTol', 'thcAuto', 'thcDim', 'thcGlowAmt', 'thcCols', 'thcRows', 'thcInset', 'thcSheetTo'].forEach(id => set[id] = $(id).value);
+      const set = {}; ['thcBg', 'thcGlow', 'thcCut', 'thcTol', 'thcAuto', 'thcDim', 'thcGlowAmt', 'thcCols', 'thcRows', 'thcInset', 'thcSheetTo', 'thcMbPos'].forEach(id => set[id] = $(id).value);
       set.thcIos26 = $('thcIos26').checked;
       try { const db = await idb(); await new Promise((res, rej) => { const tx = db.transaction(STORE, 'readwrite'); tx.objectStore(STORE).put({ mode: thMode, slots, set }, 'theme'); tx.oncomplete = res; tx.onerror = () => rej(tx.error); }); } catch (e) { /* 保存できない環境 */ }
     }, 800);
@@ -3323,8 +3333,8 @@
     if (v.mode === 'custom') thSetMode('custom', true); else thcRenderSlots();
   }
   function thcAfter() { thcRenderSlots(); thcPreviewSoon(); thcSave(); $('thcCheck').innerHTML = ''; }
-  function thcSyncLabels() { $('thcInsetV').textContent = $('thcInset').value + '%'; $('thcTolV').textContent = $('thcTol').value; $('thcDimV').textContent = $('thcDim').value; $('thcGlowAmtV').textContent = $('thcGlowAmt').value; }
-  ['thcBg', 'thcGlow', 'thcCut', 'thcTol', 'thcAuto', 'thcDim', 'thcGlowAmt', 'thcIos26'].forEach(id => $(id).addEventListener('input', () => { thcSyncLabels(); if (id === 'thcAuto') thcRenderSlots(); thcPreviewSoon(); thcSave(); }));
+  function thcSyncLabels() { $('thcInsetV').textContent = $('thcInset').value + '%'; $('thcTolV').textContent = $('thcTol').value; $('thcDimV').textContent = $('thcDim').value; $('thcGlowAmtV').textContent = $('thcGlowAmt').value; const mp = Number($('thcMbPos').value); $('thcMbPosV').textContent = mp === 50 ? '真ん中' : mp + (mp < 50 ? '（上より）' : '（下より）'); }
+  ['thcBg', 'thcGlow', 'thcCut', 'thcTol', 'thcAuto', 'thcDim', 'thcGlowAmt', 'thcIos26', 'thcMbPos'].forEach(id => $(id).addEventListener('input', () => { thcSyncLabels(); if (id === 'thcAuto') thcRenderSlots(); thcPreviewSoon(); thcSave(); }));
   ['thcCols', 'thcRows', 'thcInset', 'thcSheetTo'].forEach(id => $(id).addEventListener('input', () => { thcSyncLabels(); thcDrawSheet(); thcRenderSlots(); thcSave(); }));
   ACT.thcClear = () => {
     if (!confirm('入れた画像を全部消しますか？')) return;
