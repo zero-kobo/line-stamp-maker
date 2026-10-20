@@ -840,6 +840,10 @@
               <option value="black" selected>黒を透明にする（ネオン・光る絵に向く）</option>
               <option value="corner">四すみの色を消す（無地の背景に向く）</option>
             </select></label>
+            <label class="muted" style="margin-top:6px;display:block">パスコードの背景<select id="thcPCut">
+              <option value="same" selected>メニューと同じ抜き方</option>
+              <option value="none">抜かない（紙などの背景ごと使う）</option>
+            </select></label>
             <label class="lb muted" style="display:flex;justify-content:space-between;margin-top:6px">抜く強さ<span id="thcTolV">40</span></label>
             <input type="range" id="thcTol" min="5" max="120" value="40">
             <label class="muted" style="margin-top:6px;display:block">OFF・ONの作り方<select id="thcAuto">
@@ -2980,7 +2984,7 @@
   }
   function thcOpts() {
     const v = id => $(id).value;
-    return { bg: v('thcBg'), glow: v('thcGlow'), cut: v('thcCut'), tol: Number(v('thcTol')), auto: v('thcAuto'), dim: Number(v('thcDim')), glowAmt: Number(v('thcGlowAmt')), mbPos: Number(v('thcMbPos')) / 100, ios26: $('thcIos26').checked };
+    return { bg: v('thcBg'), glow: v('thcGlow'), cut: v('thcCut'), pcut: v('thcPCut'), tol: Number(v('thcTol')), auto: v('thcAuto'), dim: Number(v('thcDim')), glowAmt: Number(v('thcGlowAmt')), mbPos: Number(v('thcMbPos')) / 100, ios26: $('thcIos26').checked };
   }
   const thcProcCache = new Map();
   function thcPrep(e, o) {
@@ -2993,7 +2997,8 @@
     thcProcCache.set(key, c); return c;
   }
   // メニュー・パスコードのOFF/ON（加工済みの絵）
-  function thcPair(offE, onE, o) {
+  function thcPair(offE, onE, o, pass) {
+    if (pass && o.pcut === 'none') o = Object.assign({}, o, { cut: 'none' });
     const off0 = thcPrep(offE, o), on0 = thcPrep(onE, o), base = off0 || on0;
     if (!base) return { off: null, on: null };
     let off = off0 || on0, on = on0;
@@ -3001,7 +3006,7 @@
     if (o.auto === 'auto' && !(off0 && on0)) off = off0 ? thcDim(off0, o.dim) : thcDim(on0, o.dim);
     if (!on) on = o.auto === 'none' ? base : thcGlowImg(base, o.glow, o.glowAmt);
     // 光の分だけONが小さくならないよう、OFFにも同じ余白をつけてそろえる
-    if (on.width > off.width || on.height > off.height) {
+    if (!on0 && (on.width > off.width || on.height > off.height)) { // 自動で光らせたときだけ
       const c = mk(Math.max(on.width, off.width), Math.max(on.height, off.height));
       c.getContext('2d').drawImage(off, (c.width - off.width) / 2, (c.height - off.height) / 2); off = c;
     }
@@ -3010,7 +3015,7 @@
   function thcIcons(o) {
     const menu = [], pass = [];
     for (let k = 0; k < 9; k++) menu.push(thcPair(thc.mOff[k], thc.mOn[k], o));
-    for (let k = 0; k < 4; k++) { const offE = thc.pOff[k] || thc.pOff[0], onE = thc.pOn[k] || (thc.pOff[k] ? null : thc.pOn[0]); pass.push(thcPair(offE, onE, o)); }
+    for (let k = 0; k < 4; k++) { const offE = thc.pOff[k] || thc.pOff[0], onE = thc.pOn[k] || (thc.pOff[k] ? null : thc.pOn[0]); pass.push(thcPair(offE, onE, o, true)); }
     return { menu, pass };
   }
   function coverDraw(x, img, X, Y, w, h, ay = .5) {
@@ -3323,7 +3328,7 @@
     thcSaveT = setTimeout(async () => {
       const slots = {};
       for (const k of Object.keys(thc)) slots[k] = Array.isArray(thc[k]) ? thc[k].map(e => e ? e.blob : null) : (thc[k] ? thc[k].blob : null);
-      const set = {}; ['thcBg', 'thcGlow', 'thcCut', 'thcTol', 'thcAuto', 'thcDim', 'thcGlowAmt', 'thcCols', 'thcRows', 'thcInset', 'thcSheetTo', 'thcMbPos', 'thcMSize'].forEach(id => set[id] = $(id).value);
+      const set = {}; ['thcBg', 'thcGlow', 'thcCut', 'thcPCut', 'thcTol', 'thcAuto', 'thcDim', 'thcGlowAmt', 'thcCols', 'thcRows', 'thcInset', 'thcSheetTo', 'thcMbPos', 'thcMSize'].forEach(id => set[id] = $(id).value);
       set.thcIos26 = $('thcIos26').checked;
       try { const db = await idb(); await new Promise((res, rej) => { const tx = db.transaction(STORE, 'readwrite'); tx.objectStore(STORE).put({ mode: thMode, slots, set }, 'theme'); tx.oncomplete = res; tx.onerror = () => rej(tx.error); }); } catch (e) { /* 保存できない環境 */ }
     }, 800);
@@ -3343,7 +3348,7 @@
   }
   function thcAfter() { thcRenderSlots(); thcPreviewSoon(); thcSave(); $('thcCheck').innerHTML = ''; }
   function thcSyncLabels() { $('thcInsetV').textContent = $('thcInset').value + '%'; $('thcTolV').textContent = $('thcTol').value; $('thcDimV').textContent = $('thcDim').value; $('thcGlowAmtV').textContent = $('thcGlowAmt').value; $('thcMSizeV').textContent = $('thcMSize').value + '%'; const mp = Number($('thcMbPos').value); $('thcMbPosV').textContent = mp === 50 ? '真ん中' : mp + (mp < 50 ? '（上より）' : '（下より）'); }
-  ['thcBg', 'thcGlow', 'thcCut', 'thcTol', 'thcAuto', 'thcDim', 'thcGlowAmt', 'thcIos26', 'thcMbPos', 'thcMSize'].forEach(id => $(id).addEventListener('input', () => { thcSyncLabels(); if (id === 'thcAuto') thcRenderSlots(); thcPreviewSoon(); thcSave(); }));
+  ['thcBg', 'thcGlow', 'thcCut', 'thcPCut', 'thcTol', 'thcAuto', 'thcDim', 'thcGlowAmt', 'thcIos26', 'thcMbPos', 'thcMSize'].forEach(id => $(id).addEventListener('input', () => { thcSyncLabels(); if (id === 'thcAuto') thcRenderSlots(); thcPreviewSoon(); thcSave(); }));
   ['thcCols', 'thcRows', 'thcInset', 'thcSheetTo'].forEach(id => $(id).addEventListener('input', () => { thcSyncLabels(); thcDrawSheet(); thcRenderSlots(); thcSave(); }));
   ACT.thcClear = () => {
     if (!confirm('入れた画像を全部消しますか？')) return;
