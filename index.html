@@ -3024,7 +3024,7 @@
   function thcMenuBtn(w, h, img, small) {
     const c = mk(w, h), x = c.getContext('2d'); x.imageSmoothingQuality = 'high';
     if (small) { fitDraw(x, img, 4, 4, w - 8, h - 8); return c; }
-    const k = Number($('thcMSize').value) / 100, bw = 100 * k, bh = 92 * k, cy = 56;
+    const k = Number($('thcMSize').value) / 100, bw = 100 * k, bh = 92 * k, cy = 64; // 上の線とメニュー名のあいだの真ん中あたり
     fitDraw(x, img, (w - bw) / 2, cy - bh / 2, bw, bh);
     return c;
   }
