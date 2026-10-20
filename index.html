@@ -503,6 +503,8 @@
             <div class="colorrow"><input type="color" data-bind="text.stroke">内側のフチ</div>
             <div class="colorrow"><input type="color" data-bind="text.outerColor">外側のフチ</div>
           </div>
+          <label class="lb"><span>文字のかたむき</span><span data-show="text.tilt" data-suffix="°"></span></label>
+          <input type="range" min="-30" max="30" data-bind="text.tilt">
           <label class="lb"><span>フチの太さ</span><span data-show="text.strokeW" data-suffix="px"></span></label>
           <input type="range" min="0" max="20" data-bind="text.strokeW">
           <div class="row" style="margin-top:6px">
@@ -1107,7 +1109,7 @@
   // 売れ筋の「ゆる手書き」文字：細いこげ茶＋白いうすフチ、影なし
   const HANDWRITE = { font: "'Yusei Magic'", size: 40, colorMode: 'solid', c1: '#5b4636', c2: '#5b4636', stroke: '#ffffff', strokeW: 4, outer: false, shadow: false, fx: 'none', bubble: 'none' };
   const defaultText = () => ({ content: '', font: FONTS[0].f, size: SPEC[KIND].textSize, x: 50, y: 82, dir: 'horizontal', fx: 'none', fxInt: 50,
-    colorMode: 'solid', c1: '#ffffff', c2: '#fde047', stroke: '#059669', strokeW: 8, outer: true, outerColor: '#ffffff', shadow: true, bubble: 'none', bubbleColor: '#ffffff', bubbleLine: '#1e293b' });
+    colorMode: 'solid', c1: '#ffffff', c2: '#fde047', stroke: '#059669', strokeW: 8, outer: true, outerColor: '#ffffff', shadow: true, bubble: 'none', bubbleColor: '#ffffff', bubbleLine: '#1e293b', tilt: 0 });
   const newStamp = () => ({ raw: null, img: null, x: W / 2, y: H / 2 - 10, scale: 100, rot: 0, flip: false,
     outline: true, outlineW: SPEC[KIND].outlineW, outlineColor: '#ffffff', aura: 'none', auraColor: '#38bdf8', auraSize: 50, mark: 'none', markColor: '#ef4444', markSize: 50, markFlip: false, overlap: 0, text: defaultText(), hist: [], status: 'empty', issues: [], _tbox: null });
 
@@ -1273,6 +1275,11 @@
   function drawText(c, t) {
     const gs = layoutText(c, t);
     if (!gs.length) return null;
+    if (t.tilt) { // 文字全体をかたむける（看板・垂れ幕に合わせる）
+      const a = t.tilt * Math.PI / 180, cs = Math.cos(a), sn = Math.sin(a);
+      const cx = gs.reduce((v, g) => v + g.x, 0) / gs.length, cy = gs.reduce((v, g) => v + g.y, 0) / gs.length;
+      gs.forEach(g => { const dx = g.x - cx, dy = g.y - cy; g.x = cx + dx * cs - dy * sn; g.y = cy + dx * sn + dy * cs; g.r = (g.r || 0) + a; });
+    }
     if (t.bubble && t.bubble !== 'none') drawBubble(c, t, gs);
     const outerW = (t.strokeW + 5) * 2;
     const each = (cc, fn) => gs.forEach(g => { cc.save(); cc.translate(g.x, g.y); cc.rotate(g.r); cc.font = fontStr(t, g.fs); fn(cc, g); cc.restore(); });
@@ -2378,7 +2385,7 @@
   }
   // ---------- My text presets ----------
   const PKEY = 'zk-line-text-presets';
-  const STYLE_KEYS = ['font', 'size', 'dir', 'fx', 'fxInt', 'colorMode', 'c1', 'c2', 'stroke', 'strokeW', 'outer', 'outerColor', 'shadow', 'bubble', 'bubbleColor', 'bubbleLine', 'x', 'y'];
+  const STYLE_KEYS = ['font', 'size', 'dir', 'tilt', 'fx', 'fxInt', 'colorMode', 'c1', 'c2', 'stroke', 'strokeW', 'outer', 'outerColor', 'shadow', 'bubble', 'bubbleColor', 'bubbleLine', 'x', 'y'];
   const getPresets = () => { try { return JSON.parse(localStorage.getItem(PKEY) || '[]'); } catch (e) { return []; } };
   const setPresets = a => { try { localStorage.setItem(PKEY, JSON.stringify(a)); } catch (e) {} renderPresets(); };
   function renderPresets() {
