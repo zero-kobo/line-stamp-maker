@@ -860,6 +860,11 @@
             <p class="muted" style="margin:2px 0 0">0＝いちばん上、100＝いちばん下。光る線が上の方にある画像は、小さくすると線が入ります。</p>
           </div>
           <input type="file" id="thcSlotFile" accept="image/*" hidden>
+          <div class="box">
+            <label class="lb muted" style="display:flex;justify-content:space-between">メニューアイコンの大きさ（128×150用）<span id="thcMSizeV">72%</span></label>
+            <input type="range" id="thcMSize" min="50" max="100" value="72">
+            <p class="muted" style="margin:2px 0 0">大きすぎると、iOS（26より前）とAndroidで下のメニュー名に重なります。70%前後がおすすめです。</p>
+          </div>
           <label class="chk"><input type="checkbox" id="thcIos26" checked>iOS 26以降用の小さいメニューボタン（80×56px）も作る</label>
           <div style="display:flex;gap:6px;flex-wrap:wrap">
             <button class="btn" data-act="checkTheme">🔍 書き出し前のチェック</button>
@@ -3015,9 +3020,12 @@
   }
   function isOpaque(cv) { const p = cv.getContext('2d').getImageData(0, 0, cv.width, cv.height).data; for (let i = 3; i < p.length; i += 16) if (p[i] < 250) return false; return true; }
   function thcFull(w, h, e, o, ay = .5) { const c = mk(w, h), x = c.getContext('2d'); x.fillStyle = o.bg; x.fillRect(0, 0, w, h); x.imageSmoothingQuality = 'high'; coverDraw(x, thcCv(e), 0, 0, w, h, ay); return c; }
+  // 128×150は下にメニュー名が出るので、絵は上の方に小さめに置く（大きさは「メニューアイコンの大きさ」）
   function thcMenuBtn(w, h, img, small) {
     const c = mk(w, h), x = c.getContext('2d'); x.imageSmoothingQuality = 'high';
-    if (small) fitDraw(x, img, 4, 4, w - 8, h - 8); else fitDraw(x, img, 14, 12, w - 28, 92);
+    if (small) { fitDraw(x, img, 4, 4, w - 8, h - 8); return c; }
+    const k = Number($('thcMSize').value) / 100, bw = 100 * k, bh = 92 * k, cy = 56;
+    fitDraw(x, img, (w - bw) / 2, cy - bh / 2, bw, bh);
     return c;
   }
   function thcPass(sz, img) {
@@ -3315,7 +3323,7 @@
     thcSaveT = setTimeout(async () => {
       const slots = {};
       for (const k of Object.keys(thc)) slots[k] = Array.isArray(thc[k]) ? thc[k].map(e => e ? e.blob : null) : (thc[k] ? thc[k].blob : null);
-      const set = {}; ['thcBg', 'thcGlow', 'thcCut', 'thcTol', 'thcAuto', 'thcDim', 'thcGlowAmt', 'thcCols', 'thcRows', 'thcInset', 'thcSheetTo', 'thcMbPos'].forEach(id => set[id] = $(id).value);
+      const set = {}; ['thcBg', 'thcGlow', 'thcCut', 'thcTol', 'thcAuto', 'thcDim', 'thcGlowAmt', 'thcCols', 'thcRows', 'thcInset', 'thcSheetTo', 'thcMbPos', 'thcMSize'].forEach(id => set[id] = $(id).value);
       set.thcIos26 = $('thcIos26').checked;
       try { const db = await idb(); await new Promise((res, rej) => { const tx = db.transaction(STORE, 'readwrite'); tx.objectStore(STORE).put({ mode: thMode, slots, set }, 'theme'); tx.oncomplete = res; tx.onerror = () => rej(tx.error); }); } catch (e) { /* 保存できない環境 */ }
     }, 800);
@@ -3334,8 +3342,8 @@
     if (v.mode === 'custom') thSetMode('custom', true); else thcRenderSlots();
   }
   function thcAfter() { thcRenderSlots(); thcPreviewSoon(); thcSave(); $('thcCheck').innerHTML = ''; }
-  function thcSyncLabels() { $('thcInsetV').textContent = $('thcInset').value + '%'; $('thcTolV').textContent = $('thcTol').value; $('thcDimV').textContent = $('thcDim').value; $('thcGlowAmtV').textContent = $('thcGlowAmt').value; const mp = Number($('thcMbPos').value); $('thcMbPosV').textContent = mp === 50 ? '真ん中' : mp + (mp < 50 ? '（上より）' : '（下より）'); }
-  ['thcBg', 'thcGlow', 'thcCut', 'thcTol', 'thcAuto', 'thcDim', 'thcGlowAmt', 'thcIos26', 'thcMbPos'].forEach(id => $(id).addEventListener('input', () => { thcSyncLabels(); if (id === 'thcAuto') thcRenderSlots(); thcPreviewSoon(); thcSave(); }));
+  function thcSyncLabels() { $('thcInsetV').textContent = $('thcInset').value + '%'; $('thcTolV').textContent = $('thcTol').value; $('thcDimV').textContent = $('thcDim').value; $('thcGlowAmtV').textContent = $('thcGlowAmt').value; $('thcMSizeV').textContent = $('thcMSize').value + '%'; const mp = Number($('thcMbPos').value); $('thcMbPosV').textContent = mp === 50 ? '真ん中' : mp + (mp < 50 ? '（上より）' : '（下より）'); }
+  ['thcBg', 'thcGlow', 'thcCut', 'thcTol', 'thcAuto', 'thcDim', 'thcGlowAmt', 'thcIos26', 'thcMbPos', 'thcMSize'].forEach(id => $(id).addEventListener('input', () => { thcSyncLabels(); if (id === 'thcAuto') thcRenderSlots(); thcPreviewSoon(); thcSave(); }));
   ['thcCols', 'thcRows', 'thcInset', 'thcSheetTo'].forEach(id => $(id).addEventListener('input', () => { thcSyncLabels(); thcDrawSheet(); thcRenderSlots(); thcSave(); }));
   ACT.thcClear = () => {
     if (!confirm('入れた画像を全部消しますか？')) return;
