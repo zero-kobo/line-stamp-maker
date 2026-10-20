@@ -527,6 +527,10 @@
         <div>
           <div class="h3">おすすめ配色</div>
           <div class="grid2" id="themes"></div>
+          <div class="row" style="margin-top:6px;gap:6px;flex-wrap:wrap">
+            <button class="btn sm" data-act="handwrite">✍️ 手書き風（細いこげ茶文字）</button>
+            <button class="btn sm" data-act="handwriteAll">全スタンプを手書き風に</button>
+          </div>
         </div>
         <div class="box">
           <div class="h3">💾 マイ文字デザイン <button class="btn sm" data-act="savePreset">今のデザインを保存</button></div>
@@ -1100,6 +1104,8 @@
   const VROT = new Set(['ー', '〜', '～', '-', '―', '…', '‥', '（', '）', '(', ')', '「', '」', '→', '←', '=', '＝']);
 
   // ---------- State ----------
+  // 売れ筋の「ゆる手書き」文字：細いこげ茶＋白いうすフチ、影なし
+  const HANDWRITE = { font: "'Yusei Magic'", size: 40, colorMode: 'solid', c1: '#5b4636', c2: '#5b4636', stroke: '#ffffff', strokeW: 4, outer: false, shadow: false, fx: 'none', bubble: 'none' };
   const defaultText = () => ({ content: '', font: FONTS[0].f, size: SPEC[KIND].textSize, x: 50, y: 82, dir: 'horizontal', fx: 'none', fxInt: 50,
     colorMode: 'solid', c1: '#ffffff', c2: '#fde047', stroke: '#059669', strokeW: 8, outer: true, outerColor: '#ffffff', shadow: true, bubble: 'none', bubbleColor: '#ffffff', bubbleLine: '#1e293b' });
   const newStamp = () => ({ raw: null, img: null, x: W / 2, y: H / 2 - 10, scale: 100, rot: 0, flip: false,
@@ -2159,6 +2165,8 @@
   const ACT = {
     prev: () => select(cur - 1),
     next: () => select(cur + 1),
+    handwrite: () => { const t = S().text; Object.assign(t, HANDWRITE); if (S().img) autoFit(S()); ensureFont(t).then(() => { syncUI(); changed(); }); toast('手書き風の文字にしました（文字はドラッグで好きな場所へ）'); },
+    handwriteAll: () => { stamps.slice(0, N).forEach(x => { Object.assign(x.text, HANDWRITE); if (x.img) autoFit(x); }); ensureFont(S().text).then(() => { syncUI(); checkAll(); scheduleSave(); requestRender(); }); toast('全スタンプを手書き風にしました'); },
     mainFrameClear: () => { setMainFrame(null); updateMainTab(); scheduleSave(); toast('フレームを外しました'); },
     autoFit: () => { const s = S(); if (!s.img) return toast('画像がありません'); autoFit(s); syncUI(); changed(); toast('余白に収まるように配置しました'); },
     undo: () => { const s = S(); if (!s.hist.length) return toast('戻せる操作がありません'); s.img = s.hist.pop(); imgEdited(s); changed(); },
