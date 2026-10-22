@@ -73,9 +73,16 @@
     window.gtag = function(){ dataLayer.push(arguments); };
     gtag('js', new Date()); gtag('config', GA_ID);
   }
+  document.addEventListener('DOMContentLoaded', () => {
+    const seg = document.getElementById('skinSeg'); if (!seg) return;
+    const mark = () => seg.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.skinVal === document.documentElement.dataset.skin));
+    mark();
+    seg.addEventListener('click', e => { const b = e.target.closest('[data-skin-val]'); if (!b) return; document.documentElement.dataset.skin = b.dataset.skinVal; try { localStorage.setItem('lsm_skin', b.dataset.skinVal); } catch (e) {} mark(); if (window.track) track('skin_change', { skin: b.dataset.skinVal }); });
+  });
   window.track = (name, params) => { try { if (window.gtag) gtag('event', name, params || {}); } catch (e) {} };
 </script>
 
+<script>try{document.documentElement.dataset.skin=localStorage.getItem('lsm_skin')||'mono'}catch(e){document.documentElement.dataset.skin='mono'}</script>
 <style>
   :root{
     --bg:#f3f6f4; --card:#fff; --ink:#1e293b; --sub:#64748b; --line:#e2e8f0;
@@ -89,6 +96,37 @@
   button,select,input,textarea{font:inherit;color:inherit}
   button{cursor:pointer}
   .wrap{max-width:1280px;margin:0 auto;padding:0 14px}
+
+
+  /* ===== デザイン切り替え（スキン） ===== */
+  .skinsw{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--sub)}
+  .skinsw .seg{grid-auto-columns:auto}
+  .skinsw .seg button{padding:4px 10px;font-size:12px}
+  /* モノトーン：白黒ベースの洗練スタイル */
+  [data-skin=mono]{--bg:#f6f6f4;--card:#fff;--ink:#111;--sub:#6b6b6b;--line:#e4e4e1;--ac:#111;--ac-d:#111;--ac-l:#efefec;--ac-ll:#f7f7f5;--r:10px}
+  [data-skin=mono] body,[data-skin=dark] body{font-family:"Hiragino Sans","Noto Sans JP","Yu Gothic UI",system-ui,sans-serif;letter-spacing:.02em}
+  [data-skin=mono] .hero h1,[data-skin=dark] .hero h1{font-weight:800;letter-spacing:.04em}
+  [data-skin=mono] .hero h1 small{background:#111;color:#fff;border-radius:4px}
+  [data-skin=mono] .btn,[data-skin=dark] .btn{border-radius:6px}
+  [data-skin=mono] .btn.pri{box-shadow:none}
+  [data-skin=mono] .btn.pri:hover{background:#333}
+  [data-skin=mono] .card{box-shadow:none}
+  [data-skin=mono] .tabs button,[data-skin=dark] .tabs button{border-radius:6px;font-weight:700}
+  [data-skin=mono] .tabs button.on{box-shadow:inset 0 -2px 0 #111}
+  [data-skin=mono] .box.g,[data-skin=mono] .box.p,[data-skin=mono] .box.a{background:#fafaf8;border-color:var(--line)}
+  [data-skin=mono] .badges span{border-radius:4px}
+  /* ダーク：夜でも見やすい、ネオンのアクセント */
+  [data-skin=dark]{--bg:#0e1013;--card:#16191e;--ink:#e8eaed;--sub:#9aa3ad;--line:#2a2f37;--ac:#22d3ee;--ac-d:#67e8f9;--ac-l:#123038;--ac-ll:#13242a;--r:10px;color-scheme:dark}
+  [data-skin=dark] .hd,[data-skin=dark] .btn,[data-skin=dark] .seg button,[data-skin=dark] select,[data-skin=dark] textarea,[data-skin=dark] input[type=number],[data-skin=dark] input[type=text],[data-skin=dark] input[type=color],[data-skin=dark] .badges span,[data-skin=dark] .thumb,[data-skin=dark] .tabs button.on,[data-skin=dark] .work,[data-skin=dark] .aiad{background:#1c2026;border-color:var(--line);color:var(--ink)}
+  [data-skin=dark] .tabs{background:#12151a}
+  [data-skin=dark] .box,[data-skin=dark] .box.g,[data-skin=dark] .box.p,[data-skin=dark] .box.a,[data-skin=dark] .fxgrid button{background:#13161b;border-color:var(--line)}
+  [data-skin=dark] .btn.pri{background:var(--ac);border-color:var(--ac);color:#06232a;box-shadow:0 0 0 1px #22d3ee55,0 6px 18px #22d3ee33}
+  [data-skin=dark] .btn.pri:hover{background:#67e8f9}
+  [data-skin=dark] .card{box-shadow:none}
+  [data-skin=dark] .hero h1 small{background:#123038;color:#67e8f9}
+  [data-skin=dark] a{color:#67e8f9}
+  [data-skin=dark] .chat,[data-skin=dark] .phone{color:#1e293b}
+  [data-skin=dark] .chat .bub{color:#1e293b}
 
   /* header */
   .hd{background:#fff;border-bottom:1px solid var(--line)}
@@ -307,7 +345,7 @@
 <header class="hd">
   <div class="wrap">
     <a class="brand" href="https://zero-kobo.github.io/">🛠️ <b>ちいさなツール工房</b> › LINEスタンプ・絵文字メーカー</a>
-    <span class="muted">画像はあなたのブラウザ内だけで処理されます</span>
+    <div class="skinsw"><span>デザイン</span><div class="seg" id="skinSeg"><button data-skin-val="std">標準</button><button data-skin-val="mono">モノトーン</button><button data-skin-val="dark">ダーク</button></div></div>
   </div>
 </header>
 
