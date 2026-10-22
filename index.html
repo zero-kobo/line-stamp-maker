@@ -250,6 +250,12 @@
   .balance{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:6px}
   .balance div{background:#f8fafc;border-radius:10px;padding:8px;font-size:12px}
   .balance b{font-size:16px}
+  .works{margin-top:14px}
+  .works-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;margin-top:8px}
+  .work{display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 8px;border:1px solid var(--line,#e5e7eb);border-radius:14px;background:#fff;text-decoration:none;color:var(--ink);font-size:12px;font-weight:700;text-align:center;line-height:1.35;transition:.15s}
+  .work:hover{border-color:#94a3b8;box-shadow:0 4px 12px rgba(15,23,42,.08)}
+  .work img{width:88px;height:88px;object-fit:contain}
+  .works-more{display:inline-block;margin-top:10px;font-size:13px;font-weight:700}
   .aiad{position:relative;display:flex;align-items:center;gap:12px;border:1px solid #c7d2fe;background:linear-gradient(135deg,#eef2ff,#f5f3ff);border-radius:14px;padding:12px 14px;text-decoration:none;color:var(--ink);transition:.15s}
   .aiad:hover{border-color:#6366f1;box-shadow:0 4px 14px rgba(99,102,241,.15)}
   .aiad-pr{flex:0 0 auto;font-size:10px;font-weight:900;color:#4338ca;border:1px solid #a5b4fc;border-radius:6px;padding:1px 6px;background:#fff}
@@ -1043,6 +1049,18 @@
       <p class="muted" style="margin:8px 0 0">価格は2026/10/12時点のものです。最新の価格はリンク先でご確認ください。</p>
     </div>
   </div>
+
+  <section class="card pad works" aria-label="このツールで作ったスタンプ">
+    <div class="h3">🧪 このツールで作ったスタンプ（作例）</div>
+    <p class="muted" style="margin:4px 0 0">作者がこのツールで仕上げたLINEスタンプです。絵は画像AIで描き、分割・文字入れ・エフェクト・書き出しをこのツールで行いました。タップするとLINE STOREのページが開きます。</p>
+    <div class="works-grid">
+      <a class="work" href="https://line.me/S/sticker/37348766" target="_blank" rel="noopener" onclick="track('work_click',{item:'aotira'})"><img src="images/works/aotira.png" alt="あおティラ 毎日つかえるスタンプ" loading="lazy" width="88" height="88"><span>あおティラ 毎日つかえるスタンプ</span></a>
+      <a class="work" href="https://line.me/S/sticker/37429898" target="_blank" rel="noopener" onclick="track('work_click',{item:'dajare'})"><img src="images/works/dajare.png" alt="ゆるい食べものダジャレ" loading="lazy" width="88" height="88"><span>ゆるい食べものダジャレ</span></a>
+      <a class="work" href="https://line.me/S/sticker/37442726" target="_blank" rel="noopener" onclick="track('work_click',{item:'mamatomo'})"><img src="images/works/mamatomo.png" alt="ママ友に送れるやさしい敬語" loading="lazy" width="88" height="88"><span>ママ友に送れるやさしい敬語</span></a>
+      <a class="work" href="https://line.me/S/sticker/37445890" target="_blank" rel="noopener" onclick="track('work_click',{item:'bunchou'})"><img src="images/works/bunchou.png" alt="まんまる文鳥のやさしい敬語" loading="lazy" width="88" height="88"><span>まんまる文鳥のやさしい敬語</span></a>
+    </div>
+    <a class="works-more" href="https://line.me/S/shop/sticker/author/4137752" target="_blank" rel="noopener" onclick="track('work_click',{item:'author'})">ほかのスタンプも見る（作者のページ） ›</a>
+  </section>
 
   <footer>
     <p>© ちいさなツール工房　｜　<a href="https://zero-kobo.github.io/">ツール一覧</a>　｜　<a href="https://zero-kobo.github.io/privacy.html">プライバシーポリシー</a></p>
