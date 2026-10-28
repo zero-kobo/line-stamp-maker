@@ -1385,9 +1385,9 @@
   // ---------- 背景エフェクト（オーラ・後光・黒いモヤ・キラキラ） ----------
   // ctx.filter は古いSafariで効かないので、縮小→拡大でぼかす
   const AURA_LIST = [['none', 'なし'], ['glow', 'オーラ'], ['rainbow', '虹オーラ'], ['holy', '後光'], ['kira', 'キラキラ'], ['fire', '炎'], ['dark', '黒いモヤ'], ['gaan', 'ガーン'], ['shuchu', '集中線'], ['circle', '丸い背景'], ['burst', 'ドカン背景'], ['speed', 'スピード線'], ['bunshin', '影分身'], ['kemuri', 'ドロン煙'], ['kumo', '空と雲']];
-  const MARK_LIST = [['none', 'なし'], ['anger', '怒りマーク'], ['ase', '汗'], ['heart', 'ハート'], ['onpu', '音符'], ['zzz', 'Zzz'], ['guru', 'ぐるぐる'], ['exq', '！？'], ['ame', '雨雲'], ['pika', 'ひらめき'], ['yuki', '雪']];
+  const MARK_LIST = [['none', 'なし'], ['anger', '怒りマーク'], ['ase', '汗'], ['heart', 'ハート'], ['onpu', '音符'], ['zzz', 'Zzz'], ['guru', 'ぐるぐる'], ['exq', '！？'], ['hatena', 'はてな'], ['bikkuri', 'びっくり'], ['pachi', 'パチパチ'], ['kirari', 'キラリ'], ['ame', '雨雲'], ['pika', 'ひらめき'], ['yuki', '雪']];
   const AURA_DEF = { glow: '#38bdf8', rainbow: '#ffffff', holy: '#fde047', dark: '#3b0764', kira: '#fde047', fire: '#ef4444', gaan: '#4c1d95', shuchu: '#1f2937', circle: '#fbcfe8', burst: '#fde047', speed: '#94a3b8', bunshin: '#a855f7', kemuri: '#e2e8f0', kumo: '#7dd3fc' };
-  const MARK_DEF = { anger: '#ef4444', ase: '#7dd3fc', heart: '#f472b6', onpu: '#2563eb', zzz: '#3b82f6', guru: '#334155', exq: '#ef4444', ame: '#94a3b8', pika: '#facc15', yuki: '#7dd3fc' };
+  const MARK_DEF = { anger: '#ef4444', ase: '#7dd3fc', heart: '#f472b6', onpu: '#2563eb', zzz: '#3b82f6', guru: '#334155', exq: '#ef4444', hatena: '#fb923c', bikkuri: '#ef4444', pachi: '#f59e0b', kirari: '#facc15', ame: '#94a3b8', pika: '#facc15', yuki: '#7dd3fc' };
   function softBlur(src, r) {
     let cur = src, w = W, h = H;
     const target = Math.max(1, r / 2);
@@ -1621,6 +1621,29 @@
         o.font = `900 ${fs}px "Mochiy Pop One", "Hiragino Maru Gothic ProN", sans-serif`; o.textAlign = 'center'; o.textBaseline = 'middle';
         o.lineJoin = 'round'; o.lineWidth = fs * .22; o.strokeStyle = '#ffffff'; o.strokeText(t, 0, 0); o.fillStyle = col; o.fillText(t, 0, 0); o.restore();
       });
+    } else if (s.mark === 'hatena' || s.mark === 'bikkuri') {
+      // はてな・びっくり：頭の横に大小2つ（文字なしスタンプの気持ちを補う記号）
+      const ch = s.mark === 'hatena' ? '？' : '！';
+      [[.42, .05, 2.1, .2], [.66, .5, 1.3, -.12]].forEach(([fx, fy, m, rot]) => {
+        const fs = r * m, p = pt(fx, fy, fs * .6);
+        o.save(); o.translate(p.x, p.y); o.rotate(side * rot);
+        o.font = `900 ${fs}px "Mochiy Pop One", "Hiragino Maru Gothic ProN", sans-serif`; o.textAlign = 'center'; o.textBaseline = 'middle';
+        o.lineJoin = 'round'; o.lineWidth = fs * .22; o.strokeStyle = '#ffffff'; o.strokeText(ch, 0, 0); o.fillStyle = col; o.fillText(ch, 0, 0); o.restore();
+      });
+    } else if (s.mark === 'pachi') {
+      // パチパチ（拍手）：体の両わきに、外へ広がる短い線を3本ずつ
+      const y = b.y0 + bh * .5, gap = r * .35;
+      [[-1, b.x0], [1, b.x1]].forEach(([dir, ex]) => {
+        const x = cl(ex + dir * gap, M + r * 1.2, W - M - r * 1.2);
+        [-.55, 0, .55].forEach(a => {
+          const c = Math.cos(a), sn = Math.sin(a), x0 = x + dir * c * r * .15, y0 = y + sn * r * .9 - r * .2, x1 = x + dir * c * r * 1.05, y1 = y + sn * r * 1.5 - r * .2;
+          outlined(o, lw * 1.1, () => { o.beginPath(); o.moveTo(x0, y0); o.lineTo(x1, y1); }, null, col);
+        });
+      });
+    } else if (s.mark === 'kirari') {
+      // キラリ：4方向にとがった星を頭のまわりに3つ
+      const spark = (cx2, cy2, rr) => { o.beginPath(); o.moveTo(cx2, cy2 - rr); o.quadraticCurveTo(cx2, cy2, cx2 + rr, cy2); o.quadraticCurveTo(cx2, cy2, cx2, cy2 + rr); o.quadraticCurveTo(cx2, cy2, cx2 - rr, cy2); o.quadraticCurveTo(cx2, cy2, cx2, cy2 - rr); o.closePath(); };
+      [[.45, 0, 1.15], [.66, .45, .7], [-.48, .05, .8]].forEach(([fx, fy, m]) => { const p = pt(fx, fy, r * m * 1.1); outlined(o, lw * .6, () => spark(p.x, p.y, r * m), col, '#ca8a04'); });
     } else if (s.mark === 'guru') {
       const p = { x: cl(cx, M + r * 1.4, W - M - r * 1.4), y: cl(b.y0 - r * .55, M + r * .8, H - M - r) };
       outlined(o, lw * 1.1, () => { o.beginPath(); for (let t = 0; t < Math.PI * 6; t += .15) { const rr = r * .15 + t / (Math.PI * 6) * r * 1.1; o.lineTo(p.x + Math.cos(t) * rr * 1.25, p.y + Math.sin(t) * rr * .6); } }, null, col);
@@ -1673,7 +1696,9 @@
     [/えっ|えー|！？|!\?|？！|まじ|マジ|うそ|ウソ|なんだと|乗り過ご/, 'shuchu', 'exq'],
     [/好き|すき|大好|愛|ラブ|ハート|かわいい|可愛|ちゅ/, 'circle', 'heart'],
     [/ひらめ|なるほど|わかった|それだ|天才|閃/, 'none', 'pika'],
+    [/はてな|なに？|なんで|どういう|ほう？|\?|？/, 'none', 'hatena'],
     [/迷|わから|混乱|目が回|はて/, 'none', 'guru'],
+    [/拍手|ぱちぱち|パチパチ|さすが|おみごと|お見事|ブラボー/, 'none', 'pachi'],
     [/雨|どんより|憂鬱|ゆううつ|しょんぼり|行けない|残念|さみし|寂し/, 'none', 'ame'],
     [/雪|ゆき|寒|さむ|冬|ふゆ|凍/, 'none', 'yuki'],
     [/メリ|クリスマス|サンタ|プレゼント/, 'kira', 'none'],
@@ -1942,6 +1967,8 @@
     if (hasText && t.dir !== 'vertical') { if (t.y >= 55) ry1 = H * (1 - band); else if (t.y <= 45) ry0 = H * band; }
     if (hasText && t.dir === 'vertical') { if (t.x >= 55) rx1 = W * 0.70; else if (t.x <= 45) rx0 = W * 0.30; }
     if (s.aura === 'bunshin') { const q = W * ((s.auraSize ?? 50) > 66 ? .25 : .18); rx0 += q; rx1 -= q; }
+    // パチパチは体の両わきに描くので、そのぶん左右をあける
+    if (s.mark === 'pachi') { const q = Math.round((16 + 18 * ((s.markSize ?? 50) / 100)) * Math.min(W, H) / 320 * 1.3); rx0 += q; rx1 -= q; }
     const aw = rx1 - rx0, ah = ry1 - ry0;
     const bw = b.x1 - b.x0, bh = b.y1 - b.y0;
     const sc = Math.min(aw / bw, ah / bh);
@@ -2180,6 +2207,7 @@
   // ---------- Image loading ----------
   async function setImage(s, cv) {
     s.raw = cv; s.img = cloneCanvas(cv); s.hist = []; s._rawURL = null; imgEdited(s);
+    clearSampleText(s);
     if ($('autoBgOnLoad').checked) autoRemoveBg(s, Number($('tol').value), $('erode').checked);
     if ($('autoFitOnLoad').checked) autoFit(s);
     else { s.x = W / 2; s.y = H / 2 - 10; s.rot = 0; s.scale = Math.round(Math.min((W * .75) / cv.width, (H * .75) / cv.height) * 1000) / 10; }
@@ -2229,10 +2257,16 @@
     c.fillStyle = '#fde047'; drawStar(c, 35, 45, 4, 12, 5); drawStar(c, 205, 50, 4, 14, 6);
     return cv;
   }
+  // 見本のクマの上に自分の画像を入れたら、見本のセリフも消す（文字なしスタンプに「わーい！！」が残らないように）
+  const SAMPLE_TEXT = 'わーい！！';
+  function clearSampleText(s) {
+    if (s._sample && s.text.content === SAMPLE_TEXT) s.text.content = '';
+    s._sample = false;
+  }
   function loadSample() {
     stamps = Array.from({ length: MAXN }, newStamp);
     const s = stamps[0];
-    s.text.content = 'わーい！！';
+    s.text.content = SAMPLE_TEXT; s._sample = true;
     s.raw = sampleBear(); s.img = cloneCanvas(s.raw);
     autoFit(s);
   }
@@ -2317,6 +2351,7 @@
       cell = limitSize(cell, 1000);
       const s = stamps[idx];
       s.raw = cell; s.img = cloneCanvas(cell); s.hist = []; s._rawURL = null; imgEdited(s);
+      clearSampleText(s);
       if (bg) autoRemoveBg(s, tol, erode);
       autoFit(s); done++;
     }
