@@ -562,7 +562,15 @@
           <div class="row" style="margin-top:6px">
             <label class="chk"><input type="checkbox" data-bind="text.outer">外側フチ（二重フチ）</label>
             <label class="chk"><input type="checkbox" data-bind="text.shadow">ぷっくり影</label>
+            <label class="chk"><input type="checkbox" data-bind="text.comic">アメコミ影（くっきりずらし影）</label>
           </div>
+          <div class="colorrow" style="margin-top:6px"><input type="color" data-bind="text.comicColor">アメコミ影の色</div>
+        </div>
+        <div class="box">
+          <div class="h3">🗯️ （　）の中を小さく</div>
+          <label class="chk"><input type="checkbox" data-bind="text.subSmall">（　）の中だけ小さく・別の色にする</label>
+          <div class="colorrow" style="margin-top:6px"><input type="color" data-bind="text.subColor">（　）の中の文字色</div>
+          <p class="muted" style="margin:6px 0 0">「確認します（してない）」のようなツッコミが、テロップっぽく小さく入ります。</p>
         </div>
         <div class="box p">
           <div class="h3">💭 吹き出し</div>
@@ -584,6 +592,10 @@
           <div class="row" style="margin-top:6px;gap:6px;flex-wrap:wrap">
             <button class="btn sm" data-act="handwrite">✍️ 手書き風（細いこげ茶文字）</button>
             <button class="btn sm" data-act="handwriteAll">全スタンプを手書き風に</button>
+            <button class="btn sm" data-act="comic">💥 アメコミ風</button>
+            <button class="btn sm" data-act="comicAll">全スタンプをアメコミ風に</button>
+            <button class="btn sm" data-act="telop">📺 テロップ風</button>
+            <button class="btn sm" data-act="telopAll">全スタンプをテロップ風に</button>
           </div>
         </div>
         <div class="box">
@@ -1176,9 +1188,13 @@
 
   // ---------- State ----------
   // 売れ筋の「ゆる手書き」文字：細いこげ茶＋白いうすフチ、影なし
-  const HANDWRITE = { font: "'Yusei Magic'", size: 40, colorMode: 'solid', c1: '#5b4636', c2: '#5b4636', stroke: '#ffffff', strokeW: 4, outer: false, shadow: false, fx: 'none', bubble: 'none' };
+  const HANDWRITE = { font: "'Yusei Magic'", size: 40, colorMode: 'solid', c1: '#5b4636', c2: '#5b4636', stroke: '#ffffff', strokeW: 4, outer: false, shadow: false, fx: 'none', bubble: 'none', comic: false, subSmall: false, tilt: 0 };
+  // アメコミ風：極太文字＋黄→オレンジ＋黒フチ＋白の外フチ＋くっきりずらし影、少し右上がり
+  const COMIC = { font: "'Dela Gothic One'", colorMode: 'grad', c1: '#fde047', c2: '#f97316', stroke: '#111827', strokeW: 7, outer: true, outerColor: '#ffffff', shadow: false, comic: true, comicColor: '#111827', tilt: -6, fx: 'none', subSmall: true, subColor: '#ffffff' };
+  // テロップ風：バラエティ番組の字幕。白い極太文字＋黒フチ＋ずらし影、まっすぐ
+  const TELOP = { font: "'Dela Gothic One'", colorMode: 'solid', c1: '#ffffff', c2: '#ffffff', stroke: '#111827', strokeW: 7, outer: false, outerColor: '#ffffff', shadow: false, comic: true, comicColor: '#111827', tilt: 0, fx: 'none', bubble: 'none', subSmall: true, subColor: '#fde047' };
   const defaultText = () => ({ content: '', font: FONTS[0].f, size: SPEC[KIND].textSize, x: 50, y: 82, dir: 'horizontal', fx: 'none', fxInt: 50,
-    colorMode: 'solid', c1: '#ffffff', c2: '#fde047', stroke: '#059669', strokeW: 8, outer: true, outerColor: '#ffffff', shadow: true, bubble: 'none', bubbleColor: '#ffffff', bubbleLine: '#1e293b', tilt: 0 });
+    colorMode: 'solid', c1: '#ffffff', c2: '#fde047', stroke: '#059669', strokeW: 8, outer: true, outerColor: '#ffffff', shadow: true, bubble: 'none', bubbleColor: '#ffffff', bubbleLine: '#1e293b', tilt: 0, comic: false, comicColor: '#111827', subSmall: false, subColor: '#e5e7eb' });
   const newStamp = () => ({ raw: null, img: null, x: W / 2, y: H / 2 - 10, scale: 100, rot: 0, flip: false,
     outline: true, outlineW: SPEC[KIND].outlineW, outlineColor: '#ffffff', aura: 'none', auraColor: '#38bdf8', auraSize: 50, mark: 'none', markColor: '#ef4444', markSize: 50, markFlip: false, overlap: 0, text: defaultText(), hist: [], status: 'empty', issues: [], _tbox: null });
 
@@ -1261,15 +1277,22 @@
     const ox = W * t.x / 100, oy = H * t.y / 100;
     const ang = t.dir === 'slantUp' ? -0.22 : t.dir === 'slantDown' ? 0.22 : 0;
     const n = lines.length, gap = t.size * 1.18;
+    // （　）の中を小さくする：行ごとに、かっこの中の文字に印を付ける
+    const SUBK = 0.62, OPEN = new Set(['（', '(']), CLOSE = new Set(['）', ')']);
+    const subFlags = lines.map(line => { let d = 0; return Array.from(line).map(ch => { if (OPEN.has(ch)) { d++; return true; } if (CLOSE.has(ch)) { const r = d > 0; d = Math.max(0, d - 1); return r; } return d > 0; }); });
+    const allSub = subFlags.map(f => t.subSmall && f.length > 0 && f.every(Boolean));
+    const lh = allSub.map(a => gap * (a ? SUBK + .1 : 1));
+    const lhTot = lh.reduce((a, b) => a + b, 0);
     const glyphs = []; let gi = 0;
     lines.forEach((line, li) => {
       const chars = Array.from(line), L = chars.length;
       const infos = chars.map((ch, i) => {
         let f = 1;
-        if (t.fx === 'grow') f = 0.65 + (i / Math.max(1, L - 1)) * 0.95 * k;
+        if (t.subSmall && subFlags[li][i]) f = SUBK;
+        if (t.fx === 'grow') f *= 0.65 + (i / Math.max(1, L - 1)) * 0.95 * k;
         const fs = Math.max(12, Math.round(t.size * f));
         c.font = fontStr(t, fs);
-        return { ch, fs, adv: t.dir === 'vertical' ? fs * 1.05 : c.measureText(ch).width };
+        return { ch, fs, sub: !!(t.subSmall && subFlags[li][i]), adv: t.dir === 'vertical' ? fs * 1.05 : c.measureText(ch).width };
       });
       let total = infos.reduce((a, b) => a + b.adv, 0);
       // 長いセリフは余白10px＋フチの内側に収まるよう自動で縮める
@@ -1280,7 +1303,7 @@
         infos.forEach(g => { g.fs = Math.max(12, Math.round(g.fs * k2)); g.adv *= k2; });
         total = avail;
       }
-      const lo = (li - (n - 1) / 2) * gap;
+      const lo = lh.slice(0, li).reduce((a, b) => a + b, 0) + lh[li] / 2 - lhTot / 2;
       let off = -total / 2;
       infos.forEach((g, i) => {
         const cc = off + g.adv / 2; off += g.adv;
@@ -1289,7 +1312,7 @@
         else { x = ox + Math.cos(ang) * cc - Math.sin(ang) * lo; y = oy + Math.sin(ang) * cc + Math.cos(ang) * lo; r = ang; }
         if (t.fx === 'wave') { const w = Math.sin((i / Math.max(1, L)) * Math.PI * 2) * 14 * k; if (t.dir === 'vertical') x += w; else y += w; }
         if (t.fx === 'shake') { const j = jit(gi, k); x += j.x; y += j.y; r += j.r; }
-        if (g.ch.trim()) glyphs.push({ ch: g.ch, fs: g.fs, x, y, r, i: gi });
+        if (g.ch.trim()) glyphs.push({ ch: g.ch, fs: g.fs, sub: g.sub, x, y, r, i: gi });
         gi++;
       });
     });
@@ -1297,7 +1320,7 @@
     if (glyphs.length) {
       const e = (t.outer ? t.strokeW + 5 : t.strokeW) + M + 2 + bubblePad(t);
       let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
-      glyphs.forEach(g => { const r = g.fs * .56; x0 = Math.min(x0, g.x - r); x1 = Math.max(x1, g.x + r + (t.shadow ? 3 : 0)); y0 = Math.min(y0, g.y - r); y1 = Math.max(y1, g.y + r + (t.shadow ? 5 : 0)); });
+      glyphs.forEach(g => { const r = g.fs * .56; x0 = Math.min(x0, g.x - r); x1 = Math.max(x1, g.x + r + (t.shadow ? 3 : 0) + (t.comic ? comicOff(t).x : 0)); y0 = Math.min(y0, g.y - r); y1 = Math.max(y1, g.y + r + (t.shadow ? 5 : 0) + (t.comic ? comicOff(t).y : 0)); });
       const dx = x0 < e ? e - x0 : x1 > W - e ? (W - e) - x1 : 0;
       const dy = y0 < e ? e - y0 : y1 > H - e ? (H - e) - y1 : 0;
       if (dx || dy) glyphs.forEach(g => { g.x += dx; g.y += dy; });
@@ -1305,6 +1328,8 @@
     return glyphs;
   }
 
+  // アメコミ影のずらし量（文字の大きさに合わせる）
+  const comicOff = t => ({ x: Math.max(2, Math.round(t.size * .05)), y: Math.max(3, Math.round(t.size * .08)) });
   const bubbleBase = t => Math.max(8, Math.round(t.size * 0.32));
   const bubbleTail = t => Math.min(18, bubbleBase(t) * 1.4);
   // 吹き出しが文字のまわりに広がる最大幅（余白の計算に使う）
@@ -1364,6 +1389,16 @@
       });
       c.save(); c.globalAlpha = 0.28; c.drawImage(TL, 2, 4); c.restore();
     }
+    if (t.comic) { // アメコミ影：ぼかさない濃い影を右下にずらして置く
+      const s = TL.getContext('2d'); s.clearRect(0, 0, W, H); prep(s);
+      each(s, (cc, g) => {
+        cc.fillStyle = cc.strokeStyle = t.comicColor || '#111827';
+        const lw = t.outer ? outerW : t.strokeW * 2;
+        if (lw > 0) { cc.lineWidth = lw; cc.strokeText(g.ch, 0, 0); }
+        cc.fillText(g.ch, 0, 0);
+      });
+      const o = comicOff(t); c.drawImage(TL, o.x, o.y);
+    }
     c.save(); prep(c);
     if (t.outer) each(c, (cc, g) => { cc.strokeStyle = t.outerColor; cc.lineWidth = outerW; cc.strokeText(g.ch, 0, 0); });
     if (t.strokeW > 0) each(c, (cc, g) => { cc.strokeStyle = t.stroke; cc.lineWidth = t.strokeW * 2; cc.strokeText(g.ch, 0, 0); });
@@ -1371,13 +1406,14 @@
       if (t.colorMode === 'rainbow') cc.fillStyle = RAINBOW[g.i % RAINBOW.length];
       else if (t.colorMode === 'grad') { const gr = cc.createLinearGradient(0, -g.fs * .5, 0, g.fs * .5); gr.addColorStop(0, t.c1); gr.addColorStop(1, t.c2); cc.fillStyle = gr; }
       else cc.fillStyle = t.c1;
+      if (g.sub) cc.fillStyle = t.subColor || '#e5e7eb';
       cc.fillText(g.ch, 0, 0);
     });
     c.restore();
 
-    const p = (t.outer ? outerW : t.strokeW * 2) / 2 + 4;
+    const p = (t.outer ? outerW : t.strokeW * 2) / 2 + 4, co = t.comic ? comicOff(t) : { x: 0, y: 0 };
     let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
-    gs.forEach(g => { const h = g.fs * .6 + p; x0 = Math.min(x0, g.x - h); x1 = Math.max(x1, g.x + h); y0 = Math.min(y0, g.y - h); y1 = Math.max(y1, g.y + h); });
+    gs.forEach(g => { const h = g.fs * .6 + p; x0 = Math.min(x0, g.x - h); x1 = Math.max(x1, g.x + h + co.x); y0 = Math.min(y0, g.y - h); y1 = Math.max(y1, g.y + h + co.y); });
     return { x0, y0, x1, y1 };
   }
 
@@ -2242,6 +2278,10 @@
     prev: () => select(cur - 1),
     next: () => select(cur + 1),
     handwrite: () => { const t = S().text; Object.assign(t, HANDWRITE); if (S().img) autoFit(S()); ensureFont(t).then(() => { syncUI(); changed(); }); toast('手書き風の文字にしました（文字はドラッグで好きな場所へ）'); },
+    comic: () => { const t = S().text; Object.assign(t, COMIC); if (S().img) autoFit(S()); ensureFont(t).then(() => { syncUI(); changed(); }); toast('アメコミ風の文字にしました（ここぞのコマは吹き出し「ギザギザ」やドカン背景も）'); },
+    comicAll: () => { stamps.slice(0, N).forEach(x => { Object.assign(x.text, COMIC); if (x.img) autoFit(x); }); ensureFont(S().text).then(() => { syncUI(); checkAll(); scheduleSave(); requestRender(); }); toast('全スタンプをアメコミ風にしました'); },
+    telop: () => { const t = S().text; Object.assign(t, TELOP); if (S().img) autoFit(S()); ensureFont(t).then(() => { syncUI(); changed(); }); toast('テロップ風の文字にしました'); },
+    telopAll: () => { stamps.slice(0, N).forEach(x => { Object.assign(x.text, TELOP); if (x.img) autoFit(x); }); ensureFont(S().text).then(() => { syncUI(); checkAll(); scheduleSave(); requestRender(); }); toast('全スタンプをテロップ風にしました'); },
     handwriteAll: () => { stamps.slice(0, N).forEach(x => { Object.assign(x.text, HANDWRITE); if (x.img) autoFit(x); }); ensureFont(S().text).then(() => { syncUI(); checkAll(); scheduleSave(); requestRender(); }); toast('全スタンプを手書き風にしました'); },
     mainFrameClear: () => { setMainFrame(null); updateMainTab(); scheduleSave(); toast('フレームを外しました'); },
     autoFit: () => { const s = S(); if (!s.img) return toast('画像がありません'); autoFit(s); syncUI(); changed(); toast('余白に収まるように配置しました'); },
@@ -2454,7 +2494,7 @@
   }
   // ---------- My text presets ----------
   const PKEY = 'zk-line-text-presets';
-  const STYLE_KEYS = ['font', 'size', 'dir', 'tilt', 'fx', 'fxInt', 'colorMode', 'c1', 'c2', 'stroke', 'strokeW', 'outer', 'outerColor', 'shadow', 'bubble', 'bubbleColor', 'bubbleLine', 'x', 'y'];
+  const STYLE_KEYS = ['font', 'size', 'dir', 'tilt', 'fx', 'fxInt', 'colorMode', 'c1', 'c2', 'stroke', 'strokeW', 'outer', 'outerColor', 'shadow', 'bubble', 'bubbleColor', 'bubbleLine', 'x', 'y', 'comic', 'comicColor', 'subSmall', 'subColor'];
   const getPresets = () => { try { return JSON.parse(localStorage.getItem(PKEY) || '[]'); } catch (e) { return []; } };
   const setPresets = a => { try { localStorage.setItem(PKEY, JSON.stringify(a)); } catch (e) {} renderPresets(); };
   function renderPresets() {
