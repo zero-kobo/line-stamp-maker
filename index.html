@@ -566,6 +566,16 @@
           </div>
           <div class="colorrow" style="margin-top:6px"><input type="color" data-bind="text.comicColor">アメコミ影の色</div>
         </div>
+        <div class="box a">
+          <div class="h3">💥 アメコミ効果</div>
+          <label class="lb"><span>立体（文字の厚み）</span><span data-show="text.depth" data-suffix="px"></span></label>
+          <input type="range" min="0" max="16" data-bind="text.depth">
+          <div class="colorrow" style="margin-top:6px"><input type="color" data-bind="text.depthColor">立体の色</div>
+          <label class="lb"><span>ガタガタ（1文字ずつ大きさ・角度をばらす）</span><span data-show="text.jumble" data-suffix="%"></span></label>
+          <input type="range" min="0" max="100" data-bind="text.jumble">
+          <div class="muted" style="margin:8px 0 4px">アメコミ配色（タップで文字の色・立体の色を変更）</div>
+          <div class="chips" id="comicPal"></div>
+        </div>
         <div class="box">
           <div class="h3">🗯️ （　）の中を小さく</div>
           <label class="chk"><input type="checkbox" data-bind="text.subSmall">（　）の中だけ小さく・別の色にする</label>
@@ -1188,13 +1198,15 @@
 
   // ---------- State ----------
   // 売れ筋の「ゆる手書き」文字：細いこげ茶＋白いうすフチ、影なし
-  const HANDWRITE = { font: "'Yusei Magic'", size: 40, colorMode: 'solid', c1: '#5b4636', c2: '#5b4636', stroke: '#ffffff', strokeW: 4, outer: false, shadow: false, fx: 'none', bubble: 'none', comic: false, subSmall: false, tilt: 0 };
+  const HANDWRITE = { font: "'Yusei Magic'", size: 40, colorMode: 'solid', c1: '#5b4636', c2: '#5b4636', stroke: '#ffffff', strokeW: 4, outer: false, shadow: false, fx: 'none', bubble: 'none', comic: false, subSmall: false, tilt: 0, depth: 0, jumble: 0 };
   // アメコミ風：極太文字＋黄→オレンジ＋黒フチ＋白の外フチ＋くっきりずらし影、少し右上がり
-  const COMIC = { font: "'Dela Gothic One'", colorMode: 'grad', c1: '#fde047', c2: '#f97316', stroke: '#111827', strokeW: 7, outer: true, outerColor: '#ffffff', shadow: false, comic: true, comicColor: '#111827', tilt: -6, fx: 'none', subSmall: true, subColor: '#ffffff' };
+  const COMIC = { font: "'Dela Gothic One'", colorMode: 'grad', c1: '#fde047', c2: '#f97316', stroke: '#111827', strokeW: 7, outer: true, outerColor: '#ffffff', shadow: false, comic: true, comicColor: '#111827', tilt: -6, fx: 'none', subSmall: true, subColor: '#ffffff', depth: 8, depthColor: '#9a3412', jumble: 45 };
+  // アメコミ配色：[名前, 上の色, 下の色, 立体の色]
+  const COMIC_PAL = [['黄→オレンジ', '#fef08a', '#f97316', '#9a3412'], ['水色→黄', '#7dd3fc', '#fde047', '#1e3a8a'], ['赤→黄', '#ef4444', '#fde047', '#7f1d1d'], ['ピンク→白', '#ec4899', '#fce7f3', '#831843']];
   // テロップ風：バラエティ番組の字幕。白い極太文字＋黒フチ＋ずらし影、まっすぐ
-  const TELOP = { font: "'Dela Gothic One'", colorMode: 'solid', c1: '#ffffff', c2: '#ffffff', stroke: '#111827', strokeW: 7, outer: false, outerColor: '#ffffff', shadow: false, comic: true, comicColor: '#111827', tilt: 0, fx: 'none', bubble: 'none', subSmall: true, subColor: '#fde047' };
+  const TELOP = { font: "'Dela Gothic One'", colorMode: 'solid', c1: '#ffffff', c2: '#ffffff', stroke: '#111827', strokeW: 7, outer: false, outerColor: '#ffffff', shadow: false, comic: true, comicColor: '#111827', tilt: 0, fx: 'none', bubble: 'none', subSmall: true, subColor: '#fde047', depth: 0, jumble: 0 };
   const defaultText = () => ({ content: '', font: FONTS[0].f, size: SPEC[KIND].textSize, x: 50, y: 82, dir: 'horizontal', fx: 'none', fxInt: 50,
-    colorMode: 'solid', c1: '#ffffff', c2: '#fde047', stroke: '#059669', strokeW: 8, outer: true, outerColor: '#ffffff', shadow: true, bubble: 'none', bubbleColor: '#ffffff', bubbleLine: '#1e293b', tilt: 0, comic: false, comicColor: '#111827', subSmall: false, subColor: '#e5e7eb' });
+    colorMode: 'solid', c1: '#ffffff', c2: '#fde047', stroke: '#059669', strokeW: 8, outer: true, outerColor: '#ffffff', shadow: true, bubble: 'none', bubbleColor: '#ffffff', bubbleLine: '#1e293b', tilt: 0, comic: false, comicColor: '#111827', subSmall: false, subColor: '#e5e7eb', depth: 0, depthColor: '#1e3a8a', jumble: 0 });
   const newStamp = () => ({ raw: null, img: null, x: W / 2, y: H / 2 - 10, scale: 100, rot: 0, flip: false,
     outline: true, outlineW: SPEC[KIND].outlineW, outlineColor: '#ffffff', aura: 'none', auraColor: '#38bdf8', auraSize: 50, mark: 'none', markColor: '#ef4444', markSize: 50, markFlip: false, overlap: 0, text: defaultText(), hist: [], status: 'empty', issues: [], _tbox: null });
 
@@ -1289,6 +1301,7 @@
       const infos = chars.map((ch, i) => {
         let f = 1;
         if (t.subSmall && subFlags[li][i]) f = SUBK;
+        if (t.jumble) f *= 1 + (jh(li * 37 + i, 1) - .45) * .5 * (t.jumble / 100);
         if (t.fx === 'grow') f *= 0.65 + (i / Math.max(1, L - 1)) * 0.95 * k;
         const fs = Math.max(12, Math.round(t.size * f));
         c.font = fontStr(t, fs);
@@ -1297,7 +1310,7 @@
       let total = infos.reduce((a, b) => a + b.adv, 0);
       // 長いセリフは余白10px＋フチの内側に収まるよう自動で縮める
       const edge = (t.outer ? t.strokeW + 5 : t.strokeW) + M + 4 + bubblePad(t);
-      const avail = (t.dir === 'vertical' ? H : W / Math.cos(ang)) - edge * 2;
+      const avail = ((t.dir === 'vertical' ? H : W / Math.cos(ang)) - edge * 2 - extraOff(t).x - (t.depth > 0 ? 6 : 0)) * (1 - .14 * (t.jumble || 0) / 100) * (t.tilt ? .97 : 1);
       if (total > avail) {
         const k2 = avail / total;
         infos.forEach(g => { g.fs = Math.max(12, Math.round(g.fs * k2)); g.adv *= k2; });
@@ -1312,6 +1325,7 @@
         else { x = ox + Math.cos(ang) * cc - Math.sin(ang) * lo; y = oy + Math.sin(ang) * cc + Math.cos(ang) * lo; r = ang; }
         if (t.fx === 'wave') { const w = Math.sin((i / Math.max(1, L)) * Math.PI * 2) * 14 * k; if (t.dir === 'vertical') x += w; else y += w; }
         if (t.fx === 'shake') { const j = jit(gi, k); x += j.x; y += j.y; r += j.r; }
+        if (t.jumble && !g.sub) { const q = t.jumble / 100; if (t.dir === 'vertical') x += (jh(gi, 2) - .5) * g.fs * .22 * q; else y += (jh(gi, 2) - .5) * g.fs * .28 * q; r += (jh(gi, 3) - .5) * .55 * q; }
         if (g.ch.trim()) glyphs.push({ ch: g.ch, fs: g.fs, sub: g.sub, x, y, r, i: gi });
         gi++;
       });
@@ -1323,9 +1337,10 @@
     }
     // 文字のかたまりが余白10pxの外に出るときは、内側へずらす
     if (glyphs.length) {
-      const e = (t.outer ? t.strokeW + 5 : t.strokeW) + M + 2 + bubblePad(t);
+      const e = (t.outer ? t.strokeW + 5 : t.strokeW) + M + 2 + bubblePad(t) + (t.depth > 0 ? 3 : 0);
       let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
-      glyphs.forEach(g => { const r = g.fs * .56; x0 = Math.min(x0, g.x - r); x1 = Math.max(x1, g.x + r + (t.shadow ? 3 : 0) + (t.comic ? comicOff(t).x : 0)); y0 = Math.min(y0, g.y - r); y1 = Math.max(y1, g.y + r + (t.shadow ? 5 : 0) + (t.comic ? comicOff(t).y : 0)); });
+      const rk = .56 * (t.jumble || t.tilt ? 1.15 : 1); // 文字を回すと角が外へ出るので少し広めに見る
+      glyphs.forEach(g => { const r = g.fs * rk; x0 = Math.min(x0, g.x - r); x1 = Math.max(x1, g.x + r + (t.shadow ? 3 : 0) + extraOff(t).x); y0 = Math.min(y0, g.y - r); y1 = Math.max(y1, g.y + r + (t.shadow ? 5 : 0) + extraOff(t).y); });
       const dx = x0 < e ? e - x0 : x1 > W - e ? (W - e) - x1 : 0;
       const dy = y0 < e ? e - y0 : y1 > H - e ? (H - e) - y1 : 0;
       if (dx || dy) glyphs.forEach(g => { g.x += dx; g.y += dy; });
@@ -1334,7 +1349,12 @@
   }
 
   // アメコミ影のずらし量（文字の大きさに合わせる）
-  const comicOff = t => ({ x: Math.max(2, Math.round(t.size * .05)), y: Math.max(3, Math.round(t.size * .08)) });
+  // 立体（押し出し）の向き：右下。1段=1px
+  const depthOff = t => ({ x: (t.depth || 0) * .6, y: (t.depth || 0) });
+  const comicOff = t => { const d = depthOff(t); return { x: Math.max(2, Math.round(t.size * .05)) + d.x, y: Math.max(3, Math.round(t.size * .08)) + d.y }; };
+  const extraOff = t => t.comic ? comicOff(t) : depthOff(t);
+  // 文字ごとのガタガタ用の決まった乱数（毎回同じ形になる）
+  const jh = (n, k) => { const v = Math.sin(n * 12.9898 + k * 78.233) * 43758.5453; return v - Math.floor(v); };
   const bubbleBase = t => Math.max(8, Math.round(t.size * 0.32));
   const bubbleTail = t => Math.min(18, bubbleBase(t) * 1.4);
   // 吹き出しが文字のまわりに広がる最大幅（余白の計算に使う）
@@ -1399,6 +1419,16 @@
       });
       const o = comicOff(t); c.drawImage(TL, o.x, o.y);
     }
+    if (t.depth > 0) { // 立体文字：右下へ1pxずつ重ねて厚みを出す（黒い輪郭→立体の色）
+      const D = Math.round(t.depth), lw = t.outer ? outerW : t.strokeW * 2, d = depthOff(t), ux = d.x / D, uy = d.y / D;
+      const s = TL.getContext('2d'); s.clearRect(0, 0, W, H); prep(s);
+      for (const pass of [0, 1]) for (let k = D; k >= 1; k--) each(s, (cc, g) => {
+        cc.setTransform(1, 0, 0, 1, 0, 0); cc.translate(g.x + ux * k, g.y + uy * k); cc.rotate(g.r);
+        cc.strokeStyle = cc.fillStyle = pass ? t.depthColor : '#111827'; cc.lineWidth = lw + (pass ? 0 : 5);
+        if (cc.lineWidth > 0) cc.strokeText(g.ch, 0, 0); cc.fillText(g.ch, 0, 0);
+      });
+      c.drawImage(TL, 0, 0);
+    }
     c.save(); prep(c);
     if (t.outer) each(c, (cc, g) => { cc.strokeStyle = t.outerColor; cc.lineWidth = outerW; cc.strokeText(g.ch, 0, 0); });
     if (t.strokeW > 0) each(c, (cc, g) => { cc.strokeStyle = t.stroke; cc.lineWidth = t.strokeW * 2; cc.strokeText(g.ch, 0, 0); });
@@ -1411,7 +1441,7 @@
     });
     c.restore();
 
-    const p = (t.outer ? outerW : t.strokeW * 2) / 2 + 4, co = t.comic ? comicOff(t) : { x: 0, y: 0 };
+    const p = (t.outer ? outerW : t.strokeW * 2) / 2 + 4, co = extraOff(t);
     let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
     gs.forEach(g => { const h = g.fs * .6 + p; x0 = Math.min(x0, g.x - h); x1 = Math.max(x1, g.x + h + co.x); y0 = Math.min(y0, g.y - h); y1 = Math.max(y1, g.y + h + co.y); });
     return { x0, y0, x1, y1 };
@@ -1420,9 +1450,9 @@
 
   // ---------- 背景エフェクト（オーラ・後光・黒いモヤ・キラキラ） ----------
   // ctx.filter は古いSafariで効かないので、縮小→拡大でぼかす
-  const AURA_LIST = [['none', 'なし'], ['glow', 'オーラ'], ['rainbow', '虹オーラ'], ['holy', '後光'], ['kira', 'キラキラ'], ['fire', '炎'], ['dark', '黒いモヤ'], ['gaan', 'ガーン'], ['shuchu', '集中線'], ['circle', '丸い背景'], ['burst', 'ドカン背景'], ['speed', 'スピード線'], ['bunshin', '影分身'], ['kemuri', 'ドロン煙'], ['kumo', '空と雲']];
+  const AURA_LIST = [['none', 'なし'], ['glow', 'オーラ'], ['rainbow', '虹オーラ'], ['holy', '後光'], ['kira', 'キラキラ'], ['fire', '炎'], ['dark', '黒いモヤ'], ['gaan', 'ガーン'], ['shuchu', '集中線'], ['circle', '丸い背景'], ['burst', 'ドカン背景'], ['speed', 'スピード線'], ['bunshin', '影分身'], ['kemuri', 'ドロン煙'], ['kumo', '空と雲'], ['comicburst', 'アメコミ爆発'], ['dots', 'ドット背景']];
   const MARK_LIST = [['none', 'なし'], ['anger', '怒りマーク'], ['ase', '汗'], ['heart', 'ハート'], ['onpu', '音符'], ['zzz', 'Zzz'], ['guru', 'ぐるぐる'], ['exq', '！？'], ['ame', '雨雲'], ['pika', 'ひらめき'], ['yuki', '雪']];
-  const AURA_DEF = { glow: '#38bdf8', rainbow: '#ffffff', holy: '#fde047', dark: '#3b0764', kira: '#fde047', fire: '#ef4444', gaan: '#4c1d95', shuchu: '#1f2937', circle: '#fbcfe8', burst: '#fde047', speed: '#94a3b8', bunshin: '#a855f7', kemuri: '#e2e8f0', kumo: '#7dd3fc' };
+  const AURA_DEF = { glow: '#38bdf8', rainbow: '#ffffff', holy: '#fde047', dark: '#3b0764', kira: '#fde047', fire: '#ef4444', gaan: '#4c1d95', shuchu: '#1f2937', circle: '#fbcfe8', burst: '#fde047', speed: '#94a3b8', bunshin: '#a855f7', kemuri: '#e2e8f0', kumo: '#7dd3fc', comicburst: '#fde047', dots: '#0ea5e9' };
   const MARK_DEF = { anger: '#ef4444', ase: '#7dd3fc', heart: '#f472b6', onpu: '#2563eb', zzz: '#3b82f6', guru: '#334155', exq: '#ef4444', ame: '#94a3b8', pika: '#facc15', yuki: '#7dd3fc' };
   function softBlur(src, r) {
     let cur = src, w = W, h = H;
@@ -1547,6 +1577,26 @@
       if (s.aura === 'circle') o.arc(ccx, ccy, R, 0, Math.PI * 2);
       else { const n = 14; for (let i = 0; i < n * 2; i++) { const a = i / (n * 2) * Math.PI * 2 - Math.PI / 2, rr = i % 2 ? R * .72 : R * (1 + (rand() - .5) * .12); o.lineTo(ccx + Math.cos(a) * rr, ccy + Math.sin(a) * rr); } o.closePath(); }
       o.fillStyle = col; o.fill(); o.lineJoin = 'round'; o.lineWidth = 5 * sc; o.strokeStyle = '#ffffff'; o.stroke();
+    } else if (s.aura === 'comicburst' || s.aura === 'dots') {
+      // アメコミ爆発：黒フチのギザギザ＋中に網点。ドット背景：楕円の範囲に網点（中心ほど大きい）。どちらも余白の内側に収める
+      const ccx = (b.x0 + b.x1) / 2, ccy = (b.y0 + b.y1) / 2, pad = 6 * sc;
+      const ex = Math.min(ccx - M, W - M - ccx) - pad, ey = Math.min(ccy - M, H - M - ccy) - pad;
+      const Rx = Math.max(20, Math.min((b.x1 - b.x0) * (.62 + .2 * k), ex / (s.aura === 'dots' ? 1 : 1.12)));
+      const Ry = Math.max(20, Math.min((b.y1 - b.y0) * (.58 + .2 * k), ey / (s.aura === 'dots' ? 1 : 1.12)));
+      const pts = [];
+      if (s.aura === 'comicburst') { const n = 12; for (let i = 0; i < n * 2; i++) { const a = i / (n * 2) * Math.PI * 2 - Math.PI / 2 + .1, rr = i % 2 ? .64 + rand() * .08 : 1 + (rand() - .5) * .2; pts.push([ccx + Math.cos(a) * Rx * rr, ccy + Math.sin(a) * Ry * rr]); } }
+      const shape = () => { o.beginPath(); if (s.aura === 'dots') o.ellipse(ccx, ccy, Rx, Ry, 0, 0, Math.PI * 2); else { pts.forEach(([x, y], i) => i ? o.lineTo(x, y) : o.moveTo(x, y)); o.closePath(); } };
+      const dotCol = s.aura === 'dots' ? col : '#f97316';
+      if (s.aura === 'comicburst') { shape(); o.lineJoin = 'miter'; o.miterLimit = 3; o.lineWidth = 8 * sc; o.strokeStyle = '#111827'; o.stroke(); o.fillStyle = col; o.fill(); }
+      o.save(); shape(); o.clip(); o.fillStyle = dotCol;
+      const step = 8 * sc, rot = .5, R = Math.max(Rx, Ry) * 1.3;
+      for (let yy = -R; yy <= R; yy += step) for (let xx = -R; xx <= R; xx += step) {
+        const x = ccx + xx * Math.cos(rot) - yy * Math.sin(rot), y = ccy + xx * Math.sin(rot) + yy * Math.cos(rot);
+        const dn = Math.hypot((x - ccx) / Rx, (y - ccy) / Ry);
+        const r = step * .5 * (s.aura === 'dots' ? Math.max(0, 1 - dn * .8) : Math.max(0, dn * 1.15 - .3));
+        if (r > .5) { o.beginPath(); o.arc(x, y, r, 0, Math.PI * 2); o.fill(); }
+      }
+      o.restore();
     } else if (s.aura === 'bunshin') {
       // 影分身：同じ絵を少し小さく半透明にして左右に並べる（大きさで3体→5体）
       const bw = b.x1 - b.x0, bx = (b.x0 + b.x1) / 2, fy = b.y1, n = k > .66 ? 2 : 1;
@@ -2494,7 +2544,7 @@
   }
   // ---------- My text presets ----------
   const PKEY = 'zk-line-text-presets';
-  const STYLE_KEYS = ['font', 'size', 'dir', 'tilt', 'fx', 'fxInt', 'colorMode', 'c1', 'c2', 'stroke', 'strokeW', 'outer', 'outerColor', 'shadow', 'bubble', 'bubbleColor', 'bubbleLine', 'x', 'y', 'comic', 'comicColor', 'subSmall', 'subColor'];
+  const STYLE_KEYS = ['font', 'size', 'dir', 'tilt', 'fx', 'fxInt', 'colorMode', 'c1', 'c2', 'stroke', 'strokeW', 'outer', 'outerColor', 'shadow', 'bubble', 'bubbleColor', 'bubbleLine', 'x', 'y', 'comic', 'comicColor', 'subSmall', 'subColor', 'depth', 'depthColor', 'jumble'];
   const getPresets = () => { try { return JSON.parse(localStorage.getItem(PKEY) || '[]'); } catch (e) { return []; } };
   const setPresets = a => { try { localStorage.setItem(PKEY, JSON.stringify(a)); } catch (e) {} renderPresets(); };
   function renderPresets() {
@@ -2578,6 +2628,12 @@
   $('fontSelect').innerHTML = FONTS.map(f => `<option value="${f.f}">${f.l}</option>`).join('');
   $('quickChips').innerHTML = QUICK.map(q => `<button type="button">${q}</button>`).join('');
   $('quickChips').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; S().text.content = b.textContent; syncUI(); changed(); });
+  $('comicPal').innerHTML = COMIC_PAL.map((q, i) => `<button data-pal="${i}"><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:linear-gradient(${q[1]},${q[2]});border:1px solid #111;vertical-align:-1px;margin-right:4px"></span>${q[0]}</button>`).join('');
+  $('comicPal').addEventListener('click', e => {
+    const b = e.target.closest('button[data-pal]'); if (!b) return;
+    const [, c1, c2, dc] = COMIC_PAL[b.dataset.pal], t = S().text;
+    Object.assign(t, { colorMode: 'grad', c1, c2, depthColor: dc, stroke: '#111827' }); syncUI(); changed();
+  });
   $('themes').innerHTML = THEMES.map((t, i) => `<button class="btn sm" data-theme="${i}" style="text-align:left"><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:${t[3]};vertical-align:-1px;margin-right:6px"></span>${t[0]}</button>`).join('');
   buildFxGrid();
   $('themes').addEventListener('click', e => {
