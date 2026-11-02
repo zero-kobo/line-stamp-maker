@@ -1316,6 +1316,11 @@
         gi++;
       });
     });
+    if (t.tilt && glyphs.length) { // 文字全体をかたむける（看板・垂れ幕に合わせる）。はみ出しチェックの前にかたむける
+      const gs = glyphs, a = t.tilt * Math.PI / 180, cs = Math.cos(a), sn = Math.sin(a);
+      const cx = gs.reduce((v, g) => v + g.x, 0) / gs.length, cy = gs.reduce((v, g) => v + g.y, 0) / gs.length;
+      gs.forEach(g => { const dx = g.x - cx, dy = g.y - cy; g.x = cx + dx * cs - dy * sn; g.y = cy + dx * sn + dy * cs; g.r = (g.r || 0) + a; });
+    }
     // 文字のかたまりが余白10pxの外に出るときは、内側へずらす
     if (glyphs.length) {
       const e = (t.outer ? t.strokeW + 5 : t.strokeW) + M + 2 + bubblePad(t);
@@ -1369,11 +1374,6 @@
   function drawText(c, t) {
     const gs = layoutText(c, t);
     if (!gs.length) return null;
-    if (t.tilt) { // 文字全体をかたむける（看板・垂れ幕に合わせる）
-      const a = t.tilt * Math.PI / 180, cs = Math.cos(a), sn = Math.sin(a);
-      const cx = gs.reduce((v, g) => v + g.x, 0) / gs.length, cy = gs.reduce((v, g) => v + g.y, 0) / gs.length;
-      gs.forEach(g => { const dx = g.x - cx, dy = g.y - cy; g.x = cx + dx * cs - dy * sn; g.y = cy + dx * sn + dy * cs; g.r = (g.r || 0) + a; });
-    }
     if (t.bubble && t.bubble !== 'none') drawBubble(c, t, gs);
     const outerW = (t.strokeW + 5) * 2;
     const each = (cc, fn) => gs.forEach(g => { cc.save(); cc.translate(g.x, g.y); cc.rotate(g.r); cc.font = fontStr(t, g.fs); fn(cc, g); cc.restore(); });
