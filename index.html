@@ -60,7 +60,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=DotGothic16&family=Hachi+Maru+Pop&family=Kiwi+Maru:wght@500&family=Mochiy+Pop+One&family=Potta+One&family=Rampart+One&family=Reggae+One&family=RocknRoll+One&family=Train+One&family=Yuji+Boku&family=Yusei+Magic&family=Zen+Maru+Gothic:wght@500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=DotGothic16&family=Hachi+Maru+Pop&family=Kiwi+Maru:wght@500&family=Klee+One:wght@600&family=Mochiy+Pop+One&family=Potta+One&family=Rampart+One&family=Reggae+One&family=RocknRoll+One&family=Train+One&family=Yuji+Boku&family=Yomogi&family=Yusei+Magic&family=Zen+Kurenaido&family=Zen+Maru+Gothic:wght@500;700;900&display=swap" rel="stylesheet">
 
 <!-- GA4（ちいさなツール工房 共通） -->
 <script>
@@ -460,6 +460,7 @@
           <label class="lb"><span>消す範囲（許容値）</span><span id="tolVal">40</span></label>
           <input type="range" id="tol" min="5" max="120" value="40">
           <label class="chk" style="margin-top:6px"><input type="checkbox" id="erode">輪郭の色にじみを1px削る</label>
+          <label class="chk" style="margin-top:6px"><input type="checkbox" id="gapGuard" checked>線のすき間ガード（白い服・白い体の中まで消えないように）</label>
           <p class="muted" style="margin:6px 0 0">「自動」は外側からつながった背景だけを消すので、白目や白い服は残ります。残った背景は💧スポイトでクリック。</p>
           <div class="row" style="margin-top:8px"><button class="btn sm ghost" data-act="resetImage">最初の画像に戻す</button></div>
         </div>
@@ -602,6 +603,8 @@
           <div class="row" style="margin-top:6px;gap:6px;flex-wrap:wrap">
             <button class="btn sm" data-act="handwrite">✍️ 手書き風（細いこげ茶文字）</button>
             <button class="btn sm" data-act="handwriteAll">全スタンプを手書き風に</button>
+            <button class="btn sm" data-act="pencil">✏️ 鉛筆の手書き（絵のまん中に書く）</button>
+            <button class="btn sm" data-act="pencilAll">全スタンプを鉛筆の手書きに</button>
             <button class="btn sm" data-act="comic">💥 アメコミ風</button>
             <button class="btn sm" data-act="comicAll">全スタンプをアメコミ風に</button>
             <button class="btn sm" data-act="telop">📺 テロップ風</button>
@@ -1173,6 +1176,9 @@
     { f: "'Rampart One'", w: 400, l: 'ランパート（立体ブロック・フチなし向け）' },
     { f: "'Train One'", w: 400, l: 'トレインワン（ふち文字・看板風）' },
     { f: "'Yusei Magic'", w: 400, l: 'ユセイマジック（マーカー手書き）' },
+    { f: "'Klee One'", w: 600, l: 'クレー（鉛筆の手書き・ていねい）' },
+    { f: "'Yomogi'", w: 400, l: 'よもぎ（鉛筆のゆる手書き）' },
+    { f: "'Zen Kurenaido'", w: 400, l: 'Zen紅道（ペン字のさらさら手書き）' },
     { f: "'DotGothic16'", w: 400, l: 'ドットゴシック（レトロゲーム）' }
   ];
   const FONT_W = Object.fromEntries(FONTS.map(x => [x.f, x.w]));
@@ -1202,6 +1208,8 @@
   // ---------- State ----------
   // 売れ筋の「ゆる手書き」文字：細いこげ茶＋白いうすフチ、影なし
   const HANDWRITE = { font: "'Yusei Magic'", size: 40, colorMode: 'solid', c1: '#5b4636', c2: '#5b4636', stroke: '#ffffff', strokeW: 4, outer: false, shadow: false, fx: 'none', bubble: 'none', comic: false, subSmall: false, tilt: 0, depth: 0, jumble: 0 };
+  // 鉛筆の手書き：濃い鉛筆色の文字を絵のまん中に重ねる（伸ばした白Tシャツ・看板・紙などに書いた感じ）
+  const PENCIL = { font: "'Klee One'", size: 46, x: 50, y: 50, dir: 'horizontal', colorMode: 'solid', c1: '#2f2f33', c2: '#2f2f33', stroke: '#ffffff', strokeW: 0, outer: false, shadow: false, fx: 'none', bubble: 'none', comic: false, subSmall: false, tilt: 0, depth: 0, jumble: 0 };
   // アメコミ風：極太文字＋黄→オレンジ＋黒フチ＋白の外フチ＋くっきりずらし影、少し右上がり
   const COMIC = { font: "'Dela Gothic One'", colorMode: 'grad', c1: '#fde047', c2: '#f97316', stroke: '#111827', strokeW: 7, outer: true, outerColor: '#ffffff', shadow: false, comic: true, comicColor: '#111827', tilt: -6, fx: 'none', subSmall: true, subColor: '#ffffff', depth: 8, depthColor: '#9a3412', jumble: 45 };
   // アメコミ配色：[名前, 上の色, 下の色, 立体の色]
@@ -1909,14 +1917,34 @@
   const makeTab = () => fitInto(sourceFor(tabIdx), 96, 74, 2);
 
   // ---------- Background removal ----------
-  function floodRemove(cv, seeds, ref, tol, erode) {
+  // guard: 線のすき間ガード。線が少し途切れていても、外の背景がそこから内側（白い服など）へ入りこまないようにする
+  function floodRemove(cv, seeds, ref, tol, erode, guard = 0) {
     const c = cv.getContext('2d', { willReadFrequently: true });
     const w = cv.width, h = cv.height;
     const id = c.getImageData(0, 0, w, h), d = id.data;
     const T2 = tol * tol, rm = new Uint8Array(w * h), st = [];
     const dist2 = p => { const i = p * 4; const dr = d[i] - ref[0], dg = d[i + 1] - ref[1], db = d[i + 2] - ref[2]; return dr * dr + dg * dg + db * db; };
     const near = p => d[p * 4 + 3] === 0 || dist2(p) <= T2;
-    const tryP = q => { if (!rm[q] && near(q)) { rm[q] = 1; st.push(q); } };
+    let wall = null;
+    if (guard > 0) {
+      // 線＝背景よりはっきり暗い不透明ピクセル。線を「閉じる」（ふくらませてから同じだけ縮める）と、
+      // 線の太さは変えずに guard×2 px までのすき間だけがふさがる
+      const refL = 0.299 * ref[0] + 0.587 * ref[1] + 0.114 * ref[2];
+      const line = new Uint8Array(w * h);
+      for (let p = 0; p < w * h; p++) { const i = p * 4; if (d[i + 3] > 128 && refL - (0.299 * d[i] + 0.587 * d[i + 1] + 0.114 * d[i + 2]) > 90) line[p] = 1; }
+      const dilate = (src, r) => {
+        const tmp = new Uint8Array(w * h), out = new Uint8Array(w * h);
+        for (let y = 0; y < h; y++) { const o = y * w; let run = -1e9; for (let x = 0; x < w; x++) { if (src[o + x]) run = x; if (x - run <= r) tmp[o + x] = 1; } run = 1e9; for (let x = w - 1; x >= 0; x--) { if (src[o + x]) run = x; if (run - x <= r) tmp[o + x] = 1; } }
+        for (let x = 0; x < w; x++) { let run = -1e9; for (let y = 0; y < h; y++) { if (tmp[y * w + x]) run = y; if (y - run <= r) out[y * w + x] = 1; } run = 1e9; for (let y = h - 1; y >= 0; y--) { if (tmp[y * w + x]) run = y; if (run - y <= r) out[y * w + x] = 1; } }
+        return out;
+      };
+      const D = dilate(line, guard);
+      for (let p = 0; p < w * h; p++) D[p] = D[p] ? 0 : 1; // 反転
+      const notE = dilate(D, guard);
+      wall = new Uint8Array(w * h);
+      for (let p = 0; p < w * h; p++) wall[p] = notE[p] ? 0 : 1;
+    }
+    const tryP = q => { if (!rm[q] && (!wall || !wall[q]) && near(q)) { rm[q] = 1; st.push(q); } };
     seeds.forEach(tryP);
     while (st.length) {
       const p = st.pop(), x = p % w, y = (p / w) | 0;
@@ -1960,16 +1988,51 @@
     return removed;
   }
   function pixelAt(cv, x, y) { return cv.getContext('2d', { willReadFrequently: true }).getImageData(x, y, 1, 1).data; }
+  // 絵が画像の端で切れている（首から下だけ・足が下で切れている等）とき、端の「線と線のあいだ」は絵の中なので
+  // そこからは消し始めない。画像のふちを一周たどって線で区切り、四すみにつながる区間だけを消し始めの点にする
+  function cornerSeeds(cv, ref, guard) {
+    const w = cv.width, h = cv.height, d = cv.getContext('2d', { willReadFrequently: true }).getImageData(0, 0, w, h).data;
+    const refL = 0.299 * ref[0] + 0.587 * ref[1] + 0.114 * ref[2];
+    const ring = [];
+    for (let x = 0; x < w; x++) ring.push(x);
+    for (let y = 1; y < h; y++) ring.push(y * w + w - 1);
+    for (let x = w - 2; x >= 0; x--) ring.push((h - 1) * w + x);
+    for (let y = h - 2; y > 0; y--) ring.push(y * w);
+    const n = ring.length, isLine = new Uint8Array(n);
+    // ふちの線は内側 guard px まで見て判定（ふちのぎりぎりで線がかすれていても拾う）
+    const dark = p => { const i = p * 4; return d[i + 3] > 128 && refL - (0.299 * d[i] + 0.587 * d[i + 1] + 0.114 * d[i + 2]) > 90; };
+    for (let k = 0; k < n; k++) {
+      const p = ring[k], x = p % w, y = (p / w) | 0;
+      const dx = x === 0 ? 1 : x === w - 1 ? -1 : 0, dy = y === 0 ? 1 : y === h - 1 ? -1 : 0;
+      for (let t = 0; t <= guard && !isLine[k]; t++) { const xx = x + dx * t, yy = y + dy * t; if (xx >= 0 && yy >= 0 && xx < w && yy < h && dark(yy * w + xx)) isLine[k] = 1; }
+    }
+    if (!isLine.some(v => v)) return null;
+    const corner = new Set([0, w - 1, w * h - 1, (h - 1) * w]);
+    // 線で区切った区間ごとに、四すみを含むかを調べる（輪なので、線の直後から一周する）
+    const start = isLine.indexOf(1), seeds = [];
+    let seg = [], hasCorner = false;
+    const flush = () => { if (hasCorner) seeds.push(...seg); seg = []; hasCorner = false; };
+    for (let j = 1; j <= n; j++) {
+      const k = (start + j) % n;
+      if (isLine[k]) { flush(); continue; }
+      seg.push(ring[k]); if (corner.has(ring[k])) hasCorner = true;
+    }
+    flush();
+    return seeds.length ? seeds : null;
+  }
   function autoRemoveBg(s, tol, erode) {
     const cv = s.img, w = cv.width, h = cv.height;
     const cs = [[0, 0], [w - 1, 0], [0, h - 1], [w - 1, h - 1]].map(([x, y]) => pixelAt(cv, x, y));
     const opaque = cs.filter(p => p[3] > 200);
     if (!opaque.length) return 0; // already transparent
     const ref = [0, 1, 2].map(i => Math.round(opaque.reduce((a, p) => a + p[i], 0) / opaque.length));
-    const seeds = [];
+    const gEl = document.getElementById('gapGuard');
+    const guard = gEl && gEl.checked ? Math.max(2, Math.round(Math.min(w, h) / 250)) : 0;
+    let seeds = [];
     for (let x = 0; x < w; x++) { seeds.push(x, (h - 1) * w + x); }
     for (let y = 0; y < h; y++) { seeds.push(y * w, y * w + w - 1); }
-    const n = floodRemove(cv, seeds, ref, tol, erode); removeSpecks(cv); imgEdited(s); return n;
+    if (guard) seeds = cornerSeeds(cv, ref, guard) || seeds;
+    const n = floodRemove(cv, seeds, ref, tol, erode, guard); removeSpecks(cv); imgEdited(s); return n;
   }
   function removeGlobal(s, ref, tol) {
     const c = s.img.getContext('2d', { willReadFrequently: true });
@@ -2333,6 +2396,8 @@
     handwrite: () => { const t = S().text; Object.assign(t, HANDWRITE); if (S().img) autoFit(S()); ensureFont(t).then(() => { syncUI(); changed(); }); toast('手書き風の文字にしました（文字はドラッグで好きな場所へ）'); },
     comic: () => { const t = S().text; Object.assign(t, COMIC); if (S().img) autoFit(S()); ensureFont(t).then(() => { syncUI(); changed(); }); toast('アメコミ風の文字にしました（ここぞのコマは吹き出し「ギザギザ」やドカン背景も）'); },
     comicAll: () => { stamps.slice(0, N).forEach(x => { Object.assign(x.text, COMIC); if (x.img) autoFit(x); }); ensureFont(S().text).then(() => { syncUI(); checkAll(); scheduleSave(); requestRender(); }); toast('全スタンプをアメコミ風にしました'); },
+    pencil: () => { const t = S().text; Object.assign(t, PENCIL); if (S().img) autoFit(S()); ensureFont(t).then(() => { syncUI(); changed(); }); toast('鉛筆の手書き文字にしました（文字はドラッグで好きな場所へ）'); },
+    pencilAll: () => { stamps.slice(0, N).forEach(x => { Object.assign(x.text, PENCIL); if (x.img) autoFit(x); }); ensureFont(S().text).then(() => { syncUI(); checkAll(); scheduleSave(); requestRender(); }); toast('全スタンプを鉛筆の手書き文字にしました'); },
     telop: () => { const t = S().text; Object.assign(t, TELOP); if (S().img) autoFit(S()); ensureFont(t).then(() => { syncUI(); changed(); }); toast('テロップ風の文字にしました'); },
     telopAll: () => { stamps.slice(0, N).forEach(x => { Object.assign(x.text, TELOP); if (x.img) autoFit(x); }); ensureFont(S().text).then(() => { syncUI(); checkAll(); scheduleSave(); requestRender(); }); toast('全スタンプをテロップ風にしました'); },
     handwriteAll: () => { stamps.slice(0, N).forEach(x => { Object.assign(x.text, HANDWRITE); if (x.img) autoFit(x); }); ensureFont(S().text).then(() => { syncUI(); checkAll(); scheduleSave(); requestRender(); }); toast('全スタンプを手書き風にしました'); },
