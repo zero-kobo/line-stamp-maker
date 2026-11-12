@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AIでLINEスタンプを作るときの失敗12個と直し方｜キャラの顔が変わる・絵柄がそろわない</title>
+<meta name="description" content="ChatGPTやGeminiでLINEスタンプを50セット作って分かった、失敗12個と直し方です。キャラの顔が途中で変わる、しっぽが2本になる、顔が真っ赤に塗られる、区切り線が入る、などの原因と、お願いの文に足す1行をまとめました。">
+<meta property="og:title" content="AIでLINEスタンプを作るときの失敗12個と直し方">
+<meta property="og:description" content="50セット作って分かった、ChatGPT・Geminiで絵柄をそろえるコツと、お願いの文の型。">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://zero-kobo.github.io/line-stamp-maker/shippai/">
+<meta property="og:url" content="https://zero-kobo.github.io/line-stamp-maker/shippai/">
+<meta property="og:image" content="https://zero-kobo.github.io/line-stamp-maker/ogp.png">
+<meta property="og:site_name" content="ちいさなツール工房">
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:title" content="AIでLINEスタンプを作るときの失敗12個と直し方">
+<meta name="twitter:description" content="50セット作って分かった、ChatGPT・Geminiで絵柄をそろえるコツと、お願いの文の型。">
+<meta name="twitter:image" content="https://zero-kobo.github.io/line-stamp-maker/ogp.png">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "Article", "headline": "AIでLINEスタンプを作るときの失敗12個と直し方｜キャラの顔が変わる・絵柄がそろわない", "description": "ChatGPTやGeminiでLINEスタンプを50セット作って分かった、失敗12個と直し方です。キャラの顔が途中で変わる、しっぽが2本になる、顔が真っ赤に塗られる、区切り線が入る、などの原因と、お願いの文に足す1行をまとめました。", "inLanguage": "ja", "datePublished": "2026-11-13", "dateModified": "2026-11-13", "mainEntityOfPage": "https://zero-kobo.github.io/line-stamp-maker/shippai/", "image": "https://zero-kobo.github.io/line-stamp-maker/ogp.png", "author": {"@type": "Organization", "name": "ちいさなツール工房", "url": "https://zero-kobo.github.io/"}, "publisher": {"@type": "Organization", "name": "ちいさなツール工房"}}
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "AIで作ったLINEスタンプは、販売できる?", "acceptedAnswer": {"@type": "Answer", "text": "販売できます。申請の画面で「AIの使用」の欄に「使用しています」を選びます。使った画像生成サービスの規約で、商用利用が認められているかは、自分で確認してください。"}}, {"@type": "Question", "name": "キャラの絵柄をそろえるには?", "acceptedAnswer": {"@type": "Answer", "text": "いちばん気に入った1枚を「基準の絵」に決めて、毎回それだけを添付します。前に作ったまとめ画像を見本にすると、ずれが少しずつ大きくなります。"}}, {"@type": "Question", "name": "1コマだけ描き直すには?", "acceptedAnswer": {"@type": "Answer", "text": "変なところがあるコマだけ、ポーズと直したい点を書いて、もう一度描いてもらいます。基準の絵を一緒に添付すると、色や顔がそろいやすくなります。"}}, {"@type": "Question", "name": "8コマのうち、何コマくらいがそのまま使える?", "acceptedAnswer": {"@type": "Answer", "text": "私の場合は、8コマのうち6〜7コマくらいです。残りの1〜2コマを見つけて直すのが、いちばん大事な作業でした。"}}, {"@type": "Question", "name": "汗や怒りマークは、AIに描いてもらっていい?", "acceptedAnswer": {"@type": "Answer", "text": "おすすめしません。コマごとに形が変わったり、キャラに重なったりします。あとからツールで足すほうが、形がそろいます。"}}]}
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "ちいさなツール工房", "item": "https://zero-kobo.github.io/"}, {"@type": "ListItem", "position": 2, "name": "LINEスタンプ・絵文字メーカー", "item": "https://zero-kobo.github.io/line-stamp-maker/"}, {"@type": "ListItem", "position": 3, "name": "AIでスタンプを作るときの失敗12個", "item": "https://zero-kobo.github.io/line-stamp-maker/shippai/"}]}
+</script>
+<style>
+:root{--bg:#f3f6f4;--cd:#fff;--ink:#1e293b;--mut:#64748b;--ln:#e2e8f0;--ac:#047857;--acb:#ecfdf5;--wn:#b45309;--wnb:#fffbeb}
+@media(prefers-color-scheme:dark){:root{--bg:#0e1614;--cd:#16211e;--ink:#e6efec;--mut:#94a3b8;--ln:#273632;--ac:#5eead4;--acb:#10302a;--wn:#fbbf24;--wnb:#3a2a0c}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.8 "Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif}
+.wrap{max-width:640px;margin:0 auto;padding:16px 14px 40px}
+.bc{font-size:.78rem;color:var(--mut);margin:0 0 8px}.bc a{color:var(--mut)}
+h1{font-size:1.4rem;line-height:1.45;margin:6px 0 6px}
+h2{font-size:1.12rem;line-height:1.5;margin:0 0 10px}
+h3{font-size:1rem;margin:18px 0 4px}
+p{margin:8px 0}
+.meta{font-size:.8rem;color:var(--mut);margin:0 0 14px}
+.card{background:var(--cd);border:1px solid var(--ln);border-radius:10px;padding:16px 14px;margin-bottom:12px}
+.card ul,.card ol{margin:8px 0;padding-left:1.3em}.card li{margin:5px 0}
+a{color:var(--ac)}
+a:focus-visible,summary:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+.sum{background:var(--acb);border-color:transparent}.sum h2,.sum li{color:var(--ac)}.sum li{font-weight:600}
+.ex{border-left:4px solid var(--ac);background:var(--acb);border-radius:0 8px 8px 0;padding:10px 12px;margin:10px 0;font-size:.92rem}
+.ex b{color:var(--ac)}
+pre{background:#0f172a;color:#e2e8f0;border-radius:8px;padding:10px 12px;font-size:.84rem;line-height:1.6;white-space:pre-wrap;word-break:break-word;margin:8px 0}
+.cta{display:block;text-align:center;text-decoration:none;font-weight:700;background:#047857;color:#fff;border-radius:10px;padding:14px 10px;margin:14px 0 4px}
+.sc{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.86rem}
+td,th{padding:7px 4px;border-bottom:1px solid var(--ln);text-align:left;vertical-align:top}
+th{color:var(--mut);font-weight:500;font-size:.78rem}
+.f{border-bottom:1px solid var(--ln);padding:12px 0}.f:last-child{border:0}.f h3{margin:0 0 4px}.f .no{display:inline-block;background:var(--ac);color:#fff;border-radius:6px;font-size:.78rem;padding:0 7px;margin-right:6px;font-weight:700}
+@media(prefers-color-scheme:dark){.f .no,.cta{color:#06231d}}
+.fix{font-size:.92rem}.fix b{color:var(--ac)}
+.note{font-size:.78rem;color:var(--mut);line-height:1.65}
+.wn{background:var(--wnb);color:var(--wn);border-radius:8px;padding:10px 12px;font-size:.9rem;margin:10px 0}
+.gl details{border-bottom:1px solid var(--ln);padding:8px 0}.gl details:last-child{border:0}
+.gl summary{cursor:pointer;font-weight:600;font-size:.95rem}.gl p{margin:6px 0 2px;font-size:.9rem;color:var(--mut)}
+.rl{list-style:none;padding:0!important;margin:0}.rl li{border-bottom:1px solid var(--ln);padding:9px 0;margin:0!important}.rl li:last-child{border:0}.rl a{font-weight:600;text-decoration:none}.rl span{display:block;font-size:.8rem;color:var(--mut)}
+.pr{font-size:.76rem;color:var(--mut);margin:0 0 4px}
+footer{font-size:.8rem;color:var(--mut);line-height:1.7;padding:6px 2px}footer p{margin:8px 0}
+</style>
+<!-- Google tag (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-40QSGNSQEL"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-40QSGNSQEL");</script>
+</head>
+<body>
+<div class="wrap">
+<p class="bc"><a href="https://zero-kobo.github.io/">ちいさなツール工房</a> › <a href="../">LINEスタンプ・絵文字メーカー</a> › AIでスタンプを作るときの失敗12個</p>
+<h1>AIでLINEスタンプを作るときの失敗12個と、直し方</h1>
+<p class="meta">最終更新 2026年11月13日</p>
+
+<section class="card sum"><h2>先にまとめ</h2>
+<ul>
+<li>AIの絵は、8コマのうち1〜2コマに、どこか変なところが出る</li>
+<li>失敗の形は決まっているので、お願いの文に1行足せば防げる</li>
+<li>記号(汗・怒りマーク)は、AIに描かせず、あとから足す</li>
+</ul>
+<p style="margin:10px 0 0;font-size:.9rem;color:var(--ink)">ChatGPTやGeminiに絵を描いてもらって、LINEスタンプを50セット作りました。そのあいだに起きた失敗と、直し方をまとめます。</p>
+</section>
+
+<section class="card"><h2>キャラがぶれる</h2>
+<div class="f"><h3><span class="no">1</span>途中から、キャラの顔が変わる</h3><p>最初は丸い目だったのに、何セットか作るうちに、目が細くなっていました。前に作ったまとめ画像を見本として添付していたのが原因です。まとめ画像には、少しずつずれた絵が混ざっています。</p><p class="fix"><b>直し方:</b>いちばん気に入った1枚を「基準の絵」に決めて、毎回それだけを添付します。基準の絵には、横向きや後ろ向きも並べておくと安定します。</p></div><div class="f"><h3><span class="no">2</span>しっぽや手が、2本・3本になる</h3><p>腕を組んで正面を向いたポーズで、体の右と左の両方に、しっぽを描いてしまうことがありました。24個のうち3個です。</p><p class="fix"><b>直し方:</b>体の向きと、パーツの数・位置まで、言葉で書きます。</p><pre>・しっぽは必ず1本だけ。体を少しななめにして、しっぽは体の右うしろから1本だけ見えるようにする</pre></div><div class="f"><h3><span class="no">3</span>1コマだけ、衣装の一部が消える</h3><p>走るなどの大きな動きのコマで、鉢巻やリボンのような細かい部分が消えました。</p><p class="fix"><b>直し方:</b>描き直しのお願いに、場所まで書きます。「おでこに赤い鉢巻を必ず巻く。横から見ても見えるように」のように書きます。</p></div><div class="f"><h3><span class="no">4</span>衣装の色や形が、コマごとに変わる</h3><p>着ぐるみや服を着せると、コマごとに色や形が少しずつ変わりました。</p><p class="fix"><b>直し方:</b>衣装は「全部のコマで同じ」と、毎回はっきり書きます。</p><pre>・衣装（8コマ全部で同じデザイン・同じ色）：〇〇</pre></div>
+</section>
+
+<section class="card"><h2>色がおかしくなる</h2>
+<div class="f"><h3><span class="no">5</span>顔が真っ赤・真っ青に塗られる</h3><p>「怒っている」「ショックを受けている」と書くと、AIが顔ぜんぶを赤や青に塗ってしまいます。そのコマだけ、別のキャラに見えます。</p><p class="fix"><b>直し方:</b>色を変えないことを、毎回書きます。</p><pre>・頭・顔・体の色は全コマ同じまま。顔を赤や青に塗らない。照れはほっぺの小さな赤い丸2つだけで表す</pre></div><div class="f"><h3><span class="no">6</span>描き直したコマだけ、色がちがう</h3><p>描き直してもらった2コマだけ、毛の色が青っぽい白になりました。ほかはクリーム色です。並べると、そこだけ浮きます。</p><p class="fix"><b>直し方:</b>もう一度お願いするときに、「ほかのコマと同じクリーム色」と色の名前を書きます。基準の絵も一緒に添付します。</p></div><div class="f"><h3><span class="no">7</span>黒っぽいキャラは、スタンプにすると地味</h3><p>黒い体に黒い線(口・まゆ・汗)を描いても、ほとんど見えません。並べると、ぜんぶ同じ絵に見えました。</p><p class="fix"><b>直し方:</b>キャラのうしろに、オーラや集中線などのエフェクトを足します。目印になる明るい色を1か所だけ決めるのも効きます(しっぽの先だけ水色、など)。</p></div>
+</section>
+
+<section class="card"><h2>切り分けでつまずく</h2>
+<div class="f"><h3><span class="no">8</span>「区切り線なし」と書いても、線を描いてくる</h3><p>マス目の黒い線を描いてくることがあります。そのまま切り分けると、スタンプの端に黒い線が残ります。</p><p class="fix"><b>直し方:</b>画像の端から端まで続く、まっすぐな黒い線だけを白く塗りつぶしてから使います。描き直さなくても直せます。</p></div><div class="f"><h3><span class="no">9</span>翼や手が、となりのコマにはみ出す</h3><p>大きく広げた翼が、となりのコマまで伸びていました。マス目どおりに切ると、先が切れます。</p><p class="fix"><b>直し方:</b>マス目ではなく、キャラのまとまりごとに切り出します。このサイトのツールは、まとまりごとの切り出しに対応しています。</p></div><div class="f"><h3><span class="no">10</span>記号をAIに描かせると、キャラに重なる</h3><p>雨雲を描かせたら、頭にめりこみました。汗や怒りマークも、コマごとに形がばらばらになります。</p><p class="fix"><b>直し方:</b>記号は、AIに描かせないと決めます。絵はキャラだけにして、汗・怒りマーク・Zzzなどは、あとからツールで足します。形がそろって、位置も直せます。</p></div>
+</section>
+
+<section class="card"><h2>文字と保存でつまずく</h2>
+<div class="f"><h3><span class="no">11</span>2行のセリフだと、キャラが小さくなる</h3><p>文字のぶんだけ、キャラが入る場所が狭くなります。</p><p class="fix"><b>直し方:</b>セリフは、できるだけ1行・8文字以内にします。長くなるときは、キャラの足もとを少し文字のうしろに重ねて、キャラを大きくします。</p></div><div class="f"><h3><span class="no">12</span>保存した画像がぼやける</h3><p>画像を右クリックやスクリーンショットで保存すると、小さいサイズになっていることがあります。拡大するとぼやけます。</p><p class="fix"><b>直し方:</b>画像AIの画面にある「ダウンロード」ボタンで保存します。大きいサイズのまま保存できます。</p></div>
+</section>
+
+<section class="card"><h2>失敗を減らす、お願いの文の型</h2>
+<p>失敗を直すたびに、お願いの文に1行ずつ足していきました。今は、次の型を使っています。〇〇のところを、自分のキャラに合わせて書きかえてください。</p>
+<pre>添付した絵のキャラクターを、同じ絵柄で描いてください。
+・1枚の画像に8コマ（4列×2行）。各コマ同じ大きさ、区切り線なし、背景は白
+・キャラの特徴：〇〇（色・目の形・目印）
+・頭・顔・体の色は全コマ同じまま。顔を赤や青に塗らない
+・〇〇（しっぽ・耳など）は必ず1つだけ
+・衣装（8コマ全部で同じデザイン・同じ色）：〇〇
+・汗・怒りマーク・文字などの記号は描かない。キャラだけを描く
+・各コマのポーズと表情：1.〇〇　2.〇〇 …</pre>
+<p>ツールの「AIプロンプト」では、キャラの特徴と表情を入れるだけで、この形のお願いの文を作れます。まとめ画像の分割、背景の透過、記号やエフェクトの追加も、同じツールでできます。</p>
+<a class="cta" href="../?utm_source=guide&utm_medium=internal&utm_campaign=stamp-shippai&utm_content=bottom">まとめ画像の分割・背景透過・文字入れを無料でする</a>
+</section>
+
+<section class="card gl"><h2>よくある質問(タップで開きます)</h2>
+<details><summary>AIで作ったLINEスタンプは、販売できる?</summary><p>販売できます。申請の画面で「AIの使用」の欄に「使用しています」を選びます。使った画像生成サービスの規約で、商用利用が認められているかは、自分で確認してください。</p></details>
+<details><summary>キャラの絵柄をそろえるには?</summary><p>いちばん気に入った1枚を「基準の絵」に決めて、毎回それだけを添付します。前に作ったまとめ画像を見本にすると、ずれが少しずつ大きくなります。</p></details>
+<details><summary>1コマだけ描き直すには?</summary><p>変なところがあるコマだけ、ポーズと直したい点を書いて、もう一度描いてもらいます。基準の絵を一緒に添付すると、色や顔がそろいやすくなります。</p></details>
+<details><summary>8コマのうち、何コマくらいがそのまま使える?</summary><p>私の場合は、8コマのうち6〜7コマくらいです。残りの1〜2コマを見つけて直すのが、いちばん大事な作業でした。</p></details>
+<details><summary>汗や怒りマークは、AIに描いてもらっていい?</summary><p>おすすめしません。コマごとに形が変わったり、キャラに重なったりします。あとからツールで足すほうが、形がそろいます。</p></details>
+</section>
+
+<section class="card" id="rel"><h2>LINEスタンプ作りの解説ページ</h2><ul class="rl"><li><a href="../shinsei/">申請の入力欄と文字数</a><span>タイトル・説明文・コピーライト・AIの使用の書き方</span></li><li><a href="../50sets/">50セット作って分かったこと</a><span>売れた1つ、やめた企画、数字のまとめ</span></li><li><a href="../">LINEスタンプ・絵文字メーカー(無料)</a><span>まとめ画像の分割、背景透過、文字入れ、申請用ZIPまで</span></li></ul></section>
+<section class="card" id="ad"><p class="pr">PR</p><p style="margin:0 0 4px;font-size:.86rem;color:var(--mut)">画像AIを本格的に使いたい人へ</p>
+<a href="https://px.a8.net/svt/ejp?a8mat=4BEFL2+AL1KKI+50+7RTY1E" rel="nofollow sponsored noopener" target="_blank" style="font-weight:700">ブラウザだけでできる本格的なAI画像生成【ConoHa AI Canvas】</a><img border="0" width="1" height="1" src="https://www17.a8.net/0.gif?a8mat=4BEFL2+AL1KKI+50+7RTY1E" alt="" style="position:absolute;width:1px;height:1px;opacity:0">
+<p class="note">インストール不要。スタンプとして販売するときは、使うモデルの商用利用の条件を確認してください。</p></section>
+<footer>
+<p><b>運営者:</b>ちいさなツール工房(<a href="https://note.com/zero_kobo" target="_blank" rel="noopener">note</a>)。まちがいやご意見は、<a href="https://note.com/zero_kobo/n/n6c8ad35ef5da" target="_blank" rel="noopener">noteの記事</a>のコメント欄へどうぞ。ほかのツールは<a href="https://zero-kobo.github.io/">ツール一覧</a>にあります。</p>
+<p><b>広告について:</b>このページには、アフィリエイト広告(PR)を含みます。リンクから申し込みがあると、運営者に紹介料が入ることがあります。</p>
+<p><b>プライバシーポリシー:</b>アクセス状況を知るために、Googleアナリティクス(GA4)を使っています。くわしくは<a href="https://zero-kobo.github.io/privacy.html">プライバシーポリシー</a>をご覧ください。</p>
+<p><b>このページについて:</b>個人がLINEスタンプを作って申請した経験をもとに書いています(2026年10〜11月時点)。審査の基準や画面は変わることがあります。申請の前に、LINE Creators Marketの公式ガイドラインを確認してください。「LINE」はLINEヤフー株式会社の商標です。このサイトは個人が作った非公式のもので、LINEヤフー株式会社とは関係ありません。</p>
+<p>最終更新日:2026年11月13日</p>
+</footer>
+</div>
+</body>
+</html>
