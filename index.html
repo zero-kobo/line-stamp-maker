@@ -31,7 +31,7 @@
       "isAccessibleForFree": true,
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" },
       "description": "AIイラストやまとめ画像をLINEスタンプ・LINE絵文字の規格に整え、背景透過・白フチ・文字入れ・審査チェック・ZIP一括書き出しまで行える無料Webツール。",
-      "featureList": ["ChatGPT・Gemini用のスタンプ画像プロンプト作成", "セリフのテーマ別セットとバランスチェック", "申請タイトル・説明文の文字数チェックと申請チェックリスト", "告知用の一覧画像（X・Instagram）書き出し", "スタンプから絵文字を作成", "吹き出し・文字デザインの保存", "まとめ画像（シート）の自動分割", "背景の自動透過・スポイト・消しゴム", "イラストの白フチ", "エフェクト20種（オーラ・後光・黒いモヤ・集中線・怒りマーク・汗・ハート・Zzzなど）とセリフからのおまかせ", "文字の縦書き・斜め・グラデ・虹色・震え・波打ち", "余白10px・偶数サイズ・1MBの自動チェック", "01.png〜24.png・main.png・tab.pngのZIP一括書き出し", "LINE絵文字（180×180px・001.png〜）モード", "スタンプの絵からLINE着せかえ画像一式（メイン画像・メニューボタン・パスコード・プロフィール・トーク背景）を作成", "自分の画像からデザイン系の着せかえを作成（まとめ画像の分割、消灯・点灯の自動作成、62枚・サイズ・1MB・不透明の書き出し前チェック）"],
+      "featureList": ["ChatGPT・Gemini用のスタンプ画像プロンプト作成", "セリフのテーマ別セットとバランスチェック", "申請タイトル・説明文の文字数チェックと申請チェックリスト", "告知用の一覧画像（X・Instagram）書き出し", "スタンプから絵文字を作成", "吹き出し・文字デザインの保存", "まとめ画像（シート）の自動分割", "背景の自動透過・スポイト・消しゴム", "イラストの白フチ", "エフェクト20種（オーラ・後光・黒いモヤ・集中線・怒りマーク・汗・ハート・Zzzなど）とセリフからのおまかせ", "文字の縦書き・斜め・グラデ・虹色・震え・波打ち", "余白10px・偶数サイズ・1MBの自動チェック", "01.png〜24.png・main.png・tab.pngのZIP一括書き出し", "LINE絵文字（180×180px・001.png〜）モード", "スタンプの絵からLINE着せかえ画像一式（メイン画像・メニューボタン・パスコード・プロフィール・トーク背景）を作成", "自分の画像からデザイン系の着せかえを作成（まとめ画像の分割、消灯・点灯の自動作成、62枚・サイズ・1MB・不透明の書き出し前チェック）", "8コマのまとめ画像から動くLINEスタンプ（アニメーションスタンプ・APNG）を作成（コマの自動検出・背景透過・位置合わせ・往復再生・文字の動き・300KB自動圧縮）"],
       "publisher": { "@type": "Organization", "name": "ちいさなツール工房", "url": "https://zero-kobo.github.io/" }
     },
     {
@@ -135,6 +135,47 @@
   body.thmode .extras{margin-top:14px}
   .thbar{display:none;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;padding:12px 16px;border-bottom:1px solid var(--line);font-size:13px}
   body.thmode .thbar{display:flex}
+
+
+  /* 動くスタンプモード */
+  .anime{display:none;margin-top:14px}
+  body.anmode .anime{display:block}
+  body.anmode main.app,body.anmode #extras,body.anmode #setCount,body.anmode #setSummaryShort,body.anmode #pngBtn,body.anmode .strip [data-act=downloadZip],body.anmode #thumbs{display:none}
+  .anbar{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:13px;padding-bottom:12px;border-bottom:1px solid var(--line);margin-bottom:12px}
+  .angrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:14px}
+  @media (max-width:860px){.angrid{grid-template-columns:1fr}}
+  .ancol{display:flex;flex-direction:column;gap:12px;min-width:0}
+  .anblk{border:1px solid var(--line);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:8px}
+  .anblk h4{margin:0;font-size:14px}
+  .anblk label.muted{display:flex;flex-direction:column;gap:3px;font-size:12px}
+  .anblk .row label.muted{flex:1;min-width:120px}
+  .anblk summary{cursor:pointer;font-size:13px}
+  .anblk details[open] summary,.anblk[open] summary{margin-bottom:8px}
+  .anblk textarea{width:100%;font-size:12px}
+  .anlb{display:flex!important;flex-direction:row!important;justify-content:space-between}
+  .anmini{font-size:11.5px;margin:0}
+  .anslots{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:8px}
+  .anslot{border:1px solid var(--line);border-radius:10px;padding:6px;display:flex;flex-direction:column;gap:5px;cursor:pointer;background:#fff}
+  .anslot.on{border-color:var(--ac);box-shadow:0 0 0 2px var(--ac-l)}
+  .anslot .pv{aspect-ratio:320/270;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--sub);overflow:hidden}
+  .anslot .pv img{width:100%;height:100%;object-fit:contain}
+  .anslot .hd2{display:flex;justify-content:space-between;align-items:center;font-size:11px;font-weight:700}
+  .anslot .st{font-size:10.5px;color:var(--sub);min-height:1.2em}
+  .anslot .st.ng{color:var(--ng)}
+  .anslot input{font-size:12px;padding:4px 6px;width:100%}
+  .anslot .bt{display:flex;gap:4px}
+  .anslot .bt .btn{flex:1;padding:3px 4px;font-size:11px}
+  .anstage{border-radius:12px;display:flex;align-items:center;justify-content:center;padding:10px}
+  .anstage.ck{background:repeating-conic-gradient(#e2e8f0 0 25%,#f8fafc 0 50%) 0 0/16px 16px}
+  .anstage.lt{background:#8cabd9}
+  .anstage.dk{background:#1f2937}
+  .anstage img{width:320px;max-width:100%;aspect-ratio:320/270;object-fit:contain}
+  .anframes{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:6px}
+  .anframes button{border:1px solid var(--line);border-radius:8px;padding:2px;background:#fff;position:relative;font-size:10px;font-weight:700}
+  .anframes button canvas{width:100%;height:auto;display:block;background:repeating-conic-gradient(#e2e8f0 0 25%,#f8fafc 0 50%) 0 0/10px 10px;border-radius:6px}
+  .anframes button.off{opacity:.3}
+  .anframes button.off::after{content:'使わない';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--ng)}
+  [data-skin=dark] .anslot,[data-skin=dark] .anframes button{background:#1c2026}
 
   /* header */
   .hd{background:#fff;border-bottom:1px solid var(--line)}
@@ -361,7 +402,7 @@
   <div class="hero">
     <h1>LINEスタンプ・絵文字メーカー<small>無料・登録不要</small></h1>
     <p>AIイラストやまとめ画像から、LINEスタンプ一式（01.png〜・main.png・tab.png）やLINE絵文字一式（001.png〜・tab.png）をZIPで書き出せるツール。背景透過・白フチ・文字入れ・審査チェックまでここで完結します。</p>
-    <div class="badges"><span>✂️ シート自動分割</span><span>🫥 背景を自動で透過</span><span>⚪ イラストに白フチ</span><span>✨ エフェクト20種・マンガ記号</span><span>🔤 縦書き・斜め・虹色文字</span><span>✅ 余白10px・偶数px・1MBを自動チェック</span><span>📦 ZIP一括書き出し</span><span>😀 LINE絵文字（180×180）にも対応</span><span>🎨 着せかえ一式も作成</span><span>🤖 AI用プロンプト作成</span><span>📮 申請サポート</span><span>📣 告知画像</span></div>
+    <div class="badges"><span>✂️ シート自動分割</span><span>🫥 背景を自動で透過</span><span>⚪ イラストに白フチ</span><span>✨ エフェクト20種・マンガ記号</span><span>🔤 縦書き・斜め・虹色文字</span><span>✅ 余白10px・偶数px・1MBを自動チェック</span><span>📦 ZIP一括書き出し</span><span>😀 LINE絵文字（180×180）にも対応</span><span>🎨 着せかえ一式も作成</span><span>🎞️ 動くスタンプ（APNG）も作成</span><span>🤖 AI用プロンプト作成</span><span>📮 申請サポート</span><span>📣 告知画像</span></div>
   </div>
 
   <!-- ===== Strip ===== -->
@@ -372,6 +413,7 @@
           <button data-kind="stamp" class="on">スタンプ</button>
           <button data-kind="emoji">絵文字</button>
           <button data-gotheme="1" title="作ったスタンプから着せかえ一式を作る">着せかえ</button>
+          <button data-goanime="1" title="8コマのまとめ画像から動くスタンプ（APNG）を作る">動くスタンプ</button>
         </div>
         <select id="setCount" style="width:auto;padding:5px 8px;font-size:13px" aria-label="個数"></select>
         <span class="muted" id="setSummaryShort"></span>
@@ -383,6 +425,103 @@
     </div>
     <div class="thumbs" id="thumbs"></div>
   </div>
+
+  <!-- ===== 動くスタンプ（アニメーションスタンプ） ===== -->
+  <section class="card pad anime" id="animeBox" aria-label="動くスタンプ（アニメーションスタンプ）づくり">
+    <div class="anbar"><span><b>🎞️ 動くスタンプづくり</b>　<span class="muted">① AIに8コマの動きを描いてもらう → ② まとめ画像を入れる → ③ 動きを確認してZIPで書き出す</span></span><button class="btn sm" id="anExit">← スタンプ作りに戻る</button></div>
+    <div class="angrid">
+      <div class="ancol">
+        <div class="anblk">
+          <h4>① セット</h4>
+          <div class="row">
+            <label class="muted">個数<select id="anCount"><option value="8">8個</option><option value="16">16個</option><option value="24">24個</option></select></label>
+            <label class="muted">メイン画像に使う番号<select id="anMain"></select></label>
+          </div>
+          <p class="muted anmini">LINEの規格：最大320×270px・5〜20コマ・1回1〜4秒（端数なし）・ループ込みで4秒以内・1個300KB以下。このツールが自動で合わせます。</p>
+        </div>
+        <details class="anblk" id="anPromptBox">
+          <summary><b>🤖 Gemini・ChatGPT用の8コマプロンプトを作る</b></summary>
+          <label class="muted">キャラの説明<input type="text" id="anPChara" placeholder="例：黒×青のトラ柄のちびティラノ、大きく丸いうるうる目"></label>
+          <label class="muted">動き<input type="text" id="anPAct" placeholder="例：右手を大きく振って「おはよう」とあいさつする"></label>
+          <textarea id="anPOut" rows="9" readonly></textarea>
+          <button class="btn sm" id="anPCopy">📋 コピー</button>
+        </details>
+        <div class="anblk">
+          <h4>② まとめ画像の分け方</h4>
+          <label class="muted">コマの見つけ方<select id="anFind" data-an>
+            <option value="auto">キャラを自動で見つける（おすすめ）</option>
+            <option value="grid">マス目でまっすぐ切る</option>
+          </select></label>
+          <div class="row">
+            <label class="muted">横のコマ数<input type="number" id="anCols" value="4" min="1" max="8" data-an></label>
+            <label class="muted">縦のコマ数<input type="number" id="anRows" value="2" min="1" max="8" data-an></label>
+          </div>
+          <div id="anInsetRow">
+            <label class="lb muted anlb">ふちを少し削る<span id="anInsetV">3%</span></label>
+            <input type="range" id="anInset" min="0" max="15" value="3" data-an>
+          </div>
+          <label class="chk"><input type="checkbox" id="anBg" checked data-an>背景を自動で消す（無地の背景）</label>
+          <label class="lb muted anlb">抜く強さ<span id="anTolV">40</span></label>
+          <input type="range" id="anTol" min="5" max="120" value="40" data-an>
+        </div>
+        <div class="anblk">
+          <h4>③ 動き</h4>
+          <div class="row">
+            <label class="muted">1回の長さ<select id="anSec" data-an><option value="1">1秒</option><option value="2">2秒</option><option value="3">3秒</option><option value="4">4秒</option></select></label>
+            <label class="muted">くり返し<select id="anLoops" data-an><option value="0">自動（4秒いっぱい）</option><option value="1">1回</option><option value="2">2回</option><option value="3">3回</option><option value="4">4回</option></select></label>
+          </div>
+          <label class="chk"><input type="checkbox" id="anPing" data-an>往復させる（1→8→1。8コマが14コマになり、なめらかになる）</label>
+          <label class="muted">位置合わせ（ガタつき防止）<select id="anAlign" data-an>
+            <option value="foot">足元をそろえる（立っているキャラ）</option>
+            <option value="center">体の中心をそろえる（浮いている・顔だけ）</option>
+            <option value="none">合わせない（マス目どおり。移動する動き）</option>
+          </select></label>
+          <label class="chk"><input type="checkbox" id="anSize" data-an>大きさもそろえる（コマごとにキャラの大きさがバラバラなとき）</label>
+          <label class="lb muted anlb">白フチ<span id="anOutV">0px</span></label>
+          <input type="range" id="anOut" min="0" max="8" value="0" data-an>
+        </div>
+        <div class="anblk">
+          <h4>④ 文字（スタンプごとに下で入力）</h4>
+          <label class="muted">フォント<select id="anFont" data-an></select></label>
+          <div class="row">
+            <div class="colorrow"><input type="color" id="anTColor" value="#1e293b" data-an>文字の色</div>
+            <div class="colorrow"><input type="color" id="anTStroke" value="#ffffff" data-an>フチの色</div>
+          </div>
+          <div class="row">
+            <label class="muted">位置<select id="anTPos" data-an><option value="bottom">下</option><option value="top">上</option></select></label>
+            <label class="muted">文字の動き<select id="anTFx" data-an><option value="none">動かさない</option><option value="poyon">ぽよん（大きくなる）</option><option value="fuwa">ふわふわ（上下）</option><option value="puru">ぷるぷる（ふるえる）</option></select></label>
+          </div>
+        </div>
+      </div>
+      <div class="ancol">
+        <div class="anblk">
+          <div class="row" style="justify-content:space-between">
+            <h4 style="margin:0">スタンプ一覧</h4>
+            <label class="btn sm" style="cursor:pointer">🗂️ 画像をまとめて入れる<input type="file" id="anMulti" accept="image/*" multiple hidden></label>
+          </div>
+          <p class="muted anmini">1枚の画像＝1個の動くスタンプです。複数選ぶと、空いている番号に順番に入ります。</p>
+          <div class="anslots" id="anSlots"></div>
+          <input type="file" id="anOne" accept="image/*" hidden>
+        </div>
+        <div class="anblk" id="anDetail">
+          <div class="row" style="justify-content:space-between">
+            <h4 style="margin:0" id="anDetTitle">スタンプ 01</h4>
+            <div class="row"><button class="btn sm" id="anBgBtn">背景：チェック</button><button class="btn sm" id="anSaveOne">💾 このスタンプを保存</button></div>
+          </div>
+          <div class="anstage ck" id="anStage"><img id="anBig" alt="動くスタンプのプレビュー"></div>
+          <p class="muted anmini" id="anInfo"></p>
+          <label class="muted">最初に表示するコマ（トーク一覧・ストアではこのコマが止まって見えます）<select id="anFirst"></select></label>
+          <p class="muted anmini" style="margin-top:8px">切り分けたコマ（タップで使う／使わないを切り替え）</p>
+          <div class="anframes" id="anFrames"></div>
+        </div>
+        <div class="anblk">
+          <ul class="issues" id="anCheck"></ul>
+          <button class="btn pri full" id="anZip" style="margin-top:10px">📦 ZIPで一括書き出し（01.png〜・main.png・tab.png）</button>
+          <p class="muted anmini">main.png（240×240）はメイン画像に選んだ番号から動くAPNGで、tab.png（96×74）は1コマ目から作ります。</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <main class="app">
     <!-- ===== Editor ===== -->
@@ -1043,6 +1182,16 @@
         </tbody>
       </table>
       <p>絵文字にはメイン画像がありません。余白は空けずに、180×180pxいっぱいに描くのが推奨です。上の切り替えで「絵文字」を選ぶと、この規格で書き出します（<a href="#emoji" onclick="setTimeout(()=>location.reload(),0)">絵文字モードで開く</a>）。</p>
+      <h3 id="anime-spec">動くスタンプ（アニメーションスタンプ）の規格</h3>
+      <table>
+        <thead><tr><th>画像</th><th>数</th><th>サイズ</th><th>ファイル名</th></tr></thead>
+        <tbody>
+          <tr><td>アニメーションスタンプ画像（APNG）</td><td>8／16／24個</td><td>最大 320×270px</td><td>01.png〜</td></tr>
+          <tr><td>メイン画像（APNG）</td><td>1個</td><td>240×240px</td><td>main.png</td></tr>
+          <tr><td>トークルームタブ画像</td><td>1個</td><td>96×74px</td><td>tab.png</td></tr>
+        </tbody>
+      </table>
+      <p>1個あたり5〜20コマ、再生時間は1〜4秒（端数なし）、くり返しを含めて4秒以内、容量は300KB以下が目安です。1コマ目がトーク一覧やストアで止まって見える絵になります。上の切り替えで「動くスタンプ」を選ぶと、8コマのまとめ画像からこの規格のAPNGを作れます（<a href="#anime" onclick="setTimeout(()=>location.reload(),0)">動くスタンプモードで開く</a>）。</p>
       <p>共通ルール：PNG形式・背景は透過・縦横とも偶数px・1枚1MB以下。上下左右に10pxほどの余白を空けるのが推奨です。このツールは書き出し時に偶数pxとファイル名を自動で合わせます。規格は変わることがあるので、申請前に<a href="https://creator.line.me/ja/guideline/messagesticker/" target="_blank" rel="noopener">公式の制作ガイドライン</a>も確認してください。</p>
     </section>
 
@@ -1084,6 +1233,7 @@
       <details><summary>ChatGPTやGeminiでLINEスタンプを作るにはどうすればいいですか？</summary><p>「AIプロンプト」でキャラの特徴と表情を入れてプロンプトを作り、ChatGPTやGeminiで4列×2行のまとめ画像を描いてもらいます。その画像を「一括作成」タブで分割すると、背景透過と配置まで自動です。セリフを一括入力してZIPで書き出せば申請用の一式がそろいます。</p></details>
       <details><summary>申請画面で「40文字まで」「利用できない文字が含まれています」と出ます</summary><p>最初の言語（English）の欄は半角英数字のみで、全角は2文字として数えられることがあります。日本語は「言語を追加」で別に入れます。「申請サポート」で両方の数え方と、半角以外の文字が入っていないかをチェックできます。</p></details>
       <details><summary>LINE絵文字も作れますか？</summary><p>上部の切り替えで「絵文字」を選ぶと、180×180pxの正方形キャンバスになり、8〜40個の絵文字を001.png〜とtab.pngのZIPで書き出せます。絵文字は文中に文字と同じ大きさで出るので、文字なしの顔や絵だけがおすすめです。スタンプと絵文字の作業データは別々に保存されます。</p></details>
+      <details><summary>動くスタンプ（アニメーションスタンプ）も作れますか？</summary><p>上部の切り替えで「動くスタンプ」を選び、GeminiやChatGPTに描いてもらった8コマのまとめ画像を入れると、コマの切り出し・背景透過・ガタつきを抑える位置合わせをして、LINEの規格（320×270px・5〜20コマ・4秒以内・300KB以下）のAPNGにします。文字入れ、往復再生、文字の動きもつけられます。</p></details>
       <details><summary>スマホでも使えますか？</summary><p>iPhone・Androidのブラウザで使えます。指でドラッグして画像や文字を動かせます。細かい消しゴム作業はパソコンのほうが楽です。</p></details>
       <details><summary>途中で閉じても大丈夫？</summary><p>作業内容はこのブラウザに自動保存され、次に開いたときに復元されます。別の端末で続けるときは「作業データ」からファイルに保存してください。</p></details>
     </section>
@@ -3636,6 +3786,521 @@
 
   ACT.downloadPromo = async () => { await drawPromo(); $('promoCanvas').toBlob(b => dl(b, `line_${KIND}_promo_${$('prSize').value}.png`)); track('download_promo', { size: $('prSize').value }); };
 
+
+  // ---------- 動くスタンプ（アニメーションスタンプ / APNG） ----------
+  // 1枚のまとめ画像（例：横4×縦2の8コマ）→ コマを見つけて切り出し → 背景を消す → 位置をそろえる → APNGに組み立てる
+  const AW = 320, AH = 270, AMAX = 300 * 1024;
+  const AN = { n: 8, main: 0, sel: 0, bg: 0, slots: [] };
+  const anSlot = () => ({ sheet: null, blob: null, text: '', excl: [], first: 0, cells: null, key: '', frames: null, apng: null, url: null, info: null });
+  for (let i = 0; i < 24; i++) AN.slots.push(anSlot());
+  const anV = id => $(id).value, anC = id => $(id).checked;
+  const anOpt = () => ({
+    find: anV('anFind'), cols: clamp(Number(anV('anCols')) || 1, 1, 8), rows: clamp(Number(anV('anRows')) || 1, 1, 8),
+    inset: Number(anV('anInset')) / 100, bg: anC('anBg'), tol: Number(anV('anTol')),
+    sec: Number(anV('anSec')), loops: Number(anV('anLoops')), ping: anC('anPing'), align: anV('anAlign'), size: anC('anSize'), out: Number(anV('anOut')),
+    font: anV('anFont'), tColor: anV('anTColor'), tStroke: anV('anTStroke'), tPos: anV('anTPos'), tFx: anV('anTFx')
+  });
+  const anCutKey = o => [o.find, o.cols, o.rows, o.inset, o.bg, o.tol].join('|');
+
+  // 背景を消す（四すみの色を背景とみなし、外側から塗りつぶすように消す）
+  function anRemoveBg(cv, tol) {
+    const w = cv.width, h = cv.height;
+    const cs = [[0, 0], [w - 1, 0], [0, h - 1], [w - 1, h - 1]].map(([x, y]) => pixelAt(cv, x, y));
+    const opaque = cs.filter(p => p[3] > 200);
+    if (!opaque.length) return;
+    const ref = [0, 1, 2].map(i => Math.round(opaque.reduce((a, p) => a + p[i], 0) / opaque.length));
+    const seeds = [];
+    for (let x = 0; x < w; x++) seeds.push(x, (h - 1) * w + x);
+    for (let y = 0; y < h; y++) seeds.push(y * w, y * w + w - 1);
+    floodRemove(cv, seeds, ref, tol, false, 0);
+  }
+
+  // マス目で切る
+  function anCutGrid(sheet, o) {
+    const cw = sheet.width / o.cols, ch = sheet.height / o.rows, out = [];
+    for (let r = 0; r < o.rows; r++) for (let c = 0; c < o.cols; c++) {
+      const sx = c * cw + cw * o.inset, sy = r * ch + ch * o.inset, w = cw * (1 - 2 * o.inset), h = ch * (1 - 2 * o.inset);
+      const cell = mk(Math.max(1, Math.round(w)), Math.max(1, Math.round(h)));
+      cell.getContext('2d').drawImage(sheet, sx, sy, w, h, 0, 0, cell.width, cell.height);
+      if (o.bg) { anRemoveBg(cell, o.tol); removeSpecks(cell); }
+      cell._org = { x: 0, y: 0, w: cell.width, h: cell.height };
+      out.push(cell);
+    }
+    return out;
+  }
+
+  // キャラのかたまりを自動で見つける（マス目からずれていても切れない）
+  function anCutAuto(sheet, o) {
+    const cv = cloneCanvas(sheet);
+    if (o.bg) anRemoveBg(cv, o.tol);
+    const w = cv.width, h = cv.height, cx = cv.getContext('2d', { willReadFrequently: true });
+    const id = cx.getImageData(0, 0, w, h), d = id.data;
+    const lab = new Int32Array(w * h).fill(-1), comps = [], st = [];
+    for (let p0 = 0; p0 < w * h; p0++) {
+      if (lab[p0] !== -1 || d[p0 * 4 + 3] <= 24) continue;
+      const L = comps.length, cp = { n: 0, x0: w, y0: h, x1: 0, y1: 0 }; lab[p0] = L; st.push(p0);
+      while (st.length) {
+        const p = st.pop(), x = p % w, y = (p / w) | 0; cp.n++;
+        if (x < cp.x0) cp.x0 = x; if (x > cp.x1) cp.x1 = x; if (y < cp.y0) cp.y0 = y; if (y > cp.y1) cp.y1 = y;
+        if (x > 0 && lab[p - 1] === -1 && d[(p - 1) * 4 + 3] > 24) { lab[p - 1] = L; st.push(p - 1); }
+        if (x < w - 1 && lab[p + 1] === -1 && d[(p + 1) * 4 + 3] > 24) { lab[p + 1] = L; st.push(p + 1); }
+        if (y > 0 && lab[p - w] === -1 && d[(p - w) * 4 + 3] > 24) { lab[p - w] = L; st.push(p - w); }
+        if (y < h - 1 && lab[p + w] === -1 && d[(p + w) * 4 + 3] > 24) { lab[p + w] = L; st.push(p + w); }
+      }
+      comps.push(cp);
+    }
+    if (!comps.length) return [];
+    const maxN = Math.max(...comps.map(c => c.n));
+    const big = comps.map((c, i) => Object.assign(c, { i })).filter(c => c.n >= maxN * 0.18);
+    if (big.length < 2 || big.length > 24) return null; // うまく見つからない → マス目で切る
+    // 小さいかたまり（汗・ハート・はね）は、いちばん近い大きいかたまりにくっつける
+    const owner = new Int32Array(comps.length).fill(-1);
+    big.forEach((b, k) => owner[b.i] = k);
+    const cellW = w / o.cols, cellH = h / o.rows, lim = Math.min(cellW, cellH) * 0.35;
+    comps.forEach((c, i) => {
+      if (owner[i] >= 0 || c.n < 6) return;
+      let best = -1, bd = Infinity;
+      big.forEach((b, k) => {
+        const dx = Math.max(b.x0 - c.x1, c.x0 - b.x1, 0), dy = Math.max(b.y0 - c.y1, c.y0 - b.y1, 0), dd = Math.hypot(dx, dy);
+        if (dd < bd) { bd = dd; best = k; }
+      });
+      if (best >= 0 && bd <= lim) {
+        owner[i] = best; const b = big[best];
+        b.x0 = Math.min(b.x0, c.x0); b.y0 = Math.min(b.y0, c.y0); b.x1 = Math.max(b.x1, c.x1); b.y1 = Math.max(b.y1, c.y1);
+      }
+    });
+    // 上の段から、左から順に並べる
+    const hs = big.map(b => b.y1 - b.y0).sort((a, b) => a - b), mh = hs[hs.length >> 1];
+    const byY = big.map((b, k) => ({ b, k, cy: (b.y0 + b.y1) / 2, cx: (b.x0 + b.x1) / 2 })).sort((a, b) => a.cy - b.cy);
+    const rows = []; byY.forEach(e => { const r = rows[rows.length - 1]; if (r && e.cy - r[0].cy < mh * 0.5) r.push(e); else rows.push([e]); });
+    const order = rows.flatMap(r => r.sort((a, b) => a.cx - b.cx));
+    return order.map(({ b, k }) => {
+      const pad = 2, x0 = Math.max(0, b.x0 - pad), y0 = Math.max(0, b.y0 - pad), x1 = Math.min(w, b.x1 + 1 + pad), y1 = Math.min(h, b.y1 + 1 + pad);
+      const cw = x1 - x0, ch = y1 - y0, cell = mk(cw, ch), c2 = cell.getContext('2d'), im = c2.createImageData(cw, ch), q = im.data;
+      for (let y = 0; y < ch; y++) for (let x = 0; x < cw; x++) {
+        const p = (y + y0) * w + (x + x0), L = lab[p];
+        if (L < 0 || owner[L] !== k) continue;
+        const s = p * 4, t = (y * cw + x) * 4; q[t] = d[s]; q[t + 1] = d[s + 1]; q[t + 2] = d[s + 2]; q[t + 3] = d[s + 3];
+      }
+      c2.putImageData(im, 0, 0);
+      // マス目の中での位置（「合わせない」用）
+      const gx = Math.floor(((b.x0 + b.x1) / 2) / cellW), gy = Math.floor(((b.y0 + b.y1) / 2) / cellH);
+      cell._org = { x: x0 - gx * cellW, y: y0 - gy * cellH, w: cellW, h: cellH };
+      return cell;
+    });
+  }
+
+  function anCut(sl, o) {
+    const key = anCutKey(o);
+    if (!sl.sheet || sl.key === key) return;
+    let cells = o.find === 'auto' ? anCutAuto(sl.sheet, o) : null;
+    sl.autoFail = o.find === 'auto' && !cells;
+    if (!cells) cells = anCutGrid(sl.sheet, o);
+    cells = cells.filter(c => contentBox(c, 24));
+    sl.cells = cells; sl.key = key;
+    sl.excl = sl.excl.filter(i => i < cells.length);
+    if (sl.first >= cells.length) sl.first = 0;
+  }
+
+  // コマの大きさ・重心（位置合わせ用）
+  function anStats(cv) {
+    if (cv._st) return cv._st;
+    const w = cv.width, h = cv.height, d = cv.getContext('2d', { willReadFrequently: true }).getImageData(0, 0, w, h).data;
+    let x0 = w, y0 = h, x1 = -1, y1 = -1, sx = 0, sy = 0, sa = 0;
+    for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+      const a = d[(y * w + x) * 4 + 3]; if (a <= 24) continue;
+      if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; sx += x * a; sy += y * a; sa += a;
+    }
+    if (x1 < 0) return cv._st = null;
+    // 足元の重心：下から25%の高さだけで横位置を測る（手をふっても体がぶれない）
+    const fy = y1 - (y1 - y0 + 1) * 0.25; let fx = 0, fa = 0;
+    for (let y = Math.max(0, Math.floor(fy)); y <= y1; y++) for (let x = x0; x <= x1; x++) { const a = d[(y * w + x) * 4 + 3]; if (a > 24) { fx += x * a; fa += a; } }
+    return cv._st = { x0, y0, x1: x1 + 1, y1: y1 + 1, cx: sx / sa, cy: sy / sa, fx: fa ? fx / fa : sx / sa };
+  }
+
+  const anLines = t => t.split(/[／\n]/).map(s => s.trim()).filter(Boolean);
+  function anTextSize(lines, o, maxW) {
+    const t = TL.getContext('2d'); let fs = 56;
+    while (fs > 22) { t.font = fontStr({ font: o.font }, fs); if (Math.max(...lines.map(l => t.measureText(l).width)) + fs * 0.3 <= maxW) break; fs -= 2; }
+    return fs;
+  }
+
+  // 1個分のフレーム（320×270）を作る
+  function anBuildFrames(sl, o) {
+    if (!sl.cells || !sl.cells.length) return null;
+    const use = []; for (let k = 0; k < sl.cells.length; k++) { const i = (sl.first + k) % sl.cells.length; if (!sl.excl.includes(i)) use.push(i); }
+    if (!use.length) return null;
+    let seq = use.slice(); if (o.ping && use.length > 2) seq = use.concat(use.slice(1, -1).reverse());
+    const sts = use.map(i => [i, anStats(sl.cells[i])]).filter(([, s]) => s);
+    if (!sts.length) return null;
+    const hs = sts.map(([, s]) => s.y1 - s.y0).sort((a, b) => a - b), medH = hs[hs.length >> 1];
+    const A = {};
+    sts.forEach(([i, s]) => {
+      const c = sl.cells[i], g = c._org;
+      const ax = o.align === 'foot' ? s.fx : o.align === 'center' ? s.cx : g.w / 2 - g.x;
+      const ay = o.align === 'foot' ? s.y1 : o.align === 'center' ? s.cy : g.h / 2 - g.y;
+      A[i] = { ax, ay, f: o.size ? medH / (s.y1 - s.y0) : 1, s };
+    });
+    let L = 0, R = 0, U = 0, D = 0;
+    Object.values(A).forEach(({ ax, ay, f, s }) => { L = Math.max(L, (ax - s.x0) * f); R = Math.max(R, (s.x1 - ax) * f); U = Math.max(U, (ay - s.y0) * f); D = Math.max(D, (s.y1 - ay) * f); });
+    const m = 10 + o.out, lines = anLines(sl.text || '');
+    const fs = lines.length ? anTextSize(lines, o, AW - m * 2) : 0, band = lines.length ? Math.round(fs * 1.12 * lines.length + 4) : 0;
+    const aw = AW - m * 2, ah = AH - m * 2 - band;
+    const sc = Math.min(aw / Math.max(1, L + R), ah / Math.max(1, U + D));
+    const ox = m + (aw - (L + R) * sc) / 2 + L * sc, oy = m + (o.tPos === 'top' ? band : 0) + (ah - (U + D) * sc) / 2 + U * sc;
+    const n = seq.length;
+    return seq.map((i, k) => {
+      const a = A[i], cv = mk(AW, AH), x = cv.getContext('2d'); x.imageSmoothingQuality = 'high';
+      if (a) {
+        const z = sc * a.f, src = sl.cells[i];
+        const lay = mk(AW, AH), lx = lay.getContext('2d'); lx.imageSmoothingQuality = 'high';
+        lx.drawImage(src, ox - a.ax * z, oy - a.ay * z, src.width * z, src.height * z);
+        if (o.out > 0) {
+          const ol = mk(AW, AH), oc = ol.getContext('2d');
+          for (let t = 0; t < 24; t++) { const r = t * Math.PI / 12; oc.drawImage(lay, Math.cos(r) * o.out, Math.sin(r) * o.out); }
+          oc.globalCompositeOperation = 'source-in'; oc.fillStyle = '#ffffff'; oc.fillRect(0, 0, AW, AH);
+          x.drawImage(ol, 0, 0);
+        }
+        x.drawImage(lay, 0, 0);
+      }
+      if (lines.length) {
+        const p = k / n, ph = Math.sin(p * Math.PI * 2);
+        let dx = 0, dy = 0, zz = 1;
+        if (o.tFx === 'poyon') zz = 1 + 0.07 * (ph + 1) / 2;
+        if (o.tFx === 'fuwa') dy = -4 * ph;
+        if (o.tFx === 'puru') { dx = (k % 2 ? 2 : -2); dy = (k % 3 === 1 ? 1 : -1); }
+        const lh = fs * 1.12, by = o.tPos === 'top' ? m + 2 : AH - m - band + 2;
+        x.save(); x.textAlign = 'center'; x.textBaseline = 'middle'; x.lineJoin = 'round';
+        lines.forEach((l, j) => {
+          const cx0 = AW / 2 + dx, cy0 = by + lh * (j + 0.5) + dy;
+          x.save(); x.translate(cx0, cy0); x.scale(zz, zz);
+          x.font = fontStr({ font: o.font }, fs);
+          x.strokeStyle = o.tStroke; x.lineWidth = Math.max(4, fs * 0.26); x.strokeText(l, 0, 0);
+          x.fillStyle = o.tColor; x.fillText(l, 0, 0); x.restore();
+        });
+        x.restore();
+      }
+      return cv;
+    });
+  }
+
+  // ---- APNGエンコーダ（外部ライブラリなし） ----
+  async function anZlib(u8) {
+    const s = new Blob([u8]).stream().pipeThrough(new CompressionStream('deflate'));
+    return new Uint8Array(await new Response(s).arrayBuffer());
+  }
+  function anChunk(type, data) {
+    const t = new TextEncoder().encode(type), out = new Uint8Array(12 + data.length), v = new DataView(out.buffer);
+    v.setUint32(0, data.length); out.set(t, 4); out.set(data, 8);
+    v.setUint32(8 + data.length, crc32(out.subarray(4, 8 + data.length)));
+    return out;
+  }
+  const anU32 = (...a) => { const b = new Uint8Array(a.length * 4), v = new DataView(b.buffer); a.forEach((x, i) => v.setUint32(i * 4, x)); return b; };
+  // 行ごとにいちばん縮みそうなフィルターを選ぶ（RGBA）
+  function anFilterRGBA(px, w, h) {
+    const bpl = w * 4, out = new Uint8Array((bpl + 1) * h), cand = [0, 1, 2, 3, 4].map(() => new Uint8Array(bpl));
+    for (let y = 0; y < h; y++) {
+      const row = px.subarray(y * bpl, y * bpl + bpl), up = y ? px.subarray((y - 1) * bpl, y * bpl) : null;
+      let best = 0, bs = Infinity;
+      for (let f = 0; f < 5; f++) {
+        const c = cand[f]; let sum = 0;
+        for (let i = 0; i < bpl; i++) {
+          const a = i >= 4 ? row[i - 4] : 0, b = up ? up[i] : 0, cc = up && i >= 4 ? up[i - 4] : 0; let v;
+          if (f === 0) v = row[i]; else if (f === 1) v = row[i] - a; else if (f === 2) v = row[i] - b; else if (f === 3) v = row[i] - ((a + b) >> 1);
+          else { const p = a + b - cc, pa = Math.abs(p - a), pb = Math.abs(p - b), pc = Math.abs(p - cc); v = row[i] - (pa <= pb && pa <= pc ? a : pb <= pc ? b : cc); }
+          v &= 255; c[i] = v; sum += v < 128 ? v : 256 - v;
+        }
+        if (sum < bs) { bs = sum; best = f; }
+      }
+      out[y * (bpl + 1)] = best; out.set(cand[best], y * (bpl + 1) + 1);
+    }
+    return out;
+  }
+  // 256色に減らす（全フレーム共通のパレット・メディアンカット）
+  function anQuantize(datas, MAXC) {
+    const sm = [], step = Math.max(1, Math.floor(datas.length * datas[0].length / 4 / 160000));
+    datas.forEach(d => { for (let i = 0; i < d.length; i += 4 * step) if (d[i + 3] >= 16) sm.push([d[i], d[i + 1], d[i + 2], d[i + 3]]); });
+    let boxes = [sm];
+    while (boxes.length < MAXC) {
+      let bi = -1, bsc = 0, bch = 0;
+      boxes.forEach((b, i) => {
+        if (b.length < 2) return;
+        for (let ch = 0; ch < 4; ch++) { let lo = 255, hi = 0; for (const p of b) { if (p[ch] < lo) lo = p[ch]; if (p[ch] > hi) hi = p[ch]; } const sc = (hi - lo) * Math.sqrt(b.length); if (sc > bsc) { bsc = sc; bi = i; bch = ch; } }
+      });
+      if (bi < 0 || bsc === 0) break;
+      const b = boxes[bi].sort((p, q) => p[bch] - q[bch]), mid = b.length >> 1;
+      boxes.splice(bi, 1, b.slice(0, mid), b.slice(mid));
+    }
+    const pal = [[0, 0, 0, 0]].concat(boxes.filter(b => b.length).map(b => { const s = [0, 0, 0, 0]; b.forEach(p => { for (let c = 0; c < 4; c++) s[c] += p[c]; }); return s.map(v => Math.round(v / b.length)); }));
+    const cache = new Map();
+    const near = (r, g, b, a) => {
+      if (a < 16) return 0;
+      const key = (r >> 2) << 18 | (g >> 2) << 12 | (b >> 2) << 6 | (a >> 2);
+      let k = cache.get(key); if (k !== undefined) return k;
+      let bd = Infinity; k = 1;
+      for (let i = 1; i < pal.length; i++) { const p = pal[i], dr = p[0] - r, dg = p[1] - g, db = p[2] - b, da = (p[3] - a) * 1.5, dd = dr * dr + dg * dg + db * db + da * da; if (dd < bd) { bd = dd; k = i; } }
+      cache.set(key, k); return k;
+    };
+    const idx = datas.map(d => { const o = new Uint8Array(d.length / 4); for (let i = 0, j = 0; i < d.length; i += 4, j++) o[j] = near(d[i], d[i + 1], d[i + 2], d[i + 3]); return o; });
+    return { pal, idx };
+  }
+  async function anEncodeAPNG(frames, delays, plays, palette) {
+    const w = frames[0].width, h = frames[0].height;
+    const datas = frames.map(f => f.getContext('2d', { willReadFrequently: true }).getImageData(0, 0, w, h).data);
+    const parts = [new Uint8Array([137, 80, 78, 71, 13, 10, 26, 10])];
+    const ihdr = new Uint8Array(13); new DataView(ihdr.buffer).setUint32(0, w); new DataView(ihdr.buffer).setUint32(4, h);
+    ihdr[8] = 8; ihdr[9] = palette ? 3 : 6;
+    parts.push(anChunk('IHDR', ihdr), anChunk('acTL', anU32(frames.length, plays)));
+    let rows;
+    if (palette) {
+      const q = anQuantize(datas, palette - 1);
+      parts.push(anChunk('PLTE', new Uint8Array(q.pal.flatMap(p => [p[0], p[1], p[2]]))), anChunk('tRNS', new Uint8Array(q.pal.map(p => p[3]))));
+      rows = q.idx.map(ix => { const o = new Uint8Array((w + 1) * h); for (let y = 0; y < h; y++) o.set(ix.subarray(y * w, y * w + w), y * (w + 1) + 1); return o; });
+    } else rows = datas.map(d => anFilterRGBA(d, w, h));
+    let seq = 0;
+    for (let i = 0; i < frames.length; i++) {
+      const fc = new Uint8Array(26), v = new DataView(fc.buffer);
+      v.setUint32(0, seq++); v.setUint32(4, w); v.setUint32(8, h); v.setUint32(12, 0); v.setUint32(16, 0);
+      v.setUint16(20, delays[i]); v.setUint16(22, 1000); fc[24] = 0; fc[25] = 0;
+      parts.push(anChunk('fcTL', fc));
+      const z = await anZlib(rows[i]);
+      if (i === 0) parts.push(anChunk('IDAT', z));
+      else { const fd = new Uint8Array(4 + z.length); new DataView(fd.buffer).setUint32(0, seq++); fd.set(z, 4); parts.push(anChunk('fdAT', fd)); }
+    }
+    parts.push(anChunk('IEND', new Uint8Array(0)));
+    return new Blob(parts, { type: 'image/png' });
+  }
+  // まずフルカラーで作り、300KBを超えたら256→128→64色に減らす
+  async function anMake(frames, o) {
+    const n = frames.length, total = o.sec * 1000, base = Math.floor(total / n), rem = total - base * n;
+    const delays = frames.map((_, i) => base + (i < rem ? 1 : 0));
+    const maxLoops = Math.floor(4 / o.sec), plays = o.loops ? Math.min(o.loops, maxLoops) : maxLoops;
+    let blob = await anEncodeAPNG(frames, delays, plays, 0), reduced = 0;
+    for (const nc of [256, 128, 64]) { if (blob.size <= AMAX) break; blob = await anEncodeAPNG(frames, delays, plays, nc); reduced = nc; }
+    return { blob, reduced, plays };
+  }
+
+  // ---- 画面 ----
+  function anFillSelects() {
+    if (!$('anFont').options.length) $('anFont').innerHTML = FONTS.map(f => `<option value="${f.f.replace(/"/g, '&quot;')}">${f.l}</option>`).join('');
+    $('anMain').innerHTML = Array.from({ length: AN.n }, (_, i) => `<option value="${i}">${String(i + 1).padStart(2, '0')}</option>`).join('');
+    $('anMain').value = String(Math.min(AN.main, AN.n - 1));
+    $('anCount').value = String(AN.n);
+  }
+  function anSlotHTML(i) {
+    return `<div class="anslot" data-i="${i}"><div class="hd2"><span>${String(i + 1).padStart(2, '0')}</span><span class="mk"></span></div>
+      <div class="pv ck"><span>画像なし</span></div><div class="st"></div>
+      <input type="text" placeholder="文字（「／」で改行）" data-antext="${i}">
+      <div class="bt"><button class="btn sm" data-anpick="${i}">📷 画像</button><button class="btn sm danger" data-anclr="${i}" title="空にする">✖</button></div></div>`;
+  }
+  function anRenderSlots() {
+    $('anSlots').innerHTML = Array.from({ length: AN.n }, (_, i) => anSlotHTML(i)).join('');
+    for (let i = 0; i < AN.n; i++) anPaintSlot(i);
+  }
+  function anPaintSlot(i) {
+    const el = $('anSlots').querySelector(`.anslot[data-i="${i}"]`); if (!el) return;
+    const sl = AN.slots[i];
+    el.classList.toggle('on', i === AN.sel);
+    el.querySelector('.mk').textContent = i === AN.main ? '⭐メイン' : '';
+    const inp = el.querySelector('input'); if (document.activeElement !== inp) inp.value = sl.text;
+    el.querySelector('.pv').innerHTML = sl.url ? `<img src="${sl.url}" alt="">` : `<span>${sl.sheet ? '作成中…' : '画像なし'}</span>`;
+    const st = el.querySelector('.st'), inf = sl.info;
+    st.className = 'st' + (inf && inf.ng.length ? ' ng' : '');
+    st.textContent = !inf ? '' : inf.ng.length ? '⚠️ ' + inf.ng[0] : `${inf.frames}コマ・${inf.kb}KB`;
+  }
+  function anPaintDetail() {
+    const i = AN.sel, sl = AN.slots[i];
+    $('anDetTitle').textContent = `スタンプ ${String(i + 1).padStart(2, '0')}`;
+    $('anBig').src = sl.url || ''; $('anBig').style.visibility = sl.url ? 'visible' : 'hidden';
+    const inf = sl.info;
+    $('anInfo').textContent = !sl.sheet ? 'まだ画像が入っていません。「📷 画像」から、8コマのまとめ画像を入れてください。'
+      : !inf ? '作成中…'
+      : `${inf.frames}コマ・1回${inf.sec}秒×${inf.plays}回・${inf.kb}KB${inf.reduced ? `（容量を抑えるため${inf.reduced}色に減色）` : ''}${sl.autoFail ? '・キャラを自動で見つけられなかったのでマス目で切りました' : ''}`;
+    const cells = sl.cells || [];
+    $('anFirst').innerHTML = cells.map((_, k) => `<option value="${k}">${k + 1}コマ目</option>`).join('');
+    $('anFirst').value = String(sl.first);
+    $('anFrames').innerHTML = cells.map((c, k) => `<button data-anfr="${k}" class="${sl.excl.includes(k) ? 'off' : ''}"><canvas width="96" height="81"></canvas>${k + 1}</button>`).join('');
+    $('anFrames').querySelectorAll('canvas').forEach((cv, k) => { const f = fitInto(cells[k], 96, 81, 3); cv.getContext('2d').drawImage(f, 0, 0); });
+  }
+  function anPaintCheck() {
+    const items = [], used = AN.slots.slice(0, AN.n);
+    const empty = used.map((s, i) => s.sheet ? null : String(i + 1).padStart(2, '0')).filter(Boolean);
+    if (empty.length) items.push(['warn', `画像が入っていない番号：${empty.join(', ')}（申請には${AN.n}個すべて必要です）`]);
+    used.forEach((s, i) => { if (s.info) s.info.ng.forEach(m => items.push(['ng', `${String(i + 1).padStart(2, '0')}：${m}`])); });
+    if (!AN.slots[AN.main].frames) items.push(['warn', 'メイン画像に選んだ番号がまだ空です']);
+    if (!items.length) items.push(['ok', `${AN.n}個すべて規格内です（5〜20コマ・4秒以内・300KB以下・320×270px）`]);
+    $('anCheck').innerHTML = items.map(([lv, m]) => `<li class="${lv}">${lv === 'ok' ? '✅' : lv === 'ng' ? '⛔' : '⚠️'} ${m}</li>`).join('');
+  }
+
+  let anBusy = Promise.resolve();
+  async function anBuild(i) {
+    const sl = AN.slots[i], o = anOpt();
+    if (!sl.sheet) { sl.cells = sl.frames = sl.apng = sl.info = null; if (sl.url) URL.revokeObjectURL(sl.url); sl.url = null; return; }
+    anCut(sl, o);
+    const frames = anBuildFrames(sl, o);
+    if (sl.url) { URL.revokeObjectURL(sl.url); sl.url = null; }
+    sl.frames = frames; sl.apng = null;
+    if (!frames) { sl.info = { ng: ['キャラが見つかりません（背景の抜き方を確認）'], frames: 0, kb: 0 }; return; }
+    const r = await anMake(frames, o);
+    sl.apng = r.blob; sl.url = URL.createObjectURL(r.blob);
+    const ng = [];
+    if (frames.length < 5) ng.push(`コマが${frames.length}個しかありません（5コマ以上必要。「往復させる」でも増やせます）`);
+    if (frames.length > 20) ng.push(`コマが${frames.length}個あります（20コマまで）`);
+    if (r.blob.size > AMAX) ng.push(`${Math.ceil(r.blob.size / 1024)}KBで300KBを超えています（コマを減らす・往復をやめる）`);
+    sl.info = { ng, frames: frames.length, kb: Math.ceil(r.blob.size / 1024), sec: o.sec, plays: r.plays, reduced: r.reduced };
+  }
+  let anT = null;
+  function anRebuild(list, delay = 200) {
+    clearTimeout(anT);
+    anT = setTimeout(() => {
+      const idx = list || Array.from({ length: AN.n }, (_, i) => i);
+      anBusy = anBusy.then(async () => {
+        for (const i of idx) { await anBuild(i); anPaintSlot(i); if (i === AN.sel) anPaintDetail(); await new Promise(r => setTimeout(r, 0)); }
+        anPaintCheck();
+      }).catch(e => { console.error(e); toast('動くスタンプの作成でエラーが出ました'); });
+    }, delay);
+  }
+
+  async function anSetSheet(i, file) {
+    const sl = AN.slots[i];
+    sl.sheet = await fileToCanvas(file, 1800);
+    sl.blob = await toBlob(sl.sheet); sl.key = ''; sl.excl = []; sl.first = 0; sl.info = null;
+    anPaintSlot(i);
+  }
+
+  // ---- 保存・復元（このブラウザ内） ----
+  async function anSave() {
+    try {
+      const v = { n: AN.n, main: AN.main, opt: anOpt(), slots: AN.slots.map(s => ({ blob: s.blob, text: s.text, excl: s.excl, first: s.first })) };
+      const db = await idb(); await new Promise((res, rej) => { const tx = db.transaction(STORE, 'readwrite'); tx.objectStore(STORE).put(v, 'anime'); tx.oncomplete = res; tx.onerror = () => rej(tx.error); });
+    } catch (e) { /* 保存できない環境 */ }
+  }
+  let anSaveT = null; const anSaveSoon = () => { clearTimeout(anSaveT); anSaveT = setTimeout(anSave, 1200); };
+  async function anRestore() {
+    let v = null;
+    try { const db = await idb(); v = await new Promise((res, rej) => { const tx = db.transaction(STORE, 'readonly'); const r = tx.objectStore(STORE).get('anime'); r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); }); } catch (e) {}
+    anFillSelects();
+    if (!v) { anRenderSlots(); anPaintDetail(); anPaintCheck(); return; }
+    AN.n = v.n || 8; AN.main = v.main || 0;
+    const o = v.opt || {}, ids = { find: 'anFind', cols: 'anCols', rows: 'anRows', tol: 'anTol', sec: 'anSec', loops: 'anLoops', align: 'anAlign', out: 'anOut', font: 'anFont', tColor: 'anTColor', tStroke: 'anTStroke', tPos: 'anTPos', tFx: 'anTFx' };
+    Object.entries(ids).forEach(([k, id]) => { if (o[k] !== undefined) $(id).value = String(o[k]); });
+    if (o.inset !== undefined) $('anInset').value = String(Math.round(o.inset * 100));
+    [['bg', 'anBg'], ['ping', 'anPing'], ['size', 'anSize']].forEach(([k, id]) => { if (o[k] !== undefined) $(id).checked = !!o[k]; });
+    for (let i = 0; i < 24; i++) {
+      const s = (v.slots || [])[i]; if (!s) continue; const sl = AN.slots[i];
+      sl.text = s.text || ''; sl.excl = s.excl || []; sl.first = s.first || 0;
+      if (s.blob) { try { sl.blob = s.blob; sl.sheet = await fileToCanvas(s.blob, 1800); } catch (e) {} }
+    }
+    anFillSelects(); anSyncLabels(); anRenderSlots(); anPaintDetail(); anRebuild(null, 0);
+  }
+
+  function anSyncLabels() {
+    $('anInsetV').textContent = $('anInset').value + '%'; $('anTolV').textContent = $('anTol').value; $('anOutV').textContent = $('anOut').value + 'px';
+    $('anInsetRow').classList.toggle('hidden', anV('anFind') === 'auto');
+  }
+  function anPrompt() {
+    const o = anOpt(), n = o.cols * o.rows, ch = anV('anPChara').trim() || '（キャラの説明）', act = anV('anPAct').trim() || '（動き）';
+    $('anPOut').value = `同じキャラクターが動くアニメーションの${n}コマを、1枚の画像に横${o.cols}コマ×縦${o.rows}段で並べて描いてください。
+キャラクター：${ch}
+動き：${act}
+・左上から右へ、上の段から下の段の順に、動きが少しずつ進むようにする
+・最後のコマから最初のコマへ自然につながる（くり返し再生できる）動きにする
+・全コマで、キャラの大きさ・向き・絵柄・色をそろえ、変わるのは動いている部分だけにする
+・足元の高さを全コマでそろえる
+・背景は無地の白一色。影・床・枠線・コマの区切り線は描かない
+・コマとコマの間を十分にあけ、キャラがコマからはみ出さないようにする
+・文字・数字・吹き出しは入れない`;
+  }
+
+  // ---- イベント ----
+  $('animeBox').addEventListener('input', e => {
+    if (e.target.matches('[data-an]')) { anSyncLabels(); anRebuild(); anSaveSoon(); }
+    if (e.target.dataset.antext !== undefined) { const i = Number(e.target.dataset.antext); AN.slots[i].text = e.target.value; anRebuild([i], 500); anSaveSoon(); }
+    if (e.target.id === 'anPChara' || e.target.id === 'anPAct') anPrompt();
+  });
+  $('anCount').addEventListener('change', () => { AN.n = Number(anV('anCount')); AN.main = Math.min(AN.main, AN.n - 1); AN.sel = Math.min(AN.sel, AN.n - 1); anFillSelects(); anRenderSlots(); anPaintDetail(); anPaintCheck(); anSaveSoon(); });
+  $('anMain').addEventListener('change', () => { AN.main = Number(anV('anMain')); for (let i = 0; i < AN.n; i++) anPaintSlot(i); anPaintCheck(); anSaveSoon(); });
+  let anPickIdx = 0;
+  $('anSlots').addEventListener('click', e => {
+    const p = e.target.closest('[data-anpick]'), c = e.target.closest('[data-anclr]'), s = e.target.closest('.anslot');
+    if (p) { anPickIdx = Number(p.dataset.anpick); $('anOne').value = ''; $('anOne').click(); }
+    if (c) { const i = Number(c.dataset.anclr); if (!AN.slots[i].sheet || confirm(`${String(i + 1).padStart(2, '0')}番を空にしますか？`)) { const t = AN.slots[i].text; if (AN.slots[i].url) URL.revokeObjectURL(AN.slots[i].url); AN.slots[i] = anSlot(); AN.slots[i].text = t; anPaintSlot(i); anPaintDetail(); anPaintCheck(); anSaveSoon(); } return; }
+    if (s && !e.target.matches('input')) { const prev = AN.sel; AN.sel = Number(s.dataset.i); anPaintSlot(prev); anPaintSlot(AN.sel); anPaintDetail(); }
+  });
+  $('anOne').addEventListener('change', async e => {
+    const f = e.target.files[0]; if (!f) return;
+    const i = anPickIdx; toast('コマを切り分けています…');
+    try { await anSetSheet(i, f); } catch (err) { return toast(err.message); }
+    const prev = AN.sel; AN.sel = i; anPaintSlot(prev); anRebuild([i], 0); anSaveSoon(); track('anime_sheet', {});
+  });
+  $('anMulti').addEventListener('change', async e => {
+    const fs = Array.from(e.target.files); if (!fs.length) return;
+    const free = []; for (let i = 0; i < AN.n; i++) if (!AN.slots[i].sheet) free.push(i);
+    if (fs.length > free.length && AN.n < 24) { const nn = Math.min(24, Math.ceil((AN.n - free.length + fs.length) / 8) * 8); if (confirm(`${fs.length}枚入れるには${nn}個セットが必要です。${nn}個セットに変更しますか？`)) { AN.n = nn; anFillSelects(); anRenderSlots(); free.length = 0; for (let i = 0; i < AN.n; i++) if (!AN.slots[i].sheet) free.push(i); } }
+    const done = [];
+    toast('コマを切り分けています…');
+    for (let k = 0; k < fs.length && k < free.length; k++) { try { await anSetSheet(free[k], fs[k]); done.push(free[k]); } catch (err) {} }
+    e.target.value = '';
+    if (fs.length > free.length) toast(`空いている${free.length}個だけに入れました`);
+    anRebuild(done, 0); anSaveSoon(); track('anime_sheet', { n: done.length });
+  });
+  $('anFrames').addEventListener('click', e => {
+    const b = e.target.closest('[data-anfr]'); if (!b) return;
+    const sl = AN.slots[AN.sel], k = Number(b.dataset.anfr);
+    sl.excl = sl.excl.includes(k) ? sl.excl.filter(x => x !== k) : sl.excl.concat(k);
+    b.classList.toggle('off', sl.excl.includes(k)); anRebuild([AN.sel], 150); anSaveSoon();
+  });
+  $('anFirst').addEventListener('change', () => { AN.slots[AN.sel].first = Number(anV('anFirst')); anRebuild([AN.sel], 0); anSaveSoon(); });
+  $('anBgBtn').addEventListener('click', () => {
+    AN.bg = (AN.bg + 1) % 3; const st = $('anStage');
+    st.classList.toggle('ck', AN.bg === 0); st.classList.toggle('lt', AN.bg === 1); st.classList.toggle('dk', AN.bg === 2);
+    $('anBgBtn').textContent = '背景：' + ['チェック', 'トーク', '暗'][AN.bg];
+  });
+  $('anSaveOne').addEventListener('click', () => { const sl = AN.slots[AN.sel]; if (!sl.apng) return toast('まだできていません'); dl(sl.apng, String(AN.sel + 1).padStart(2, '0') + '.png'); });
+  $('anPCopy').addEventListener('click', async () => { anPrompt(); try { await navigator.clipboard.writeText(anV('anPOut')); toast('コピーしました'); } catch (e) { $('anPOut').select(); document.execCommand('copy'); toast('コピーしました'); } });
+  $('anZip').addEventListener('click', async () => {
+    await anBusy;
+    const used = AN.slots.slice(0, AN.n), empty = [], ng = [];
+    used.forEach((s, i) => { if (!s.apng) empty.push(String(i + 1).padStart(2, '0')); else if (s.info.ng.length) ng.push(String(i + 1).padStart(2, '0')); });
+    if (empty.length === AN.n) return toast('まだ動くスタンプがありません');
+    let warn = '';
+    if (empty.length) warn += `・空の番号：${empty.join(', ')}（申請には${AN.n}個すべて必要です）\n`;
+    if (ng.length) warn += `・規格外：${ng.join(', ')}\n`;
+    if (warn && !confirm(`このまま書き出しますか？\n\n${warn}`)) return;
+    toast('ZIPを作っています…');
+    const o = anOpt(), files = [];
+    used.forEach((s, i) => { if (s.apng) files.push({ name: String(i + 1).padStart(2, '0') + '.png', blob: s.apng }); });
+    const ms = AN.slots[AN.main].frames || used.find(s => s.frames)?.frames;
+    if (ms) {
+      // メイン画像：全コマを同じ倍率で240×240に収める（動くAPNG）
+      let x0 = AW, y0 = AH, x1 = 0, y1 = 0;
+      ms.forEach(f => { const b = contentBox(f, 0); if (b) { x0 = Math.min(x0, b.x0); y0 = Math.min(y0, b.y0); x1 = Math.max(x1, b.x1); y1 = Math.max(y1, b.y1); } });
+      const bw = Math.max(1, x1 - x0), bh = Math.max(1, y1 - y0), sc = Math.min(224 / bw, 224 / bh);
+      const mf = ms.map(f => { const c = mk(240, 240), x = c.getContext('2d'); x.imageSmoothingQuality = 'high'; x.drawImage(f, x0, y0, bw, bh, (240 - bw * sc) / 2, (240 - bh * sc) / 2, bw * sc, bh * sc); return c; });
+      files.push({ name: 'main.png', blob: (await anMake(mf, o)).blob });
+      files.push({ name: 'tab.png', blob: await toBlob(fitInto(ms[0], 96, 74, 2)) });
+    }
+    dl(await makeZip(files), `line_anime_${AN.n}set.zip`);
+    track('download_zip', { count: AN.n, kind: 'anime' });
+    toast('ZIPを書き出しました');
+  });
+
+  // ---- モード切り替え ----
+  const setAnMode = on => {
+    document.body.classList.toggle('anmode', on);
+    if (on) {
+      document.body.classList.remove('thmode');
+      const ab = document.querySelector('[data-goanime]');
+      $('kindSeg').querySelectorAll('button').forEach(b => b.classList.toggle('on', b === ab));
+      window.scrollTo({ top: 0, behavior: 'smooth' }); track('anime_mode', {});
+      if (!window.CompressionStream) toast('このブラウザは動くスタンプの書き出しに対応していません。最新のChrome・Safariで開いてください');
+    }
+  };
+  document.querySelector('[data-goanime]').addEventListener('click', () => setAnMode(true));
+  $('anExit').addEventListener('click', () => { setAnMode(false); $('kindSeg').querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.kind === KIND)); });
+  $('kindSeg').addEventListener('click', e => { if (e.target.closest('button[data-kind],button[data-gotheme]')) setAnMode(false); });
+  anSyncLabels(); anPrompt(); anRestore();
+
   // ---------- Init ----------
   (async () => {
     applySpec();
@@ -3644,6 +4309,7 @@
       try { await deserialize(saved); toast('前回の作業を復元しました'); } catch (e) { loadSample(); buildStrip(); select(0); }
     } else { loadSample(); buildStrip(); select(0); }
     if (location.hash === '#emoji') await switchKind('emoji');
+    if (location.hash === '#anime') setAnMode(true);
     if (document.fonts) {
       await Promise.race([Promise.all(FONTS.map(f => document.fonts.load(`${f.w} 40px ${f.f}`, 'あいう！ABC'))).catch(() => {}), new Promise(r => setTimeout(r, 2500))]);
     }
